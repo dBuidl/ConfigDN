@@ -1,0 +1,2 @@
+# LiveConfig
+ConfigCat but better
