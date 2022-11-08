@@ -8,8 +8,8 @@ import (
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase"
-	"github.com/pocketbase/pocketbase/tools/types"
 	"github.com/pocketbase/pocketbase/core"
+	"github.com/pocketbase/pocketbase/tools/types"
 )
 
 type JsonResponse struct {
@@ -19,12 +19,12 @@ type JsonResponse struct {
 }
 
 type BaseModel struct {
-	Id string `db:"id"`
-    Created types.DateTime
-	Updated types.DateTime
+	Id      string         `db:"id"`
+	Created types.DateTime `db:"created"`
+	Updated types.DateTime `db:"updated"`
 }
 
-type ApiKeyModel struct {
+type ApiKeyAndEnvironmentModel struct {
 	BaseModel
 }
 
@@ -48,8 +48,10 @@ func main() {
 					})
 				}
 
-				// select all from api_key table
-				q := app.DB().Select("*").From("api_key").Where(dbx.HashExp{"key": key}).One()
+				var apiKeyAndEnvModel ApiKeyAndEnvironmentModel
+
+				// select flag.identifier, value.value, value.updated
+				app.DB().Select("*").From("api_key").Where(dbx.HashExp{"key": key}).LeftJoin("environment", dbx.NewExp("environment.id=api_key.environment")).One(&apiKeyAndEnvModel)
 
 				return c.JSON(http.StatusOK, JsonResponse{
 					Success: true,
