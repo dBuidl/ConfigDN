@@ -103,6 +103,6 @@ dist
 # TernJS port file
 .tern-port
 
-pb_data/
+backend/pb_data.old
 backend/pb_data
 pocketbase
