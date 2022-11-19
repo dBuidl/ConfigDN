@@ -107,3 +107,5 @@ backend/pb_data.old
 backend/pb_data
 pocketbase
 backend/vendor/
+pb_data
+.idea
