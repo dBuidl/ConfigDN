@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -36,7 +37,7 @@ func main() {
 	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 		e.Router.AddRoute(echo.Route{
 			Method: http.MethodGet,
-			Path:   "/api/v1/get_config",
+			Path:   "/public_api/v1/get_config",
 			Handler: func(c echo.Context) error {
 				// get key from auth header
 				key := c.Request().Header.Get("Authorization")
@@ -48,15 +49,41 @@ func main() {
 					})
 				}
 
-				var apiKeyAndEnvModel ApiKeyAndEnvironmentModel
+				var data []ApiKeyAndEnvironmentModel
 
 				// select flag.identifier, value.value, value.updated
-				app.DB().Select("*").From("api_key").Where(dbx.HashExp{"key": key}).LeftJoin("environment", dbx.NewExp("environment.id=api_key.environment")).One(&apiKeyAndEnvModel)
+				err := app.DB().Select("*").From("flag").Where(dbx.HashExp{"api_key.key": key}).
+					InnerJoin("config", dbx.NewExp("config.id=flag.config")).
+					InnerJoin("value", dbx.NewExp("value.flag=flag.id and value.environment=environment.id")).
+					InnerJoin("environment", dbx.NewExp("environment.config=config.id")).
+					InnerJoin("api_key", dbx.NewExp("environment.id=api_key.environment")).
+					All(&data)
+
+				dataResponse, err := json.Marshal(data)
+
+				if err != nil {
+					return c.JSON(http.StatusInternalServerError, JsonResponse{
+						Success: false,
+						Message: "error marshaling data",
+						Data:    nil,
+					})
+				}
+
+				if err != nil {
+					fmt.Println(err)
+					return c.JSON(http.StatusUnauthorized, JsonResponse{
+						Success: false,
+						Message: "invalid api key",
+						Data:    nil,
+					})
+				}
+
+				fmt.Println(data)
 
 				return c.JSON(http.StatusOK, JsonResponse{
 					Success: true,
 					Message: "Success",
-					Data:    nil,
+					Data:    dataResponse,
 				})
 			},
 			Middlewares: []echo.MiddlewareFunc{
