@@ -25,7 +25,7 @@ type BaseModel struct {
 	Updated types.DateTime `db:"updated"`
 }
 
-type ApiKeyAndEnvironmentModel struct {
+type ConfigKeyValueInfo struct {
 	BaseModel
 }
 
@@ -49,7 +49,7 @@ func main() {
 					})
 				}
 
-				var data []ApiKeyAndEnvironmentModel
+				var data []ConfigKeyValueInfo
 
 				// select flag.identifier, value.value, value.updated
 				err := app.DB().Select("*").From("flag").Where(dbx.HashExp{"api_key.key": key}).
