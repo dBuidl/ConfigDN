@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -10,24 +9,7 @@ import (
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/core"
-	"github.com/pocketbase/pocketbase/tools/types"
 )
-
-type JsonResponse struct {
-	Success bool            `json:"success"`
-	Message string          `json:"message"`
-	Data    json.RawMessage `json:"data"`
-}
-
-type BaseModel struct {
-	Id      string         `db:"id"`
-	Created types.DateTime `db:"created"`
-	Updated types.DateTime `db:"updated"`
-}
-
-type ConfigKeyValueInfo struct {
-	BaseModel
-}
 
 func main() {
 	app := pocketbase.New()
@@ -42,9 +24,9 @@ func main() {
 				// get key from auth header
 				key := c.Request().Header.Get("Authorization")
 				if key == "" {
-					return c.JSON(http.StatusUnauthorized, JsonResponse{
+					return c.JSON(http.StatusUnauthorized, JsonErrorResponse{
 						Success: false,
-						Message: "missing authorization header",
+						Error:   "missing authorization header",
 						Data:    nil,
 					})
 				}
@@ -52,38 +34,52 @@ func main() {
 				var data []ConfigKeyValueInfo
 
 				// select flag.identifier, value.value, value.updated
-				err := app.DB().Select("*").From("flag").Where(dbx.HashExp{"api_key.key": key}).
+				err := app.DB().Select("value.updated", "value.value", "flag.identifier").From("flag").Where(dbx.HashExp{"api_key.key": key}).
 					InnerJoin("config", dbx.NewExp("config.id=flag.config")).
 					InnerJoin("value", dbx.NewExp("value.flag=flag.id and value.environment=environment.id")).
 					InnerJoin("environment", dbx.NewExp("environment.config=config.id")).
 					InnerJoin("api_key", dbx.NewExp("environment.id=api_key.environment")).
 					All(&data)
 
-				dataResponse, err := json.Marshal(data)
-
 				if err != nil {
-					return c.JSON(http.StatusInternalServerError, JsonResponse{
+					return c.JSON(http.StatusInternalServerError, JsonErrorResponse{
 						Success: false,
-						Message: "error marshaling data",
+						Error:   "error marshaling data",
 						Data:    nil,
 					})
 				}
 
 				if err != nil {
-					fmt.Println(err)
-					return c.JSON(http.StatusUnauthorized, JsonResponse{
+					return c.JSON(http.StatusUnauthorized, JsonErrorResponse{
 						Success: false,
-						Message: "invalid api key",
+						Error:   "invalid api key",
 						Data:    nil,
 					})
 				}
 
-				fmt.Println(data)
+				response, err := ConfigValuesToPublicJson(data)
 
-				return c.JSON(http.StatusOK, JsonResponse{
+				if err != nil {
+					return c.JSON(http.StatusInternalServerError, JsonErrorResponse{
+						Success: false,
+						Error:   "error converting data",
+						Data:    nil,
+					})
+				}
+
+				responseJson, err := json.Marshal(response)
+
+				if err != nil {
+					return c.JSON(http.StatusInternalServerError, JsonErrorResponse{
+						Success: false,
+						Error:   "error marshaling data",
+						Data:    nil,
+					})
+				}
+
+				return c.JSON(http.StatusOK, JsonSuccessResponse{
 					Success: true,
-					Message: "Success",
-					Data:    dataResponse,
+					Data:    responseJson,
 				})
 			},
 			Middlewares: []echo.MiddlewareFunc{
@@ -93,7 +89,7 @@ func main() {
 
 		e.Router.AddRoute(echo.Route{
 			Method: http.MethodOptions,
-			Path:   "/api/v1/get_config",
+			Path:   "/public_api/v1/get_config",
 			Handler: func(c echo.Context) error {
 				// send cors headers
 				c.Response().Header().Set("Access-Control-Allow-Origin", "*")
