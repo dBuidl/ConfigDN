@@ -1,2 +1,3 @@
 # LiveConfig
-ConfigCat but better
+
+Open source configuration management and feature flags.
