@@ -1,5 +1,16 @@
 import { render } from 'preact'
-import { App } from './app'
-import './index.css'
+import { Home } from './routes/Home'
+import './styles/index.scss'
+import React from "preact/compat";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
 
-render(<App />, document.getElementById('app') as HTMLElement)
+// TODO: remember that react-router now has loaders (https://reactrouter.com/en/main/route/loader) which can be used to load data before rendering the componentpo
+
+const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <Home />,
+    }
+])
+
+render(<RouterProvider router={router} />, document.getElementById('app') as HTMLElement)

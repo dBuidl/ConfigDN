@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "preact": "^10.11.2"
+    "preact": "^10.11.2",
+    "react-router-dom": "^6.4.3",
+    "sass": "^1.56.1"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.4.0",
