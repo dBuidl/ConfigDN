@@ -17,7 +17,7 @@ func main() {
 	// this is the public config api
 
 	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		e.Router.AddRoute(echo.Route{
+		_, err := e.Router.AddRoute(echo.Route{
 			Method: http.MethodGet,
 			Path:   "/public_api/v1/get_config",
 			Handler: func(c echo.Context) error {
@@ -31,24 +31,12 @@ func main() {
 					})
 				}
 
-				var data []ConfigKeyValueInfo
+				// check whether the api key exists
+				var apiKeyRecord ApiKeyRecord
 
-				// select flag.identifier, value.value, value.updated
-				err := app.DB().Select("value.updated", "value.value", "flag.identifier").From("flag").Where(dbx.HashExp{"api_key.key": key}).
-					InnerJoin("config", dbx.NewExp("config.id=flag.config")).
-					InnerJoin("value", dbx.NewExp("value.flag=flag.id and value.environment=environment.id")).
-					InnerJoin("environment", dbx.NewExp("environment.config=config.id")).
-					InnerJoin("api_key", dbx.NewExp("environment.id=api_key.environment")).
-					All(&data)
+				err := app.DB().Select("*").From("api_key").Where(dbx.HashExp{"key": key}).One(&apiKeyRecord)
 
-				if err != nil {
-					return c.JSON(http.StatusInternalServerError, JsonErrorResponse{
-						Success: false,
-						Error:   "error marshaling data",
-						Data:    nil,
-					})
-				}
-
+				// if we error out, return an error
 				if err != nil {
 					return c.JSON(http.StatusUnauthorized, JsonErrorResponse{
 						Success: false,
@@ -57,6 +45,36 @@ func main() {
 					})
 				}
 
+				// if record is nil or key is not the same, return an error (key does not exist)
+				if apiKeyRecord.Key != key {
+					return c.JSON(http.StatusUnauthorized, JsonErrorResponse{
+						Success: false,
+						Error:   "invalid api key",
+						Data:    nil,
+					})
+				}
+
+				// var to hold the config key->value info
+				var data []ConfigKeyValueInfo
+
+				// select flag.identifier, value.value, value.updated
+				err = app.DB().Select("value.updated", "value.value", "flag.identifier").From("flag").Where(dbx.HashExp{"api_key.key": key}).
+					InnerJoin("config", dbx.NewExp("config.id=flag.config")).
+					InnerJoin("value", dbx.NewExp("value.flag=flag.id and value.environment=environment.id")).
+					InnerJoin("environment", dbx.NewExp("environment.config=config.id")).
+					InnerJoin("api_key", dbx.NewExp("environment.id=api_key.environment")).
+					All(&data)
+
+				// if we error out, return an error
+				if err != nil {
+					return c.JSON(http.StatusInternalServerError, JsonErrorResponse{
+						Success: false,
+						Error:   "error marshaling data",
+						Data:    nil,
+					})
+				}
+
+				// convert it to the get_config format
 				response, err := ConfigValuesToPublicJson(data)
 
 				if err != nil {
@@ -67,6 +85,7 @@ func main() {
 					})
 				}
 
+				// marshal it so we can send it back
 				responseJson, err := json.Marshal(response)
 
 				if err != nil {
@@ -77,17 +96,22 @@ func main() {
 					})
 				}
 
+				// send it back inside success response
 				return c.JSON(http.StatusOK, JsonSuccessResponse{
 					Success: true,
 					Data:    responseJson,
 				})
 			},
-			Middlewares: []echo.MiddlewareFunc{
-				//apis.RequireAdminOrUserAuth(),
-			},
+			Middlewares: []echo.MiddlewareFunc{},
 		})
 
-		e.Router.AddRoute(echo.Route{
+		if err != nil {
+			// if route fails to set, we should stop now (as this is core functionality)
+			panic(err)
+		}
+
+		// This route handles CORS preflight requests so that ConfigDN can be used in the browser
+		_, err = e.Router.AddRoute(echo.Route{
 			Method: http.MethodOptions,
 			Path:   "/public_api/v1/get_config",
 			Handler: func(c echo.Context) error {
@@ -101,6 +125,11 @@ func main() {
 				//apis.RequireAdminOrUserAuth(),
 			},
 		})
+
+		if err != nil {
+			// if these routes fail to set, we should panic
+			panic(err)
+		}
 
 		return nil
 	})
