@@ -45,7 +45,7 @@ func main() {
 					})
 				}
 
-				// if record is nil or key is not the same, return an error (key does not exist)
+				// if key is not the same, return an error (key does not exist)
 				if apiKeyRecord.Key != key {
 					return c.JSON(http.StatusUnauthorized, JsonErrorResponse{
 						Success: false,
