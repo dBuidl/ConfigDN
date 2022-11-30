@@ -709,6 +709,11 @@ picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.2:
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
   integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
 
+pocketbase@^0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/pocketbase/-/pocketbase-0.8.1.tgz#b50e0f12d9073dc9f857d6716fda1c2cc6288b3a"
+  integrity sha512-6ABZJ6gEvkfT46otZbyC+4JQ8kaV/I3tKP2HcqtBU4QIYKaha/THekVPq0dmpj88oGiTIGf+L1Hd5EXLL/T70w==
+
 postcss@^8.4.18:
   version "8.4.19"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.19.tgz#61178e2add236b17351897c8bcc0b4c8ecab56fc"

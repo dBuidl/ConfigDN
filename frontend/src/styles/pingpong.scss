@@ -1,0 +1,32 @@
+@import "theme";
+
+.ping-pong {
+  background-color: black;
+  width: 500px;
+  height: 400px;
+  margin: 20px auto;
+  position: relative;
+
+  .ping-pong-paddle {
+    background-color: white;
+    position: absolute;
+    left: 10px;
+    width: 15px;
+    height: 100px;
+  }
+
+  .ping-pong-paddle-right {
+    // move to the left
+    position: absolute;
+    right: 10px;
+    left: unset;
+  }
+
+  .ping-pong-ball {
+    color: white;
+
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+  }
+}

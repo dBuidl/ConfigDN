@@ -44,6 +44,12 @@ $themes: (
   }
 }
 
+@mixin forcedTheme($property, $color, $theme, $additionalPropertiesPositionIsFront: false, $additionalProperties: '') {
+  $theme: map-get($themes, $theme);
+
+  @include themeProperty($theme, $property, $color, $additionalPropertiesPositionIsFront, $additionalProperties);
+}
+
 body {
   @include theme('background-color', $background-color);
   @include theme('color', $text-color);
