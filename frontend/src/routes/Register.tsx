@@ -2,6 +2,11 @@ import Navigation from "../components/Navigation";
 import React from "preact/compat";
 import "../styles/auth.scss";
 import pocketbase from "../libraries/Pocketbase";
+import {ClientResponseError} from "pocketbase";
+import ErrorsAsArray from "../helpers/ErrorsAsArray";
+import {useNavigate} from "react-router-dom";
+import URLS from "../helpers/URLS";
+import {DatabaseInsertError} from "../types/Errors";
 
 export default function Register() {
     // register = POST http://127.0.0.1:8090/api/users
@@ -9,20 +14,42 @@ export default function Register() {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [passwordConfirm, setPasswordConfirm] = React.useState("");
-
+    const [errors, setErrors] = React.useState<string[]>([]);
+    const [registerEnabled, setRegisterEnabled] = React.useState(true);
+    const navigate = useNavigate();
 
     async function createAccount(e: Event) {
         e.preventDefault();
         e.stopPropagation();
+        setRegisterEnabled(false);
+        setErrors([]);
 
-        const response = await pocketbase.collection('users').create({
-            username,
-            email,
-            password,
-            passwordConfirm,
-        })
+        try {
+            await pocketbase.collection('users').create({
+                username,
+                email,
+                password,
+                passwordConfirm,
+                emailVisibility: true,
+            });
 
-        console.log(response);
+            await pocketbase.collection('users').authWithPassword(email, password);
+
+            navigate(URLS.DASHBOARD);
+        } catch (e) {
+            if (e instanceof ClientResponseError) {
+                // get the response data
+                const userCreateError = (e.data as DatabaseInsertError).data;
+
+                // set the errors
+                setErrors(ErrorsAsArray(userCreateError));
+            } else if (e instanceof Error) {
+                // unknown error
+                setErrors([e.message]);
+            }
+        }
+
+        setRegisterEnabled(true);
     }
 
     return <div className={"auth-page"}>
@@ -32,9 +59,9 @@ export default function Register() {
             <div className="form" onSubmit={createAccount}>
                 <div className="form-title">Register</div>
                 <div className="form-input">
-                    <label htmlFor="email">Username</label>
-                    <input type="email" name="email" value={username}
-                           onChange={(e: any) => setUsername(e.target.value)} id="email"/>
+                    <label htmlFor="username">Username</label>
+                    <input type="text" name="username" value={username}
+                           onChange={(e: any) => setUsername(e.target.value)} id="username"/>
                 </div>
                 <div className="form-input">
                     <label htmlFor="email">Email</label>
@@ -52,7 +79,11 @@ export default function Register() {
                            onChange={(e: any) => setPasswordConfirm(e.target.value)} id="password-confirm"/>
                 </div>
                 <div className="form-input">
-                    <button onClick={createAccount}>Register</button>
+                    <button onClick={createAccount} disabled={!registerEnabled}>Register</button>
+                    {errors.length > 0 ? <div className="errors">
+                        <strong>Errors:</strong>
+                        {errors.map((error) => <div className="error">{error}</div>)}
+                    </div> : null}
                 </div>
 
                 {/* todo: add oauth2 options here */}
