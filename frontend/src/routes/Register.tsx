@@ -1,5 +1,5 @@
 import Navigation from "../components/Navigation";
-import React from "preact/compat";
+import React, {useEffect} from "preact/compat";
 import "../styles/auth.scss";
 import pocketbase from "../libraries/Pocketbase";
 import {ClientResponseError} from "pocketbase";
@@ -17,6 +17,20 @@ export default function Register() {
     const [errors, setErrors] = React.useState<string[]>([]);
     const [registerEnabled, setRegisterEnabled] = React.useState(true);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (pocketbase.authStore.isValid) {
+            // check if the user is logged in
+            pocketbase.collection('users').authRefresh().then(() => {
+                // redirect to dashboard
+                if (pocketbase.authStore.isValid) {
+                    navigate(URLS.DASHBOARD);
+                }
+            }).catch(() => {
+                // do nothing
+            });
+        }
+    }, []);
 
     async function createAccount(e: Event) {
         e.preventDefault();
@@ -39,10 +53,15 @@ export default function Register() {
         } catch (e) {
             if (e instanceof ClientResponseError) {
                 // get the response data
-                const userCreateError = (e.data as DatabaseInsertError).data;
+                const userCreateError = (e.data as DatabaseInsertError);
 
-                // set the errors
-                setErrors(ErrorsAsArray(userCreateError));
+                // check if data is empty
+                if (Object.keys(userCreateError.data).length === 0) {
+                    setErrors([userCreateError.message]);
+                } else {
+                    // set the errors
+                    setErrors(ErrorsAsArray(userCreateError.data));
+                }
             } else if (e instanceof Error) {
                 // unknown error
                 setErrors([e.message]);
@@ -59,7 +78,7 @@ export default function Register() {
             <div className="form" onSubmit={createAccount}>
                 <div className="form-title">Register</div>
                 <div className="form-input">
-                    <label htmlFor="username">Username</label>
+                    <label htmlFor="username">Username (Optional)</label>
                     <input type="text" name="username" value={username}
                            onChange={(e: any) => setUsername(e.target.value)} id="username"/>
                 </div>
