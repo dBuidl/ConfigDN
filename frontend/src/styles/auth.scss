@@ -63,7 +63,11 @@
             }
         }
 
-        button {
+        .error-message {
+            font-size: 0.8em;
+        }
+
+        button[type=submit] {
             width: 100%;
             padding: 10px;
             border-radius: 5px;

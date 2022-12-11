@@ -1,55 +1,54 @@
 @import "theme";
-
-$nav-height: 50px;
+@import "vars";
 
 nav.nav {
-  @include theme('background-color', $primary-color);
-  @include forcedTheme('color', $text-color, $dark-theme);
-  height: $nav-height;
-  width: 100%;
-  display: flex;
-
-  .nav-logo {
-    font-size: 1.5rem;
-    font-weight: 600;
-    padding: 0 1rem;
+    @include theme('background-color', $primary-color);
+    @include forcedTheme('color', $text-color, $dark-theme);
+    height: $nav-height;
+    width: 100%;
     display: flex;
-    align-items: center;
-    line-height: 50px;
-    height: 100%;
 
-    a {
-      text-decoration: none;
+    .nav-logo {
+        font-size: 1.5rem;
+        font-weight: 600;
+        padding: 0 1rem;
+        display: flex;
+        align-items: center;
+        line-height: 50px;
+        height: 100%;
+
+        a {
+            text-decoration: none;
+        }
     }
-  }
 
-  .nav-spacer {
-    flex: 1;
-  }
-
-  .nav-links {
-    display: flex;
-    align-items: center;
-    height: 100%;
-
-    .nav-link {
-      @include theme('color', $text-color);
-      font-size: 1rem;
-      font-weight: 400;
-      padding: 0 1rem;
-      display: flex;
-      align-items: center;
-      line-height: 50px;
-      height: 100%;
-      text-decoration: none;
-
-      &:hover {
-        @include theme('background-color', $secondary-color);
-      }
-
-      &:last-of-type {
-        margin-right: 0;
-      }
+    .nav-spacer {
+        flex: 1;
     }
-  }
+
+    .nav-links {
+        display: flex;
+        align-items: center;
+        height: 100%;
+
+        .nav-link {
+            @include theme('color', $text-color);
+            font-size: 1rem;
+            font-weight: 400;
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+            line-height: 50px;
+            height: 100%;
+            text-decoration: none;
+
+            &:hover {
+                @include theme('background-color', $secondary-color);
+            }
+
+            &:last-of-type {
+                margin-right: 0;
+            }
+        }
+    }
 }

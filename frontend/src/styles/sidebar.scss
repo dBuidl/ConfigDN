@@ -1,0 +1,25 @@
+@import "theme";
+
+.sidebar {
+    height: 100%;
+    width: 100%;
+    @include theme('background-color', $secondary-color);
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr) 50px;
+    grid-column-gap: 0;
+    grid-row-gap: 0;
+}
+
+.sidebar-header {
+    grid-area: 5 / 1 / 6 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include theme('background-color', $primary-color);
+
+    // rounded bottom
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+}

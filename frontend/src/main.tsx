@@ -6,12 +6,16 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import Login from "./routes/Login";
 import Register from "./routes/Register";
 import URLS from "./helpers/URLS";
+import ErrorNotFound from "./routes/ErrorNotFound";
+import Dashboard from "./routes/Dashboard";
+import Logout from "./routes/Logout";
 
 // TODO: remember that react-router now has loaders (https://reactrouter.com/en/main/route/loader) which can be used to load data before rendering the componentpo
 
 const router = createBrowserRouter([
     {
         path: URLS.HOME,
+        errorElement: <ErrorNotFound/>,
         element: <Home/>,
     },
     {
@@ -21,6 +25,17 @@ const router = createBrowserRouter([
     {
         path: URLS.REGISTER,
         element: <Register/>,
+    },
+    {
+        path: URLS.DASHBOARD,
+        element: <Dashboard/>,
+        children: [
+            // put teams, projects, envs here
+        ]
+    },
+    {
+        path: URLS.LOGOUT,
+        element: <Logout/>,
     }
 ])
 

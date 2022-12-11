@@ -3,6 +3,7 @@ const URLS: { [key: string]: string } = {
     REGISTER: "/auth/register",
     HOME: "/",
     DASHBOARD: "/dashboard",
+    LOGOUT: "/auth/logout",
 }
 
 export default URLS;

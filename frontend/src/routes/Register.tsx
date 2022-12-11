@@ -1,42 +1,30 @@
 import Navigation from "../components/Navigation";
-import React, {useEffect} from "preact/compat";
+import React from "preact/compat";
 import "../styles/auth.scss";
 import pocketbase from "../libraries/Pocketbase";
 import {ClientResponseError} from "pocketbase";
-import ErrorsAsArray from "../helpers/ErrorsAsArray";
-import {useNavigate} from "react-router-dom";
+import ErrorsAsStringDict from "../helpers/ErrorsAsStringDict";
 import URLS from "../helpers/URLS";
 import {DatabaseInsertError} from "../types/Errors";
+import useAuthStatusRedirect from "../hooks/useAuthStatusRedirect";
+import {useNavigate} from "react-router-dom";
+import ValidatedInput from "../components/ValidatedInput";
+import ErrorIfExists from "../components/ErrorIfExists";
 
 export default function Register() {
-    // register = POST http://127.0.0.1:8090/api/users
     const [username, setUsername] = React.useState("");
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [passwordConfirm, setPasswordConfirm] = React.useState("");
-    const [errors, setErrors] = React.useState<string[]>([]);
+    const [errors, setErrors] = React.useState<{ [key: string]: string }>({});
     const [registerEnabled, setRegisterEnabled] = React.useState(true);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        if (pocketbase.authStore.isValid) {
-            // check if the user is logged in
-            pocketbase.collection('users').authRefresh().then(() => {
-                // redirect to dashboard
-                if (pocketbase.authStore.isValid) {
-                    navigate(URLS.DASHBOARD);
-                }
-            }).catch(() => {
-                // do nothing
-            });
-        }
-    }, []);
+    // redirect to dashboard if already authenticated
+    useAuthStatusRedirect(URLS.DASHBOARD, true);
 
     async function createAccount(e: Event) {
         e.preventDefault();
-        e.stopPropagation();
         setRegisterEnabled(false);
-        setErrors([]);
 
         try {
             await pocketbase.collection('users').create({
@@ -49,6 +37,8 @@ export default function Register() {
 
             await pocketbase.collection('users').authWithPassword(email, password);
 
+            setErrors({});
+
             navigate(URLS.DASHBOARD);
         } catch (e) {
             if (e instanceof ClientResponseError) {
@@ -57,14 +47,14 @@ export default function Register() {
 
                 // check if data is empty
                 if (Object.keys(userCreateError.data).length === 0) {
-                    setErrors([userCreateError.message]);
+                    setErrors({form: userCreateError.message});
                 } else {
                     // set the errors
-                    setErrors(ErrorsAsArray(userCreateError.data));
+                    setErrors(ErrorsAsStringDict(userCreateError.data));
                 }
             } else if (e instanceof Error) {
                 // unknown error
-                setErrors([e.message]);
+                setErrors({form: e.message});
             }
         }
 
@@ -75,38 +65,24 @@ export default function Register() {
         <Navigation/>
 
         <div className="auth-container">
-            <div className="form" onSubmit={createAccount}>
+            <form className="form" onSubmit={createAccount}>
                 <div className="form-title">Register</div>
+                <ValidatedInput value={username} valueUpdate={setUsername} name={"username"}
+                                label={"Username (optional)"}
+                                errors={errors}/>
+                <ValidatedInput value={email} valueUpdate={setEmail} name={"email"} label={"Email"} errors={errors}
+                                type={"email"}/>
+                <ValidatedInput value={password} valueUpdate={setPassword} name={"password"} label={"Password"}
+                                type={"password"} errors={errors}/>
+                <ValidatedInput value={passwordConfirm} valueUpdate={setPasswordConfirm} name={"passwordConfirm"}
+                                label={"Confirm Password"} type={"password"} errors={errors}/>
                 <div className="form-input">
-                    <label htmlFor="username">Username (Optional)</label>
-                    <input type="text" name="username" value={username}
-                           onChange={(e: any) => setUsername(e.target.value)} id="username"/>
-                </div>
-                <div className="form-input">
-                    <label htmlFor="email">Email</label>
-                    <input type="email" name="email" value={email}
-                           onChange={(e: any) => setEmail(e.target.value)} id="email"/>
-                </div>
-                <div className="form-input">
-                    <label htmlFor="password">Password</label>
-                    <input type="password" name="password" value={password}
-                           onChange={(e: any) => setPassword(e.target.value)} id="password"/>
-                </div>
-                <div className="form-input">
-                    <label htmlFor="password-confirm">Confirm Password</label>
-                    <input type="password" name="password-confirm" value={passwordConfirm}
-                           onChange={(e: any) => setPasswordConfirm(e.target.value)} id="password-confirm"/>
-                </div>
-                <div className="form-input">
-                    <button onClick={createAccount} disabled={!registerEnabled}>Register</button>
-                    {errors.length > 0 ? <div className="errors">
-                        <strong>Errors:</strong>
-                        {errors.map((error) => <div className="error">{error}</div>)}
-                    </div> : null}
+                    <button type="submit" disabled={!registerEnabled}>Register</button>
+                    <div className="errors"><ErrorIfExists error={errors.form}/></div>
                 </div>
 
                 {/* todo: add oauth2 options here */}
-            </div>
+            </form>
         </div>
     </div>
 }

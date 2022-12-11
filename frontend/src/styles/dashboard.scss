@@ -1,0 +1,18 @@
+@import "vars";
+
+.dashboard {
+    min-height: calc(100vh - $nav-height);
+    display: grid;
+    grid-template-columns: 300px 4fr;
+    grid-template-rows: repeat(5, 1fr);
+    grid-column-gap: 0;
+    grid-row-gap: 0;
+}
+
+.sidebar {
+    grid-area: 1 / 1 / 6 / 2;
+}
+
+.content {
+    grid-area: 1 / 2 / 6 / 6;
+}

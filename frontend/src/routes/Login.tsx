@@ -1,41 +1,32 @@
 import Navigation from "../components/Navigation";
-import React, {useEffect} from "preact/compat";
+import React from "preact/compat";
 import "../styles/auth.scss";
 import pocketbase from "../libraries/Pocketbase";
 import {ClientResponseError} from "pocketbase";
 import {useNavigate} from "react-router-dom";
 import URLS from "../helpers/URLS";
 import {DatabaseInsertError} from "../types/Errors";
+import ValidatedInput from "../components/ValidatedInput";
+import useAuthStatusRedirect from "../hooks/useAuthStatusRedirect";
+import ErrorIfExists from "../components/ErrorIfExists";
 
 export default function Login() {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
-    const [errors, setErrors] = React.useState<string[]>([]);
+    const [errors, setErrors] = React.useState<{ [key: string]: string }>({});
     const [loginEnabled, setLoginEnabled] = React.useState(true);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        if (pocketbase.authStore.isValid) {
-            // check if the user is logged in
-            pocketbase.collection('users').authRefresh().then(() => {
-                // redirect to dashboard
-                if (pocketbase.authStore.isValid) {
-                    navigate(URLS.DASHBOARD);
-                }
-            }).catch(() => {
-                // do nothing
-            });
-        }
-    }, []);
+    // redirect to dashboard if already authenticated
+    useAuthStatusRedirect(URLS.DASHBOARD, true);
 
     async function loginToAccount(e: Event) {
         e.preventDefault();
-        e.stopPropagation();
         setLoginEnabled(false);
-        setErrors([]);
 
         try {
             await pocketbase.collection('users').authWithPassword(email, password);
+
+            setErrors({});
 
             navigate(URLS.DASHBOARD);
         } catch (e) {
@@ -44,10 +35,10 @@ export default function Login() {
                 const userLoginError = (e.data as DatabaseInsertError).message;
 
                 // set the errors
-                setErrors([userLoginError]);
+                setErrors({"form": userLoginError});
             } else if (e instanceof Error) {
                 // unknown error
-                setErrors([e.message]);
+                setErrors({"form": e.message});
             }
         }
 
@@ -58,28 +49,19 @@ export default function Login() {
         <Navigation/>
 
         <div className="auth-container">
-            <div className="form" onSubmit={loginToAccount}>
+            <form className="form" onSubmit={loginToAccount}>
                 <div className="form-title">Login</div>
+                <ValidatedInput value={email} valueUpdate={setEmail} name={"email"} label={"Username or Email"}
+                                errors={errors}/>
+                <ValidatedInput value={password} valueUpdate={setPassword} name={"password"} label={"Password"}
+                                errors={errors} type={"password"}/>
                 <div className="form-input">
-                    <label htmlFor="email">Email</label>
-                    <input type="email" name="email" value={email}
-                           onChange={(e: any) => setEmail(e.target.value)} id="email"/>
-                </div>
-                <div className="form-input">
-                    <label htmlFor="password">Password</label>
-                    <input type="password" name="password" value={password}
-                           onChange={(e: any) => setPassword(e.target.value)} id="password"/>
-                </div>
-                <div className="form-input">
-                    <button onClick={loginToAccount} disabled={!loginEnabled}>Login</button>
-                    {errors.length > 0 ? <div className="errors">
-                        <strong>Errors:</strong>
-                        {errors.map((error) => <div className="error">{error}</div>)}
-                    </div> : null}
+                    <button type="submit" disabled={!loginEnabled}>Login</button>
+                    <div className="errors"><ErrorIfExists error={errors.form}/></div>
                 </div>
 
                 {/* todo: add oauth2 options here */}
-            </div>
+            </form>
         </div>
     </div>
 }
