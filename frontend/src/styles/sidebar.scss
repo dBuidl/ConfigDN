@@ -5,21 +5,36 @@
     width: 100%;
     @include theme('background-color', $secondary-color);
 
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(4, 1fr) 50px;
-    grid-column-gap: 0;
-    grid-row-gap: 0;
-}
+    padding: 1rem 0;
 
-.sidebar-header {
-    grid-area: 5 / 1 / 6 / 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    @include theme('background-color', $primary-color);
+    .team {
+        display: flex;
+        align-items: center;
+        padding: 0 0.5rem;
+        margin-bottom: 1rem;
+        @include theme('background-color', $primary-color);
 
-    // rounded bottom
-    border-top-left-radius: 50%;
-    border-top-right-radius: 50%;
+        .team-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+
+            .project {
+                margin-left: 0.5rem;
+
+                .project-name {
+                    font-size: 1rem;
+                    font-weight: 400;
+
+                    .config {
+                        margin-left: 0.5rem;
+
+                        .config-name {
+                            font-size: 0.9rem;
+                            font-weight: 300;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

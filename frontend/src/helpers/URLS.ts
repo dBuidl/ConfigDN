@@ -4,6 +4,9 @@ const URLS: { [key: string]: string } = {
     HOME: "/",
     DASHBOARD: "/dashboard",
     LOGOUT: "/auth/logout",
+    TEAM: "team",
+    PROJECT: "project",
+    CONFIG: "config",
 }
 
 export default URLS;

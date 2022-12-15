@@ -10,7 +10,7 @@ import ErrorNotFound from "./routes/ErrorNotFound";
 import Dashboard from "./routes/Dashboard";
 import Logout from "./routes/Logout";
 
-// TODO: remember that react-router now has loaders (https://reactrouter.com/en/main/route/loader) which can be used to load data before rendering the componentpo
+// TODO: remember that react-router now has loaders (https://reactrouter.com/en/main/route/loader) which can be used to load data before rendering the component
 
 const router = createBrowserRouter([
     {
