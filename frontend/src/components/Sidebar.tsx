@@ -25,7 +25,7 @@ export interface SidebarTeam {
     projects: SidebarProject[];
 }
 
-export default function Sidebar(props: any) {
+export default function Sidebar() {
     const [data, setData] = React.useState<SidebarTeam[]>([]);
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState<string>("");
