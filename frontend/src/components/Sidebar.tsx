@@ -3,7 +3,6 @@ import "../styles/sidebar.scss";
 import pocketbase from "../libraries/Pocketbase";
 import {ClientResponseError} from "pocketbase";
 import {Link} from "react-router-dom";
-import URLS from "../helpers/URLS";
 
 export interface SidebarConfig {
     id: string;
@@ -81,19 +80,19 @@ export default function Sidebar() {
         {data.map((team: SidebarTeam) => {
             return <div className="team">
                 <div className="team-name">
-                    <Link to={URLS.TEAM + "/" + team.url}>{team.name}</Link>
+                    <Link to={team.id}>{team.name}</Link>
                     <div className="team-projects">
                         {team.projects.map((project: SidebarProject) => {
                             return <div className="project">
                                 <div className="project-name">
                                     <Link
-                                        to={URLS.TEAM + "/" + team.url + "/" + URLS.PROJECT + "/" + project.url}>{project.name}</Link>
+                                        to={team.id + "/" + project.id}>{project.name}</Link>
                                     <div className="project-configs">
                                         {project.configs.map((config: SidebarConfig) => {
                                             return <div className="config">
                                                 <div className="config-name">
                                                     <Link
-                                                        to={URLS.TEAM + "/" + team.url + "/" + URLS.PROJECT + "/" + project.url + "/" + URLS.CONFIG + "/" + config.url}>{config.name}</Link>
+                                                        to={team.id + "/" + project.id + "/" + config.id}>{config.name}</Link>
                                                 </div>
                                             </div>
                                         })}

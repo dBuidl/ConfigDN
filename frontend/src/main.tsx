@@ -9,6 +9,9 @@ import URLS from "./helpers/URLS";
 import ErrorNotFound from "./routes/ErrorNotFound";
 import Dashboard from "./routes/Dashboard";
 import Logout from "./routes/Logout";
+import Team, {teamLoader} from "./routes/Dashboards/Team";
+import Project from "./routes/Dashboards/Project";
+import Config from "./routes/Dashboards/Config";
 
 // TODO: remember that react-router now has loaders (https://reactrouter.com/en/main/route/loader) which can be used to load data before rendering the component
 
@@ -30,7 +33,23 @@ const router = createBrowserRouter([
         path: URLS.DASHBOARD,
         element: <Dashboard/>,
         children: [
-            // put teams, projects, envs here
+            {
+                path: ":team",
+                element: <Team/>,
+                loader: teamLoader,
+            },
+            {
+                path: ":team/:project",
+                element: <Project/>,
+            },
+            {
+                path: ":team/:project/:config",
+                element: <Config/>,
+            },
+            {
+                path: ":team/:project/:config/:environment",
+                element: <Config/>,
+            }
         ]
     },
     {
