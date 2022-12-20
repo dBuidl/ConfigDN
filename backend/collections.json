@@ -1,477 +1,477 @@
 [
-  {
-    "id": "s4mq1ee1hnznlfz",
-    "name": "team",
-    "type": "base",
-    "system": false,
-    "schema": [
-      {
-        "id": "5ut2zdg2",
-        "name": "name",
-        "type": "text",
-        "system": false,
-        "required": true,
-        "unique": false,
-        "options": {
-          "min": null,
-          "max": null,
-          "pattern": ""
-        }
-      },
-      {
-        "id": "1pwx8mps",
-        "name": "owner",
-        "type": "relation",
-        "system": false,
-        "required": true,
-        "unique": false,
-        "options": {
-          "maxSelect": 1,
-          "collectionId": "systemprofiles0",
-          "cascadeDelete": true
-        }
-      },
-      {
-        "id": "o5pijlvl",
-        "name": "admins",
-        "type": "relation",
-        "system": false,
-        "required": false,
-        "unique": false,
-        "options": {
-          "maxSelect": 99,
-          "collectionId": "systemprofiles0",
-          "cascadeDelete": false
-        }
-      },
-      {
-        "id": "h6jvon7p",
-        "name": "editors",
-        "type": "relation",
-        "system": false,
-        "required": false,
-        "unique": false,
-        "options": {
-          "maxSelect": 99,
-          "collectionId": "systemprofiles0",
-          "cascadeDelete": false
-        }
-      },
-      {
-        "id": "87fdpy3v",
-        "name": "viewers",
-        "type": "relation",
-        "system": false,
-        "required": false,
-        "unique": false,
-        "options": {
-          "maxSelect": 999,
-          "collectionId": "systemprofiles0",
-          "cascadeDelete": false
-        }
-      },
-      {
-        "id": "eb7ntbzl",
-        "name": "identifier",
-        "type": "text",
-        "system": false,
-        "required": true,
-        "unique": true,
-        "options": {
-          "min": 36,
-          "max": 36,
-          "pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$"
-        }
-      }
-    ],
-    "listRule": "@request.auth.id = owner.id || @request.auth.id = admins.id || @request.auth.id = editors.id || @request.auth.id = viewers.id",
-    "viewRule": "@request.auth.id = owner.id || @request.auth.id = admins.id || @request.auth.id = editors.id || @request.auth.id = viewers.id",
-    "createRule": "@request.auth.id = owner.id",
-    "updateRule": "@request.auth.id = owner.id",
-    "deleteRule": "@request.auth.id = owner.id",
-    "options": {}
-  },
-  {
-    "id": "t3c6e6hc22l769v",
-    "name": "project",
-    "type": "base",
-    "system": false,
-    "schema": [
-      {
-        "id": "kkb2ta8p",
+    {
+        "id": "s4mq1ee1hnznlfz",
         "name": "team",
-        "type": "relation",
+        "type": "base",
         "system": false,
-        "required": true,
-        "unique": false,
-        "options": {
-          "maxSelect": 1,
-          "collectionId": "s4mq1ee1hnznlfz",
-          "cascadeDelete": true
-        }
-      },
-      {
-        "id": "h5n8a4hp",
-        "name": "name",
-        "type": "text",
-        "system": false,
-        "required": true,
-        "unique": false,
-        "options": {
-          "min": null,
-          "max": null,
-          "pattern": ""
-        }
-      }
-    ],
-    "listRule": "@request.auth.id = team.owner.id || @request.auth.id = team.admins.id || @request.auth.id = team.editors.id || @request.auth.id = team.viewers.id",
-    "viewRule": "@request.auth.id = team.owner.id || @request.auth.id = team.admins.id || @request.auth.id = team.editors.id || @request.auth.id = team.viewers.id",
-    "createRule": "@request.auth.id = team.owner.id || @request.auth.id = team.admins.id",
-    "updateRule": "@request.auth.id = team.owner.id || @request.auth.id = team.admins.id",
-    "deleteRule": "@request.auth.id = team.owner.id || @request.auth.id = team.admins.id",
-    "options": {}
-  },
-  {
-    "id": "mixx87ealfdmjua",
-    "name": "config",
-    "type": "base",
-    "system": false,
-    "schema": [
-      {
-        "id": "aiijq9xl",
+        "schema": [
+            {
+                "id": "5ut2zdg2",
+                "name": "name",
+                "type": "text",
+                "system": false,
+                "required": true,
+                "unique": false,
+                "options": {
+                    "min": null,
+                    "max": null,
+                    "pattern": ""
+                }
+            },
+            {
+                "id": "1pwx8mps",
+                "name": "owner",
+                "type": "relation",
+                "system": false,
+                "required": true,
+                "unique": false,
+                "options": {
+                    "maxSelect": 1,
+                    "collectionId": "systemprofiles0",
+                    "cascadeDelete": true
+                }
+            },
+            {
+                "id": "o5pijlvl",
+                "name": "admins",
+                "type": "relation",
+                "system": false,
+                "required": false,
+                "unique": false,
+                "options": {
+                    "maxSelect": 99,
+                    "collectionId": "systemprofiles0",
+                    "cascadeDelete": false
+                }
+            },
+            {
+                "id": "h6jvon7p",
+                "name": "editors",
+                "type": "relation",
+                "system": false,
+                "required": false,
+                "unique": false,
+                "options": {
+                    "maxSelect": 99,
+                    "collectionId": "systemprofiles0",
+                    "cascadeDelete": false
+                }
+            },
+            {
+                "id": "87fdpy3v",
+                "name": "viewers",
+                "type": "relation",
+                "system": false,
+                "required": false,
+                "unique": false,
+                "options": {
+                    "maxSelect": 999,
+                    "collectionId": "systemprofiles0",
+                    "cascadeDelete": false
+                }
+            }
+        ],
+        "listRule": "@request.auth.id = owner.id || @request.auth.id = admins.id || @request.auth.id = editors.id || @request.auth.id = viewers.id",
+        "viewRule": "@request.auth.id = owner.id || @request.auth.id = admins.id || @request.auth.id = editors.id || @request.auth.id = viewers.id",
+        "createRule": "@request.auth.id = owner.id",
+        "updateRule": "@request.auth.id = owner.id",
+        "deleteRule": "@request.auth.id = owner.id",
+        "options": {}
+    },
+    {
+        "id": "t3c6e6hc22l769v",
         "name": "project",
-        "type": "relation",
+        "type": "base",
         "system": false,
-        "required": true,
-        "unique": false,
-        "options": {
-          "maxSelect": 1,
-          "collectionId": "t3c6e6hc22l769v",
-          "cascadeDelete": true
-        }
-      },
-      {
-        "id": "aptdehdc",
-        "name": "name",
-        "type": "text",
-        "system": false,
-        "required": true,
-        "unique": false,
-        "options": {
-          "min": null,
-          "max": null,
-          "pattern": ""
-        }
-      }
-    ],
-    "listRule": "@request.auth.id = project.team.owner.id || @request.auth.id =  project.team.admins.id || @request.auth.id =  project.team.editors.id || @request.auth.id =  project.team.viewers.id",
-    "viewRule": "@request.auth.id = project.team.owner.id || @request.auth.id =  project.team.admins.id || @request.auth.id =  project.team.editors.id || @request.auth.id =  project.team.viewers.id",
-    "createRule": "@request.auth.id = project.team.owner.id || @request.auth.id =  project.team.admins.id || @request.auth.id =  project.team.editors.id",
-    "updateRule": "@request.auth.id = project.team.owner.id || @request.auth.id =  project.team.admins.id || @request.auth.id =  project.team.editors.id",
-    "deleteRule": "@request.auth.id = project.team.owner.id || @request.auth.id =  project.team.admins.id",
-    "options": {}
-  },
-  {
-    "id": "ogmpxvmqq1fd0o1",
-    "name": "flag",
-    "type": "base",
-    "system": false,
-    "schema": [
-      {
-        "id": "qvlwubta",
-        "name": "name",
-        "type": "text",
-        "system": false,
-        "required": true,
-        "unique": false,
-        "options": {
-          "min": null,
-          "max": null,
-          "pattern": ""
-        }
-      },
-      {
-        "id": "pch8wgin",
-        "name": "identifier",
-        "type": "text",
-        "system": false,
-        "required": true,
-        "unique": false,
-        "options": {
-          "min": 1,
-          "max": 32,
-          "pattern": "^[A-z0-9_-]{1,32}$"
-        }
-      },
-      {
-        "id": "kjcecrmv",
-        "name": "config",
-        "type": "relation",
-        "system": false,
-        "required": true,
-        "unique": false,
-        "options": {
-          "maxSelect": 1,
-          "collectionId": "mixx87ealfdmjua",
-          "cascadeDelete": true
-        }
-      },
-      {
-        "id": "j1uthccm",
-        "name": "type",
-        "type": "select",
-        "system": false,
-        "required": true,
-        "unique": false,
-        "options": {
-          "maxSelect": 1,
-          "values": [
-            "number",
-            "string",
-            "array",
-            "json",
-            "boolean"
-          ]
-        }
-      },
-      {
-        "id": "amjepurg",
-        "name": "valuesSource",
-        "type": "url",
-        "system": false,
-        "required": false,
-        "unique": false,
-        "options": {
-          "exceptDomains": [],
-          "onlyDomains": []
-        }
-      },
-      {
-        "id": "2wbjlklh",
-        "name": "valuesFilter",
-        "type": "text",
-        "system": false,
-        "required": false,
-        "unique": false,
-        "options": {
-          "min": null,
-          "max": null,
-          "pattern": ""
-        }
-      },
-      {
-        "id": "ic6u2qoj",
-        "name": "allowedValues",
-        "type": "json",
-        "system": false,
-        "required": false,
-        "unique": false,
+        "schema": [
+            {
+                "id": "kkb2ta8p",
+                "name": "team",
+                "type": "relation",
+                "system": false,
+                "required": true,
+                "unique": false,
+                "options": {
+                    "maxSelect": 1,
+                    "collectionId": "s4mq1ee1hnznlfz",
+                    "cascadeDelete": true
+                }
+            },
+            {
+                "id": "h5n8a4hp",
+                "name": "name",
+                "type": "text",
+                "system": false,
+                "required": true,
+                "unique": false,
+                "options": {
+                    "min": null,
+                    "max": null,
+                    "pattern": ""
+                }
+            }
+        ],
+        "listRule": "@request.auth.id = team.owner.id || @request.auth.id = team.admins.id || @request.auth.id = team.editors.id || @request.auth.id = team.viewers.id",
+        "viewRule": "@request.auth.id = team.owner.id || @request.auth.id = team.admins.id || @request.auth.id = team.editors.id || @request.auth.id = team.viewers.id",
+        "createRule": "@request.auth.id = team.owner.id || @request.auth.id = team.admins.id",
+        "updateRule": "@request.auth.id = team.owner.id || @request.auth.id = team.admins.id",
+        "deleteRule": "@request.auth.id = team.owner.id || @request.auth.id = team.admins.id",
         "options": {}
-      }
-    ],
-    "listRule": "@request.auth.id = config.project.team.owner.id || @request.auth.id = config.project.team.admins.id || @request.auth.id =  config.project.team.editors.id || @request.auth.id = config.project.team.viewers.id",
-    "viewRule": "@request.auth.id = config.project.team.owner.id || @request.auth.id = config.project.team.admins.id || @request.auth.id =  config.project.team.editors.id || @request.auth.id = config.project.team.viewers.id",
-    "createRule": "@request.auth.id = config.project.team.owner.id || @request.auth.id = config.project.team.admins.id || @request.auth.id =  config.project.team.editors.id",
-    "updateRule": "@request.auth.id = config.project.team.owner.id || @request.auth.id = config.project.team.admins.id || @request.auth.id =  config.project.team.editors.id",
-    "deleteRule": "@request.auth.id = config.project.team.owner.id || @request.auth.id = config.project.team.admins.id || @request.auth.id =  config.project.team.editors.id",
-    "options": {}
-  },
-  {
-    "id": "u1yctvaahukq2r1",
-    "name": "environment",
-    "type": "base",
-    "system": false,
-    "schema": [
-      {
-        "id": "k0zpheqn",
-        "name": "name",
-        "type": "text",
-        "system": false,
-        "required": true,
-        "unique": false,
-        "options": {
-          "min": null,
-          "max": null,
-          "pattern": ""
-        }
-      },
-      {
-        "id": "csgtb2sw",
+    },
+    {
+        "id": "mixx87ealfdmjua",
         "name": "config",
-        "type": "relation",
+        "type": "base",
         "system": false,
-        "required": true,
-        "unique": false,
-        "options": {
-          "maxSelect": 1,
-          "collectionId": "mixx87ealfdmjua",
-          "cascadeDelete": false
-        }
-      }
-    ],
-    "listRule": "@request.auth.id = config.project.team.owner.id || @request.auth.id = config.project.team.admins.id || @request.auth.id =  config.project.team.editors.id || @request.auth.id =  config.project.team.viewers.id",
-    "viewRule": "@request.auth.id = config.project.team.owner.id || @request.auth.id = config.project.team.admins.id || @request.auth.id =  config.project.team.editors.id || @request.auth.id =  config.project.team.viewers.id",
-    "createRule": "@request.auth.id = config.project.team.owner.id || @request.auth.id = config.project.team.admins.id || @request.auth.id =  config.project.team.editors.id",
-    "updateRule": "@request.auth.id = config.project.team.owner.id || @request.auth.id = config.project.team.admins.id || @request.auth.id =  config.project.team.editors.id",
-    "deleteRule": "@request.auth.id = config.project.team.owner.id || @request.auth.id = config.project.team.admins.id",
-    "options": {}
-  },
-  {
-    "id": "9ak6v6n8zekgaty",
-    "name": "value",
-    "type": "base",
-    "system": false,
-    "schema": [
-      {
-        "id": "9lgepcz5",
+        "schema": [
+            {
+                "id": "aiijq9xl",
+                "name": "project",
+                "type": "relation",
+                "system": false,
+                "required": true,
+                "unique": false,
+                "options": {
+                    "maxSelect": 1,
+                    "collectionId": "t3c6e6hc22l769v",
+                    "cascadeDelete": true
+                }
+            },
+            {
+                "id": "aptdehdc",
+                "name": "name",
+                "type": "text",
+                "system": false,
+                "required": true,
+                "unique": false,
+                "options": {
+                    "min": null,
+                    "max": null,
+                    "pattern": ""
+                }
+            }
+        ],
+        "listRule": "@request.auth.id = project.team.owner.id || @request.auth.id =  project.team.admins.id || @request.auth.id =  project.team.editors.id || @request.auth.id =  project.team.viewers.id",
+        "viewRule": "@request.auth.id = project.team.owner.id || @request.auth.id =  project.team.admins.id || @request.auth.id =  project.team.editors.id || @request.auth.id =  project.team.viewers.id",
+        "createRule": "@request.auth.id = project.team.owner.id || @request.auth.id =  project.team.admins.id || @request.auth.id =  project.team.editors.id",
+        "updateRule": "@request.auth.id = project.team.owner.id || @request.auth.id =  project.team.admins.id || @request.auth.id =  project.team.editors.id",
+        "deleteRule": "@request.auth.id = project.team.owner.id || @request.auth.id =  project.team.admins.id",
+        "options": {}
+    },
+    {
+        "id": "ogmpxvmqq1fd0o1",
         "name": "flag",
-        "type": "relation",
+        "type": "base",
         "system": false,
-        "required": true,
-        "unique": false,
-        "options": {
-          "maxSelect": 1,
-          "collectionId": "ogmpxvmqq1fd0o1",
-          "cascadeDelete": true
-        }
-      },
-      {
-        "id": "d92qej4i",
-        "name": "environment",
-        "type": "relation",
-        "system": false,
-        "required": true,
-        "unique": false,
-        "options": {
-          "maxSelect": 1,
-          "collectionId": "u1yctvaahukq2r1",
-          "cascadeDelete": true
-        }
-      },
-      {
-        "id": "97dltbqv",
-        "name": "value",
-        "type": "json",
-        "system": false,
-        "required": true,
-        "unique": false,
+        "schema": [
+            {
+                "id": "qvlwubta",
+                "name": "name",
+                "type": "text",
+                "system": false,
+                "required": true,
+                "unique": false,
+                "options": {
+                    "min": null,
+                    "max": null,
+                    "pattern": ""
+                }
+            },
+            {
+                "id": "pch8wgin",
+                "name": "identifier",
+                "type": "text",
+                "system": false,
+                "required": true,
+                "unique": false,
+                "options": {
+                    "min": 1,
+                    "max": 32,
+                    "pattern": "^[A-z0-9_-]{1,32}$"
+                }
+            },
+            {
+                "id": "kjcecrmv",
+                "name": "config",
+                "type": "relation",
+                "system": false,
+                "required": true,
+                "unique": false,
+                "options": {
+                    "maxSelect": 1,
+                    "collectionId": "mixx87ealfdmjua",
+                    "cascadeDelete": true
+                }
+            },
+            {
+                "id": "j1uthccm",
+                "name": "type",
+                "type": "select",
+                "system": false,
+                "required": true,
+                "unique": false,
+                "options": {
+                    "maxSelect": 1,
+                    "values": [
+                        "number",
+                        "string",
+                        "array",
+                        "json",
+                        "boolean"
+                    ]
+                }
+            },
+            {
+                "id": "amjepurg",
+                "name": "valuesSource",
+                "type": "url",
+                "system": false,
+                "required": false,
+                "unique": false,
+                "options": {
+                    "exceptDomains": [],
+                    "onlyDomains": []
+                }
+            },
+            {
+                "id": "2wbjlklh",
+                "name": "valuesFilter",
+                "type": "text",
+                "system": false,
+                "required": false,
+                "unique": false,
+                "options": {
+                    "min": null,
+                    "max": null,
+                    "pattern": ""
+                }
+            },
+            {
+                "id": "ic6u2qoj",
+                "name": "allowedValues",
+                "type": "json",
+                "system": false,
+                "required": false,
+                "unique": false,
+                "options": {}
+            }
+        ],
+        "listRule": "@request.auth.id = config.project.team.owner.id || @request.auth.id = config.project.team.admins.id || @request.auth.id =  config.project.team.editors.id || @request.auth.id = config.project.team.viewers.id",
+        "viewRule": "@request.auth.id = config.project.team.owner.id || @request.auth.id = config.project.team.admins.id || @request.auth.id =  config.project.team.editors.id || @request.auth.id = config.project.team.viewers.id",
+        "createRule": "@request.auth.id = config.project.team.owner.id || @request.auth.id = config.project.team.admins.id || @request.auth.id =  config.project.team.editors.id",
+        "updateRule": "@request.auth.id = config.project.team.owner.id || @request.auth.id = config.project.team.admins.id || @request.auth.id =  config.project.team.editors.id",
+        "deleteRule": "@request.auth.id = config.project.team.owner.id || @request.auth.id = config.project.team.admins.id || @request.auth.id =  config.project.team.editors.id",
         "options": {}
-      }
-    ],
-    "listRule": "@request.auth.id = environment.config.project.team.owner.id || @request.auth.id = environment.config.project.team.admins.id || @request.auth.id =  environment.config.project.team.editors.id ||\n@request.auth.id = environment.config.project.team.viewers.id",
-    "viewRule": "@request.auth.id = environment.config.project.team.owner.id || @request.auth.id = environment.config.project.team.admins.id || @request.auth.id =  environment.config.project.team.editors.id ||\n@request.auth.id = environment.config.project.team.viewers.id",
-    "createRule": "@request.auth.id = environment.config.project.team.owner.id || @request.auth.id = environment.config.project.team.admins.id || @request.auth.id =  environment.config.project.team.editors.id",
-    "updateRule": "@request.auth.id = environment.config.project.team.owner.id || @request.auth.id = environment.config.project.team.admins.id || @request.auth.id =  environment.config.project.team.editors.id",
-    "deleteRule": "@request.auth.id = environment.config.project.team.owner.id || @request.auth.id = environment.config.project.team.admins.id || @request.auth.id =  environment.config.project.team.editors.id",
-    "options": {}
-  },
-  {
-    "id": "ap3812wer1q474e",
-    "name": "api_key",
-    "type": "base",
-    "system": false,
-    "schema": [
-      {
-        "id": "uo5c3qea",
+    },
+    {
+        "id": "u1yctvaahukq2r1",
         "name": "environment",
-        "type": "relation",
+        "type": "base",
         "system": false,
-        "required": true,
-        "unique": false,
-        "options": {
-          "maxSelect": 1,
-          "collectionId": "u1yctvaahukq2r1",
-          "cascadeDelete": true
-        }
-      },
-      {
-        "id": "hf1kvswr",
-        "name": "name",
-        "type": "text",
+        "schema": [
+            {
+                "id": "k0zpheqn",
+                "name": "name",
+                "type": "text",
+                "system": false,
+                "required": true,
+                "unique": false,
+                "options": {
+                    "min": null,
+                    "max": null,
+                    "pattern": ""
+                }
+            },
+            {
+                "id": "m0ni91gh",
+                "name": "team",
+                "type": "relation",
+                "system": false,
+                "required": false,
+                "unique": true,
+                "options": {
+                    "maxSelect": 1,
+                    "collectionId": "s4mq1ee1hnznlfz",
+                    "cascadeDelete": true
+                }
+            }
+        ],
+        "listRule": "@request.auth.id = team.owner.id || @request.auth.id = team.admins.id || @request.auth.id =  team.editors.id || @request.auth.id = team.viewers.id",
+        "viewRule": "@request.auth.id = team.owner.id || @request.auth.id = team.admins.id || @request.auth.id =  team.editors.id || @request.auth.id = team.viewers.id",
+        "createRule": "@request.auth.id = team.owner.id || @request.auth.id = team.admins.id || @request.auth.id =  team.editors.id",
+        "updateRule": "@request.auth.id = team.owner.id || @request.auth.id = team.admins.id || @request.auth.id =  team.editors.id",
+        "deleteRule": "@request.auth.id = team.owner.id || @request.auth.id = team.admins.id",
+        "options": {}
+    },
+    {
+        "id": "9ak6v6n8zekgaty",
+        "name": "value",
+        "type": "base",
         "system": false,
-        "required": true,
-        "unique": false,
-        "options": {
-          "min": null,
-          "max": null,
-          "pattern": ""
-        }
-      },
-      {
-        "id": "4idswkaf",
-        "name": "key",
-        "type": "text",
+        "schema": [
+            {
+                "id": "9lgepcz5",
+                "name": "flag",
+                "type": "relation",
+                "system": false,
+                "required": true,
+                "unique": false,
+                "options": {
+                    "maxSelect": 1,
+                    "collectionId": "ogmpxvmqq1fd0o1",
+                    "cascadeDelete": true
+                }
+            },
+            {
+                "id": "d92qej4i",
+                "name": "environment",
+                "type": "relation",
+                "system": false,
+                "required": true,
+                "unique": false,
+                "options": {
+                    "maxSelect": 1,
+                    "collectionId": "u1yctvaahukq2r1",
+                    "cascadeDelete": true
+                }
+            },
+            {
+                "id": "97dltbqv",
+                "name": "value",
+                "type": "json",
+                "system": false,
+                "required": true,
+                "unique": false,
+                "options": {}
+            }
+        ],
+        "listRule": "@request.auth.id = environment.config.project.team.owner.id || @request.auth.id = environment.config.project.team.admins.id || @request.auth.id =  environment.config.project.team.editors.id ||\n@request.auth.id = environment.config.project.team.viewers.id",
+        "viewRule": "@request.auth.id = environment.config.project.team.owner.id || @request.auth.id = environment.config.project.team.admins.id || @request.auth.id =  environment.config.project.team.editors.id ||\n@request.auth.id = environment.config.project.team.viewers.id",
+        "createRule": "@request.auth.id = environment.config.project.team.owner.id || @request.auth.id = environment.config.project.team.admins.id || @request.auth.id =  environment.config.project.team.editors.id",
+        "updateRule": "@request.auth.id = environment.config.project.team.owner.id || @request.auth.id = environment.config.project.team.admins.id || @request.auth.id =  environment.config.project.team.editors.id",
+        "deleteRule": "@request.auth.id = environment.config.project.team.owner.id || @request.auth.id = environment.config.project.team.admins.id || @request.auth.id =  environment.config.project.team.editors.id",
+        "options": {}
+    },
+    {
+        "id": "ap3812wer1q474e",
+        "name": "api_key",
+        "type": "base",
         "system": false,
-        "required": true,
-        "unique": true,
-        "options": {
-          "min": null,
-          "max": null,
-          "pattern": ""
-        }
-      }
-    ],
-    "listRule": "@request.auth.id = environment.config.project.team.owner.id || @request.auth.id = environment.config.project.team.admins.id || @request.auth.id = environment.config.project.team.editors.id",
-    "viewRule": "@request.auth.id = environment.config.project.team.owner.id || @request.auth.id = environment.config.project.team.admins.id || @request.auth.id = environment.config.project.team.editors.id",
-    "createRule": "@request.auth.id = environment.config.project.team.owner.id || @request.auth.id = environment.config.project.team.admins.id || @request.auth.id = environment.config.project.team.editors.id",
-    "updateRule": "@request.auth.id = environment.config.project.team.owner.id || @request.auth.id = environment.config.project.team.admins.id || @request.auth.id = environment.config.project.team.editors.id",
-    "deleteRule": "@request.auth.id = environment.config.project.team.owner.id || @request.auth.id = environment.config.project.team.admins.id || @request.auth.id = environment.config.project.team.editors.id",
-    "options": {}
-  },
-  {
-    "id": "systemprofiles0",
-    "name": "users",
-    "type": "auth",
-    "system": false,
-    "schema": [
-      {
-        "id": "pbfieldname",
-        "name": "name",
-        "type": "text",
+        "schema": [
+            {
+                "id": "uo5c3qea",
+                "name": "environment",
+                "type": "relation",
+                "system": false,
+                "required": true,
+                "unique": false,
+                "options": {
+                    "maxSelect": 1,
+                    "collectionId": "u1yctvaahukq2r1",
+                    "cascadeDelete": true
+                }
+            },
+            {
+                "id": "hf1kvswr",
+                "name": "name",
+                "type": "text",
+                "system": false,
+                "required": true,
+                "unique": false,
+                "options": {
+                    "min": null,
+                    "max": null,
+                    "pattern": ""
+                }
+            },
+            {
+                "id": "4idswkaf",
+                "name": "key",
+                "type": "text",
+                "system": false,
+                "required": true,
+                "unique": true,
+                "options": {
+                    "min": null,
+                    "max": null,
+                    "pattern": ""
+                }
+            },
+            {
+                "id": "blkpcjnp",
+                "name": "config",
+                "type": "relation",
+                "system": false,
+                "required": false,
+                "unique": true,
+                "options": {
+                    "maxSelect": 1,
+                    "collectionId": "mixx87ealfdmjua",
+                    "cascadeDelete": true
+                }
+            }
+        ],
+        "listRule": "@request.auth.id = config.project.team.owner.id || @request.auth.id = config.project.team.admins.id || @request.auth.id = config.project.team.editors.id",
+        "viewRule": "@request.auth.id = config.project.team.owner.id || @request.auth.id = config.project.team.admins.id || @request.auth.id = config.project.team.editors.id",
+        "createRule": "@request.auth.id = config.project.team.owner.id || @request.auth.id = config.project.team.admins.id || @request.auth.id = config.project.team.editors.id",
+        "updateRule": "@request.auth.id = config.project.team.owner.id || @request.auth.id = config.project.team.admins.id || @request.auth.id = config.project.team.editors.id",
+        "deleteRule": "@request.auth.id = config.project.team.owner.id || @request.auth.id = config.project.team.admins.id || @request.auth.id = config.project.team.editors.id",
+        "options": {}
+    },
+    {
+        "id": "systemprofiles0",
+        "name": "users",
+        "type": "auth",
         "system": false,
-        "required": false,
-        "unique": false,
+        "schema": [
+            {
+                "id": "pbfieldname",
+                "name": "name",
+                "type": "text",
+                "system": false,
+                "required": false,
+                "unique": false,
+                "options": {
+                    "min": null,
+                    "max": null,
+                    "pattern": ""
+                }
+            },
+            {
+                "id": "pbfieldavatar",
+                "name": "avatar",
+                "type": "file",
+                "system": false,
+                "required": false,
+                "unique": false,
+                "options": {
+                    "maxSelect": 1,
+                    "maxSize": 5242880,
+                    "mimeTypes": [
+                        "image/jpg",
+                        "image/jpeg",
+                        "image/png",
+                        "image/svg+xml",
+                        "image/gif"
+                    ],
+                    "thumbs": null
+                }
+            }
+        ],
+        "listRule": "id = @request.auth.id",
+        "viewRule": "id = @request.auth.id || ((@collection.team.admins.id = @request.auth.id || @collection.team.owner = @request.auth.id || @collection.team.viewers.id = @request.auth.id || @collection.team.editors.id = @request.auth.id) && (@collection.team.admins.id  = id || @collection.team.editors.id = id || @collection.team.owner.id = id || @collection.team.viewers = id ))",
+        "createRule": "",
+        "updateRule": "id = @request.auth.id",
+        "deleteRule": null,
         "options": {
-          "min": null,
-          "max": null,
-          "pattern": ""
+            "allowEmailAuth": true,
+            "allowOAuth2Auth": true,
+            "allowUsernameAuth": true,
+            "exceptEmailDomains": null,
+            "manageRule": null,
+            "minPasswordLength": 8,
+            "onlyEmailDomains": null,
+            "requireEmail": true
         }
-      },
-      {
-        "id": "pbfieldavatar",
-        "name": "avatar",
-        "type": "file",
-        "system": false,
-        "required": false,
-        "unique": false,
-        "options": {
-          "maxSelect": 1,
-          "maxSize": 5242880,
-          "mimeTypes": [
-            "image/jpg",
-            "image/jpeg",
-            "image/png",
-            "image/svg+xml",
-            "image/gif"
-          ],
-          "thumbs": null
-        }
-      }
-    ],
-    "listRule": "id = @request.auth.id",
-    "viewRule": "id = @request.auth.id",
-    "createRule": "",
-    "updateRule": "id = @request.auth.id",
-    "deleteRule": null,
-    "options": {
-      "allowEmailAuth": true,
-      "allowOAuth2Auth": true,
-      "allowUsernameAuth": true,
-      "exceptEmailDomains": null,
-      "manageRule": null,
-      "minPasswordLength": 8,
-      "onlyEmailDomains": null,
-      "requireEmail": true
     }
-  }
 ]

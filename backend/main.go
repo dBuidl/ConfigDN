@@ -57,12 +57,14 @@ func main() {
 				// var to hold the config key->value info
 				var data []ConfigKeyValueInfo
 
+				// todo: fix this for new database structure
+
 				// select flag.identifier, value.value, value.updated
 				err = app.DB().Select("value.updated", "value.value", "flag.identifier").From("flag").Where(dbx.HashExp{"api_key.key": key}).
 					InnerJoin("config", dbx.NewExp("config.id=flag.config")).
 					InnerJoin("value", dbx.NewExp("value.flag=flag.id and value.environment=environment.id")).
 					InnerJoin("environment", dbx.NewExp("environment.config=config.id")).
-					InnerJoin("api_key", dbx.NewExp("environment.id=api_key.environment")).
+					InnerJoin("api_key", dbx.NewExp("environment.id=api_key.environment and api_key.config=config.id")).
 					All(&data)
 
 				// if we error out, return an error
