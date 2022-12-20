@@ -7,6 +7,6 @@ export default function Team() {
 export function teamLoader({params}: { params: any }) {
     return Promise.all([
         pocketbase.collection('team').getOne(params.team, {}),
-        pocketbase.collection('project').getOne(params.project, {}),
+        pocketbase.collection('project').getFullList(undefined, {team: params.team}),
     ]);
 }

@@ -32,7 +32,7 @@ export default function Register() {
                 email,
                 password,
                 passwordConfirm,
-                emailVisibility: true,
+                emailVisibility: false,
             });
 
             await pocketbase.collection('users').authWithPassword(email, password);
