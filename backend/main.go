@@ -60,11 +60,10 @@ func main() {
 				// todo: fix this for new database structure
 
 				// select flag.identifier, value.value, value.updated
-				err = app.DB().Select("value.updated", "value.value", "flag.identifier").From("flag").Where(dbx.HashExp{"api_key.key": key}).
-					InnerJoin("config", dbx.NewExp("config.id=flag.config")).
+				err = app.DB().Select("value.updated", "value.value", "flag.identifier").From("api_key").Where(dbx.HashExp{"api_key.key": key}).
+					InnerJoin("flag", dbx.NewExp("api_key.config=flag.config")).
+					InnerJoin("environment", dbx.NewExp("environment.id=api_key.environment")).
 					InnerJoin("value", dbx.NewExp("value.flag=flag.id and value.environment=environment.id")).
-					InnerJoin("environment", dbx.NewExp("environment.config=config.id")).
-					InnerJoin("api_key", dbx.NewExp("environment.id=api_key.environment and api_key.config=config.id")).
 					All(&data)
 
 				// if we error out, return an error
