@@ -1,5 +1,4 @@
 import pocketbase from "../../libraries/Pocketbase";
-import DashboardNavbar from "./DashboardNavbar";
 import {useLoaderData} from "react-router-dom";
 import {useEffect, useState} from "preact/compat";
 
@@ -24,6 +23,8 @@ export function configLoader({params}: { params: any }) {
             pocketbase.collection('team').getOne(params.team, {expand: 'owner,admins,editors,viewers'}),
             pocketbase.collection('project').getOne(params.project, {}),
             pocketbase.collection('config').getOne(params.config, {}),
+            pocketbase.collection('flag').getFullList(undefined, {config: params.config}),
+            pocketbase.collection('value').getFullList(undefined, {config: params.config}),
             pocketbase.collection('environment').getOne(params.environment, {}),
             pocketbase.collection('api_key').getList(1, 50, {"environment.team": params.team, "config": params.config}),
         ]);
@@ -32,6 +33,8 @@ export function configLoader({params}: { params: any }) {
             pocketbase.collection('team').getOne(params.team, {expand: 'owner,admins,editors,viewers'}),
             pocketbase.collection('project').getOne(params.project, {}),
             pocketbase.collection('config').getOne(params.config, {}),
+            pocketbase.collection('flag').getFullList(undefined, {config: params.config}),
+            pocketbase.collection('value').getFullList(undefined, {config: params.config}),
             pocketbase.collection('environment').getList(1, 1, {team: params.team}),
             pocketbase.collection('api_key').getList(1, 50, {"environment.team": params.team, "config": params.config}),
         ]);
