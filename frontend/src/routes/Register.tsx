@@ -32,7 +32,7 @@ export default function Register() {
                 email,
                 password,
                 passwordConfirm,
-                emailVisibility: false,
+                emailVisibility: true, // allow team members to see email (only team members can view profiles of other users)
             });
 
             await pocketbase.collection('users').authWithPassword(email, password);

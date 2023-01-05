@@ -3,6 +3,7 @@ import "../styles/sidebar.scss";
 import pocketbase from "../libraries/Pocketbase";
 import {ClientResponseError} from "pocketbase";
 import {Link} from "react-router-dom";
+import {ConfigRecord, EnvironmentRecord, ProjectRecord, TeamRecord} from "../types/Structures";
 
 export interface SidebarBase {
     id: string,
@@ -12,7 +13,6 @@ export interface SidebarBase {
 
 export interface SidebarEnvironment extends SidebarBase {
 }
-
 
 export interface SidebarConfig extends SidebarBase {
     environments: SidebarEnvironment[];
@@ -33,13 +33,12 @@ export default function Sidebar() {
 
     React.useEffect(() => {
         (async () => {
-            // load pocketbase config -> project -> team (wrong order but saves us 2 more requests, and it's just easier to flip it)
             try {
-                const teams = await pocketbase.collection('team').getFullList();
-                const projects = await pocketbase.collection('project').getFullList();
-                const configs = await pocketbase.collection('config').getFullList();
-                const environments = await pocketbase.collection('environment').getFullList();
-                
+                const teams = await pocketbase.collection('team').getFullList() as TeamRecord[];
+                const projects = await pocketbase.collection('project').getFullList() as ProjectRecord[];
+                const configs = await pocketbase.collection('config').getFullList() as ConfigRecord[];
+                const environments = await pocketbase.collection('environment').getFullList() as EnvironmentRecord[];
+
                 // turn into SidebarTeam with SidebarProject with SidebarConfig
                 setData(teams.map((team: any) => {
                     return {
@@ -56,7 +55,7 @@ export default function Sidebar() {
                                         id: config.id,
                                         name: config.name,
                                         url: config.url,
-                                        environments: environments.filter((environment: any) => environment.team === team.id).map((environment: any) => {
+                                        environments: environments.filter((environment: any) => environment.project === project.id).map((environment: any) => {
                                             return {
                                                 id: environment.id,
                                                 name: environment.name,

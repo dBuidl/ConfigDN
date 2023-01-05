@@ -7,8 +7,6 @@ import React from "preact/compat";
 export default function DashboardError(props: any) {
     const error: any = useRouteError();
 
-    console.log((error as ClientResponseError).status);
-
     if (error instanceof ClientResponseError) {
         switch (error.status) {
             case 404:
