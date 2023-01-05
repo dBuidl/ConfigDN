@@ -283,24 +283,24 @@
                 }
             },
             {
-                "id": "m0ni91gh",
-                "name": "team",
+                "id": "8uthdhnu",
+                "name": "project",
                 "type": "relation",
                 "system": false,
                 "required": false,
                 "unique": true,
                 "options": {
                     "maxSelect": 1,
-                    "collectionId": "s4mq1ee1hnznlfz",
+                    "collectionId": "t3c6e6hc22l769v",
                     "cascadeDelete": true
                 }
             }
         ],
-        "listRule": "@request.auth.id = team.owner.id || @request.auth.id = team.admins.id || @request.auth.id =  team.editors.id || @request.auth.id = team.viewers.id",
-        "viewRule": "@request.auth.id = team.owner.id || @request.auth.id = team.admins.id || @request.auth.id =  team.editors.id || @request.auth.id = team.viewers.id",
-        "createRule": "@request.auth.id = team.owner.id || @request.auth.id = team.admins.id || @request.auth.id =  team.editors.id",
-        "updateRule": "@request.auth.id = team.owner.id || @request.auth.id = team.admins.id || @request.auth.id =  team.editors.id",
-        "deleteRule": "@request.auth.id = team.owner.id || @request.auth.id = team.admins.id",
+        "listRule": "@request.auth.id = project.team.owner.id || @request.auth.id = project.team.admins.id || @request.auth.id = project.team.editors.id || @request.auth.id = project.team.viewers.id",
+        "viewRule": "@request.auth.id = project.team.owner.id || @request.auth.id = project.team.admins.id || @request.auth.id = project.team.editors.id || @request.auth.id = project.team.viewers.id",
+        "createRule": "@request.auth.id = project.team.owner.id || @request.auth.id = project.team.admins.id || @request.auth.id = project.team.editors.id",
+        "updateRule": "@request.auth.id = project.team.owner.id || @request.auth.id = project.team.admins.id || @request.auth.id = project.team.editors.id",
+        "deleteRule": "@request.auth.id = project.team.owner.id || @request.auth.id = project.team.admins.id",
         "options": {}
     },
     {
@@ -345,11 +345,11 @@
                 "options": {}
             }
         ],
-        "listRule": "@request.auth.id = environment.config.project.team.owner.id || @request.auth.id = environment.config.project.team.admins.id || @request.auth.id =  environment.config.project.team.editors.id ||\n@request.auth.id = environment.config.project.team.viewers.id",
-        "viewRule": "@request.auth.id = environment.config.project.team.owner.id || @request.auth.id = environment.config.project.team.admins.id || @request.auth.id =  environment.config.project.team.editors.id ||\n@request.auth.id = environment.config.project.team.viewers.id",
-        "createRule": "@request.auth.id = environment.config.project.team.owner.id || @request.auth.id = environment.config.project.team.admins.id || @request.auth.id =  environment.config.project.team.editors.id",
-        "updateRule": "@request.auth.id = environment.config.project.team.owner.id || @request.auth.id = environment.config.project.team.admins.id || @request.auth.id =  environment.config.project.team.editors.id",
-        "deleteRule": "@request.auth.id = environment.config.project.team.owner.id || @request.auth.id = environment.config.project.team.admins.id || @request.auth.id =  environment.config.project.team.editors.id",
+        "listRule": "@request.auth.id = environment.project.team.owner.id || @request.auth.id = environment.project.team.admins.id || @request.auth.id =  environment.project.team.editors.id ||\n@request.auth.id = environment.project.team.viewers.id",
+        "viewRule": "@request.auth.id = environment.project.team.owner.id || @request.auth.id = environment.project.team.admins.id || @request.auth.id =  environment.project.team.editors.id ||\n@request.auth.id = environment.project.team.viewers.id",
+        "createRule": "@request.auth.id = environment.project.team.owner.id || @request.auth.id = environment.project.team.admins.id || @request.auth.id =  environment.project.team.editors.id",
+        "updateRule": "@request.auth.id = environment.project.team.owner.id || @request.auth.id = environment.project.team.admins.id || @request.auth.id =  environment.project.team.editors.id",
+        "deleteRule": "@request.auth.id = environment.project.team.owner.id || @request.auth.id = environment.project.team.admins.id || @request.auth.id = environment.project.team.editors.id",
         "options": {}
     },
     {
@@ -459,7 +459,7 @@
             }
         ],
         "listRule": "id = @request.auth.id",
-        "viewRule": "id = @request.auth.id || ((@collection.team.admins.id = @request.auth.id || @collection.team.owner = @request.auth.id || @collection.team.viewers.id = @request.auth.id || @collection.team.editors.id = @request.auth.id) && (@collection.team.admins.id  = id || @collection.team.editors.id = id || @collection.team.owner.id = id || @collection.team.viewers = id ))",
+        "viewRule": "id = @request.auth.id || ((@collection.team.admins.id = @request.auth.id || @collection.team.owner = @request.auth.id) && (@collection.team.admins.id  = id || @collection.team.editors.id = id || @collection.team.owner.id = id || @collection.team.viewers = id ))",
         "createRule": "",
         "updateRule": "id = @request.auth.id",
         "deleteRule": null,
