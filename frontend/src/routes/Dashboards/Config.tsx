@@ -1,6 +1,6 @@
 import pocketbase from "../../libraries/Pocketbase";
 import {useLoaderData, useNavigate} from "react-router-dom";
-import {useEffect, useState} from "preact/compat";
+import React, {useEffect, useState} from "preact/compat";
 import {
     ApiKeyRecord,
     ConfigRecord,
@@ -10,6 +10,7 @@ import {
     ValueRecord
 } from "../../types/Structures";
 import {fieldTypeToInputType} from "../../types/Conversions";
+import {Content} from "../../components/Content";
 
 export default function Config() {
     const [environment, ...others] = useLoaderData() as ConfigLoaderData;
@@ -42,7 +43,7 @@ export default function Config() {
 
     console.log(others);
 
-    return <>
+    return <Content>
         <h1>{`${project.name}/${config.name} (${environment.name})`}</h1>
         <h2>Flags</h2>
         <div class={"flag-cards"}>
@@ -55,7 +56,7 @@ export default function Config() {
                 </div>)}
             </div>)}
         </div>
-    </>;
+    </Content>;
 }
 
 // Loads data for the config page (remember to change the order above if you change this)

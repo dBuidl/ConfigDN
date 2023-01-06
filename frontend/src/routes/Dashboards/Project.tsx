@@ -1,12 +1,14 @@
 import pocketbase from "../../libraries/Pocketbase";
 import {ConfigRecord, EnvironmentRecord, ProjectRecord} from "../../types/Structures";
 import {useLoaderData, useNavigate} from "react-router-dom";
+import React from "preact/compat";
+import {Content} from "../../components/Content";
 
 export default function Project() {
     const [project, configs, environments] = useLoaderData() as ProjectLoaderData;
     const navigate = useNavigate();
 
-    return <>
+    return <Content>
         <h1>{project.name}</h1>
         <h2>Environments</h2>
         <div class={"environment-cards"}>
@@ -23,7 +25,7 @@ export default function Project() {
                 <h3>{config.name}</h3>
             </div>)}
         </div>
-    </>;
+    </Content>;
 }
 
 export function projectLoader({params}: { params: any }) {

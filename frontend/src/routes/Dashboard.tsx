@@ -1,7 +1,7 @@
 import React from "preact/compat";
 import Navigation from "../components/Navigation";
 import Sidebar from "../components/Sidebar";
-import "../styles/dashboard.scss";
+import "../styles/dashboard/base.scss";
 import {Outlet} from "react-router-dom";
 
 export default function Dashboard() {
@@ -11,9 +11,7 @@ export default function Dashboard() {
         <div className="dashboard">
             <Sidebar/>
 
-            <div className="content">
-                <Outlet/>
-            </div>
+            <Outlet/>
         </div>
     </>
 }

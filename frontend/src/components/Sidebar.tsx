@@ -85,33 +85,38 @@ export default function Sidebar() {
     return <div className="sidebar">
         {loading && <div className="loading">Loading...</div>}
 
+        <span className="sidebar-divider"/>
+
         {/* print data hierarchy here */}
         {data.map((team: SidebarTeam) => {
-            return <div className="team">
-                <div className="team-name">
-                    <Link to={team.id}>{team.name}</Link>
-                    <div className="team-projects">
-                        {team.projects.map((project: SidebarProject) => {
-                            return <div className="project">
-                                <div className="project-name">
-                                    <Link
-                                        to={team.id + "/" + project.id}>{project.name}</Link>
-                                    <div className="project-configs">
-                                        {project.configs.map((config: SidebarConfig) => {
-                                            return <div className="config">
-                                                <div className="config-name">
-                                                    <Link
-                                                        to={team.id + "/" + project.id + "/" + config.id + (config.environments.length > 0 ? "/" + config.environments[0].id : "")}>{config.name}</Link>
+            return <>
+                <div className="team">
+                    <div className="team-name">
+                        <Link to={team.id}>{team.name}</Link>
+                        <div className="team-projects">
+                            {team.projects.map((project: SidebarProject) => {
+                                return <div className="project">
+                                    <div className="project-name">
+                                        <Link
+                                            to={team.id + "/" + project.id}>{project.name}</Link>
+                                        <div className="project-configs">
+                                            {project.configs.map((config: SidebarConfig) => {
+                                                return <div className="config">
+                                                    <div className="config-name">
+                                                        <Link
+                                                            to={team.id + "/" + project.id + "/" + config.id + (config.environments.length > 0 ? "/" + config.environments[0].id : "")}>{config.name}</Link>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        })}
+                                            })}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        })}
+                            })}
+                        </div>
                     </div>
                 </div>
-            </div>
+                <span className="sidebar-divider"/>
+            </>
         })}
 
         {error && <div className="error">{error}</div>}

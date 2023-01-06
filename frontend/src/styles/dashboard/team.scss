@@ -1,0 +1,35 @@
+@import "../theme";
+
+.content-nav h1 {
+    @include theme('color', $text-color);
+    font-size: 40px;
+    line-height: 50px;
+    font-weight: 600;
+    padding: 5px 10px 0;
+}
+
+.content-with-nav {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 0;
+    grid-row-gap: 0;
+
+    .user-list {
+        grid-area: 1 / 4 / 2 / 5;
+    }
+
+    // handles if both are present
+    .user-list + .sub-item-list {
+        grid-area: 1 / 1 / 2 / 4;
+    }
+
+    // handles if only sub-item-list is present
+    .sub-item-list {
+        grid-area: 1 / 1 / 2 / 5;
+
+        .project-cards {
+
+        }
+    }
+}
