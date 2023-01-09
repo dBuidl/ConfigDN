@@ -2,12 +2,13 @@ import React from "preact/compat";
 import {Link} from "react-router-dom";
 import "../styles/navigation.scss";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import usePocketbaseAuth from "../hooks/usePocketbaseAuth";
+import useAuthValid from "../hooks/useAuthValid";
 import {faUserCircle} from "@fortawesome/free-solid-svg-icons/faUserCircle";
 import URLS from "../helpers/URLS";
+import pocketbase from "../libraries/Pocketbase";
 
 export default function Navigation() {
-    const pocketbaseAuthStore = usePocketbaseAuth();
+    const authValid = useAuthValid();
 
     return <nav class="nav">
         <div className="nav-logo">
@@ -15,10 +16,10 @@ export default function Navigation() {
         </div>
         <div className="nav-spacer"/>
         <div className="nav-links">
-            {pocketbaseAuthStore.isValid ? <>
+            {authValid ? <>
                     <Link to={URLS.DASHBOARD}
                           className="nav-link"><FontAwesomeIcon
-                        icon={faUserCircle}/>&nbsp;{pocketbaseAuthStore.model?.name || pocketbaseAuthStore.model?.username}
+                        icon={faUserCircle}/>&nbsp;{pocketbase.authStore?.model?.name || pocketbase.authStore?.model?.username}
                     </Link>
                     <Link to={URLS.LOGOUT} className="nav-link">Logout</Link>
                 </> :

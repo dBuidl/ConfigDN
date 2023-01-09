@@ -754,10 +754,10 @@ picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.2:
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
   integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
 
-pocketbase@^0.8.1:
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/pocketbase/-/pocketbase-0.8.2.tgz#fb5d8f23b0685c0843e67c15c5993d61511129ab"
-  integrity sha512-3fk/Jg9ZUkICAq0wNHwm4rNWWEy1IfUKSPgIpZx/0HUdwDivNArlY6I2DefPScfenaB/gqvTWBsB+jf7RpvCyQ==
+pocketbase@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/pocketbase/-/pocketbase-0.9.1.tgz#5a90bc9de7404a8da78621aca1dc9ea550f32ed5"
+  integrity sha512-a9S/WHak+mgr3WI8bD2tz3lFVFzoy6ZgKTBlUXwIH4VLTKVU3JKeAKxqIFBF7av4qblmB+52tX8sWLS08Ftm/w==
 
 postcss@^8.4.18:
   version "8.4.19"

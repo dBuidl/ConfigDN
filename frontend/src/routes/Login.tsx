@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 import URLS from "../helpers/URLS";
 import {DatabaseInsertError} from "../types/Errors";
 import ValidatedInput from "../components/ValidatedInput";
-import useAuthStatusRedirect from "../hooks/useAuthStatusRedirect";
+import useAuthRedirect from "../hooks/useAuthRedirect";
 import ErrorIfExists from "../components/ErrorIfExists";
 
 export default function Login() {
@@ -17,7 +17,7 @@ export default function Login() {
     const [loginEnabled, setLoginEnabled] = React.useState(true);
     const navigate = useNavigate();
     // redirect to dashboard if already authenticated
-    useAuthStatusRedirect(URLS.DASHBOARD, true);
+    useAuthRedirect(URLS.DASHBOARD, true);
 
     async function loginToAccount(e: Event) {
         e.preventDefault();

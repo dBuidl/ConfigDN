@@ -6,7 +6,7 @@ import {ClientResponseError} from "pocketbase";
 import ErrorsAsStringDict from "../helpers/ErrorsAsStringDict";
 import URLS from "../helpers/URLS";
 import {DatabaseInsertError} from "../types/Errors";
-import useAuthStatusRedirect from "../hooks/useAuthStatusRedirect";
+import useAuthRedirect from "../hooks/useAuthRedirect";
 import {useNavigate} from "react-router-dom";
 import ValidatedInput from "../components/ValidatedInput";
 import ErrorIfExists from "../components/ErrorIfExists";
@@ -20,7 +20,7 @@ export default function Register() {
     const [registerEnabled, setRegisterEnabled] = React.useState(true);
     const navigate = useNavigate();
     // redirect to dashboard if already authenticated
-    useAuthStatusRedirect(URLS.DASHBOARD, true);
+    useAuthRedirect(URLS.DASHBOARD, true);
 
     async function createAccount(e: Event) {
         e.preventDefault();

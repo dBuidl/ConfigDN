@@ -1,9 +1,10 @@
-import React from "preact/compat";
+import React, {useEffect} from "preact/compat";
 import "../styles/sidebar.scss";
 import pocketbase from "../libraries/Pocketbase";
 import {ClientResponseError} from "pocketbase";
 import {Link} from "react-router-dom";
 import {ConfigRecord, EnvironmentRecord, ProjectRecord, TeamRecord} from "../types/Structures";
+import useAuthValid from "../hooks/useAuthValid";
 
 export interface SidebarBase {
     id: string,
@@ -27,12 +28,18 @@ export interface SidebarTeam extends SidebarBase {
 }
 
 export default function Sidebar() {
+    const authValid = useAuthValid();
     const [data, setData] = React.useState<SidebarTeam[]>([]);
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState<string>("");
 
-    React.useEffect(() => {
-        (async () => {
+    useEffect(() => {
+        if (!authValid) {
+            setData([]);
+            return;
+        }
+
+        (async function () {
             try {
                 const teams = await pocketbase.collection('team').getFullList() as TeamRecord[];
                 const projects = await pocketbase.collection('project').getFullList() as ProjectRecord[];
@@ -79,8 +86,7 @@ export default function Sidebar() {
                 setLoading(false);
             }
         })();
-    }, []);
-
+    }, [authValid]);
 
     return <div className="sidebar">
         {loading && <div className="loading">Loading...</div>}
