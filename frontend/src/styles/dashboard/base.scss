@@ -1,6 +1,14 @@
 @import "src/styles/vars";
 @import "src/styles/theme";
 
+.content-nav h1 {
+    @include theme('color', $text-color);
+    font-size: 40px;
+    line-height: 50px;
+    font-weight: 600;
+    padding: 5px 10px 0;
+}
+
 .dashboard {
     min-height: calc(100vh - $nav-height);
     display: grid;

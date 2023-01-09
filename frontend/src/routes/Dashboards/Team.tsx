@@ -14,7 +14,7 @@ export default function Team() {
         <ContentNavigation>
             <h1>{team.name}</h1>
         </ContentNavigation>
-        <ContentWithNavigation>
+        <ContentWithNavigation class={"page-team"}>
             {/* List of people (only shown to the owner), loop through each expand prop and render a <ExpandUserSection /> */}
             {team.owner === pocketbase.authStore.model?.id && <div class="user-list">
                 <ExpandUserSection title={"Owner"} expand={team.expand.owner}/>

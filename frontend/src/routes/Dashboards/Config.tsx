@@ -10,7 +10,7 @@ import {
     ValueRecord
 } from "../../types/Structures";
 import {fieldTypeToInputType} from "../../types/Conversions";
-import {Content} from "../../components/Content";
+import {Content, ContentNavigation, ContentWithNavigation} from "../../components/Content";
 
 export default function Config() {
     const [environment, ...others] = useLoaderData() as ConfigLoaderData;
@@ -43,20 +43,24 @@ export default function Config() {
 
     console.log(others);
 
-    return <Content>
-        <h1>{`${project.name}/${config.name} (${environment.name})`}</h1>
-        <h2>Flags</h2>
-        <div class={"flag-cards"}>
-            {flags.map((flag: FlagRecord) => <div class={"flag-card"}>
-                <h3>{flag.name}</h3>
-                <p>{flag.identifier}</p>
-                {values.filter((value: ValueRecord) => value.flag === flag.id).map((value: ValueRecord) => <div
-                    class={"value-card"}>
-                    <input value={JSON.stringify(value.value)} type={fieldTypeToInputType(flag.type)}/>
+    return <>
+        <ContentNavigation>
+            <h1>{team.name}/{project.name}/{config.name} ({environment.name})</h1>
+        </ContentNavigation>
+        <ContentWithNavigation class="page-config">
+            <h2>Flags</h2>
+            <div class={"flag-cards"}>
+                {flags.map((flag: FlagRecord) => <div class={"flag-card"}>
+                    <h3>{flag.name}</h3>
+                    <p>{flag.identifier}</p>
+                    {values.filter((value: ValueRecord) => value.flag === flag.id).map((value: ValueRecord) => <div
+                        class={"value-card"}>
+                        <input value={JSON.stringify(value.value)} type={fieldTypeToInputType(flag.type)}/>
+                    </div>)}
                 </div>)}
-            </div>)}
-        </div>
-    </Content>;
+            </div>
+        </ContentWithNavigation>
+    </>;
 }
 
 // Loads data for the config page (remember to change the order above if you change this)

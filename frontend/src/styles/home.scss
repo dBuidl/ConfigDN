@@ -1,2 +1,31 @@
 @import "theme";
+@import "vars";
 
+.page-home {
+    min-height: calc(100vh - $nav-height);
+
+    h1 {
+        font-size: 2rem;
+        font-weight: 600;
+    }
+
+    p {
+        font-size: 1.5rem;
+    }
+
+    .banner {
+        background-color: rgb(201, 106, 0);
+        padding: 20px 10px;
+    }
+
+    .demo-devices {
+        .demo-device.phone {
+            height: 100%;
+            width: 30%;
+
+            .demo-device-frame {
+                border: 1px solid black;
+            }
+        }
+    }
+}
