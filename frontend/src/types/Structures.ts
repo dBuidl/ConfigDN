@@ -60,7 +60,7 @@ export interface EnvironmentRecord extends BaseRecord {
 export interface ValueRecord extends BaseRecord {
     flag: tPocketbaseID;
     environment: tPocketbaseID;
-    value: object | null;
+    value: object | string | number | null;
 }
 
 export interface ApiKeyRecord extends BaseRecord {

@@ -13,6 +13,7 @@ import Team, {teamLoader} from "./routes/Dashboards/Team";
 import Project, {projectLoader} from "./routes/Dashboards/Project";
 import Config, {configLoader} from "./routes/Dashboards/Config";
 import DashboardError from "./routes/Dashboards/DashboardError";
+import Overview, {overviewLoader} from "./routes/Dashboards/Overview";
 
 // TODO: remember that react-router now has loaders (https://reactrouter.com/en/main/route/loader) which can be used to load data before rendering the component
 
@@ -35,6 +36,12 @@ const router = createBrowserRouter([
         element: <Dashboard/>,
         children: [
             {
+                path: "",
+                element: <Overview/>,
+                loader: overviewLoader,
+                errorElement: <DashboardError/>,
+            },
+            {
                 path: ":team",
                 element: <Team/>,
                 loader: teamLoader,
@@ -48,9 +55,7 @@ const router = createBrowserRouter([
             },
             {
                 path: ":team/:project/:config",
-                element: <Config/>,
-                loader: configLoader,
-                errorElement: <DashboardError/>,
+                element: <ErrorNotFound/>
             },
             {
                 path: ":team/:project/:config/:environment",

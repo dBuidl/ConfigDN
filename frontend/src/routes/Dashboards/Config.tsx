@@ -1,66 +1,77 @@
 import pocketbase from "../../libraries/Pocketbase";
-import {useLoaderData, useNavigate} from "react-router-dom";
-import React, {useEffect, useState} from "preact/compat";
+import {useLoaderData} from "react-router-dom";
+import React, {useState} from "preact/compat";
 import {
     ApiKeyRecord,
     ConfigRecord,
-    EnvironmentRecord, FlagRecord,
+    EnvironmentRecord,
+    FlagRecord,
     ProjectRecord,
-    TeamRecord, tPocketbaseID,
+    TeamRecord,
     ValueRecord
 } from "../../types/Structures";
-import {fieldTypeToInputType} from "../../types/Conversions";
-import {Content, ContentNavigation, ContentWithNavigation} from "../../components/Content";
+import {ContentNavigation, ContentWithNavigation} from "../../components/Content";
+import FlagCard from "../../components/FlagCard";
 
 export default function Config() {
     const [environment, ...others] = useLoaderData() as ConfigLoaderData;
-    const navigate = useNavigate();
 
-    // redirect if no environment was selected
-    useEffect(() => {
-        if (Array.isArray(environment) && environment.length > 0) navigate('./' + environment[0].id); // redirect to url with /environmentID appended (so it can load full data)
-    }, [environment]);
+    if (typeof environment !== "undefined") {
+        // if we're here, we have the other data
+        const [team, project, config, flags, values, apiKeys] = others;
 
-    // show alternate text depending on environment existence
-    if (Array.isArray(environment)) { // if it's set, it's an object, if it's not set, it's an array
-        if (environment.length >= 1) {
-            return <div class="content">
-                <h1>Loading...</h1>
-            </div>;
+        const [editedValues, setEditedValues] = useState<ValueRecord[]>(JSON.parse(JSON.stringify(values))); // deep copy
+
+        function setEditedValue(value: ValueRecord) {
+            setEditedValues(editedValues.map((v) => v.id === value.id ? value : v));
         }
-    }
 
-    if (others.length === 0 || Array.isArray(environment)) {
+        const getEditedValue = (flag: FlagRecord): ValueRecord => {
+            return editedValues.find((v) => v.flag === flag.id) as ValueRecord; // values are created at the same time as flags, so we know it'll exist here
+        }
+
+        function getOriginalValue(flag: FlagRecord): ValueRecord {
+            return values.find((v) => v.flag === flag.id) as ValueRecord; // values are created at the same time as flags, so we know it'll exist here
+        }
+
+        function saveChanges(e: Event) {
+            e.preventDefault();
+            console.log(editedValues);
+
+            for (let i = 0; i < editedValues.length; i++) {
+                const editedValue = editedValues[i];
+                const previousValueIndex = values.findIndex(value => value.id === editedValue.id);
+                const previousValue = values[previousValueIndex];
+
+                if (JSON.stringify(previousValue.value) !== JSON.stringify(editedValues[i].value)) {
+                    pocketbase.collection('value').update(editedValue.id, editedValue);
+                    values[previousValueIndex] = JSON.parse(JSON.stringify(editedValue));
+                }
+            }
+        }
+
+        return <>
+            <ContentNavigation>
+                <h1>{team.name}/{project.name}/{config.name} ({environment.name})</h1>
+            </ContentNavigation>
+            <ContentWithNavigation class="page-config">
+                <h2>Flags</h2>
+                <div class={"flag-cards"}>
+                    {flags.map((flag: FlagRecord) => <FlagCard flag={flag} originalValue={getOriginalValue(flag)}
+                                                               value={getEditedValue(flag)}
+                                                               setValue={setEditedValue}/>)}
+                </div>
+                <button onClick={saveChanges
+                }>Save Changes
+                </button>
+            </ContentWithNavigation>
+        </>;
+    } else {
         return <div class="content">
+            {/* todo: should probably suggest how to create an environment here */}
             <h1>No environments found!</h1>
         </div>;
     }
-
-    // if we're here, we have the other data
-    const [team, project, config, flags, values, apiKeys] = others;
-
-    const [editedValues, setEditedValues] = useState<Map<tPocketbaseID, object>>(new Map(values.map((value: ValueRecord) => [value.flag, value])));
-
-    console.log(others);
-
-    return <>
-        <ContentNavigation>
-            <h1>{team.name}/{project.name}/{config.name} ({environment.name})</h1>
-        </ContentNavigation>
-        <ContentWithNavigation class="page-config">
-            <h2>Flags</h2>
-            <div class={"flag-cards"}>
-                {flags.map((flag: FlagRecord) => <div class={"flag-card"}>
-                    <h3>{flag.name}</h3>
-                    <p>{flag.identifier}</p>
-                    {values.filter((value: ValueRecord) => value.flag === flag.id).map((value: ValueRecord) => <div
-                        class={"value-card"}>
-                        <input value={JSON.stringify(value.value)} type={fieldTypeToInputType(flag.type)}/>
-                    </div>)}
-                </div>)}
-            </div>
-        </ContentWithNavigation>
-    </>;
 }
 
 // Loads data for the config page (remember to change the order above if you change this)
@@ -77,11 +88,10 @@ export function configLoader({params}: { params: any }) {
         ]);
     } else {
         return Promise.all([
-            pocketbase.collection('environment').getFullList(undefined, {filter: `project = "${params.project}"`}),
+            pocketbase.collection('environment').getList(undefined, 1, {filter: `project = "${params.project}"`}).then((environments) => environments.items[0] || undefined),
         ]);
     }
 }
 
 export type ConfigLoaderData =
-    [EnvironmentRecord, TeamRecord, ProjectRecord, ConfigRecord, FlagRecord[], ValueRecord[], ApiKeyRecord[]]
-    | [EnvironmentRecord[]];
+    [EnvironmentRecord | undefined, TeamRecord, ProjectRecord, ConfigRecord, FlagRecord[], ValueRecord[], ApiKeyRecord[]];

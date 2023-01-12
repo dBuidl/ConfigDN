@@ -1,6 +1,6 @@
 import {tFlagType} from "./Structures";
 
-export function fieldTypeToInputType(fieldType: tFlagType): string {
+export function fieldTypeToInputType(fieldType: tFlagType): "checkbox" | "text" | "number" | "textarea" {
     switch (fieldType) {
         case "boolean":
             return "checkbox";
