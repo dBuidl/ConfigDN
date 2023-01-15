@@ -1,6 +1,6 @@
 import pocketbase from "../../libraries/Pocketbase";
 import {useLoaderData} from "react-router-dom";
-import React, {useState} from "preact/compat";
+import React, {useMemo, useState} from "preact/compat";
 import {
     ApiKeyRecord,
     ConfigRecord,
@@ -8,70 +8,97 @@ import {
     FlagRecord,
     ProjectRecord,
     TeamRecord,
-    ValueRecord
+    ValueRecord, ValueRecordString
 } from "../../types/Structures";
 import {ContentNavigation, ContentWithNavigation} from "../../components/Content";
 import FlagCard from "../../components/FlagCard";
+import {Record} from "pocketbase";
+import "../../styles/dashboard/config.scss";
+
+export type tPocketbaseAsyncResponse = Promise<[true, Record] | [false, any]>;
+export type tPocketbaseResponse = [true, Record] | [false, any];
 
 export default function Config() {
-    const [environment, ...others] = useLoaderData() as ConfigLoaderData;
+    const [environment, team, project, config, flags, valuesInDB, apiKeys] = useLoaderData() as ConfigLoaderData;
 
-    if (typeof environment !== "undefined") {
-        // if we're here, we have the other data
-        const [team, project, config, flags, values, apiKeys] = others;
-
-        const [editedValues, setEditedValues] = useState<ValueRecord[]>(JSON.parse(JSON.stringify(values))); // deep copy
-
-        function setEditedValue(value: ValueRecord) {
-            setEditedValues(editedValues.map((v) => v.id === value.id ? value : v));
-        }
-
-        const getEditedValue = (flag: FlagRecord): ValueRecord => {
-            return editedValues.find((v) => v.flag === flag.id) as ValueRecord; // values are created at the same time as flags, so we know it'll exist here
-        }
-
-        function getOriginalValue(flag: FlagRecord): ValueRecord {
-            return values.find((v) => v.flag === flag.id) as ValueRecord; // values are created at the same time as flags, so we know it'll exist here
-        }
-
-        function saveChanges(e: Event) {
-            e.preventDefault();
-            console.log(editedValues);
-
-            for (let i = 0; i < editedValues.length; i++) {
-                const editedValue = editedValues[i];
-                const previousValueIndex = values.findIndex(value => value.id === editedValue.id);
-                const previousValue = values[previousValueIndex];
-
-                if (JSON.stringify(previousValue.value) !== JSON.stringify(editedValues[i].value)) {
-                    pocketbase.collection('value').update(editedValue.id, editedValue);
-                    values[previousValueIndex] = JSON.parse(JSON.stringify(editedValue));
-                }
-            }
-        }
-
-        return <>
-            <ContentNavigation>
-                <h1>{team.name}/{project.name}/{config.name} ({environment.name})</h1>
-            </ContentNavigation>
-            <ContentWithNavigation class="page-config">
-                <h2>Flags</h2>
-                <div class={"flag-cards"}>
-                    {flags.map((flag: FlagRecord) => <FlagCard flag={flag} originalValue={getOriginalValue(flag)}
-                                                               value={getEditedValue(flag)}
-                                                               setValue={setEditedValue}/>)}
-                </div>
-                <button onClick={saveChanges
-                }>Save Changes
-                </button>
-            </ContentWithNavigation>
-        </>;
-    } else {
+    if (typeof environment === "undefined") {
         return <div class="content">
             {/* todo: should probably suggest how to create an environment here */}
             <h1>No environments found!</h1>
         </div>;
     }
+
+    const values = useMemo(() => valuesInDB.map(v => {
+        v.value = JSON.stringify(v.value);
+
+        return v;
+    }) as ValueRecordString[], [valuesInDB])
+
+    const [editedValues, setEditedValues] = useState<ValueRecordString[]>(JSON.parse(JSON.stringify(values))); // deep copy
+    console.log(editedValues);
+
+    function setEditedValue(value: ValueRecordString) {
+        setEditedValues(ev => ev.map((v) => v.id === value.id ? value : v));
+    }
+
+    const getEditedValue = (flag: FlagRecord): ValueRecordString => {
+        return editedValues.find((v) => v.flag === flag.id) as ValueRecordString; // values are created at the same time as flags, so we know it'll exist here
+    }
+
+    function getOriginalValue(flag: FlagRecord): ValueRecordString {
+        return values.find((v) => v.flag === flag.id) as ValueRecordString; // values are created at the same time as flags, so we know it'll exist here
+    }
+
+    function saveChanges(e: Event) {
+        e.preventDefault();
+
+        for (let i = 0; i < editedValues.length; i++) {
+            const editedValue = editedValues[i];
+            const previousValueIndex = values.findIndex(value => value.id === editedValue.id);
+            const previousValue = values[previousValueIndex];
+
+            if (JSON.stringify(previousValue.value) !== JSON.stringify(editedValues[i].value)) {
+                pocketbase.collection('value').update(editedValue.id, {
+                    ...editedValue,
+                    value: JSON.parse(editedValue.value)
+                });
+                values[previousValueIndex] = JSON.parse(JSON.stringify(editedValue));
+            }
+        }
+    }
+
+    async function saveOne(value: ValueRecordString): tPocketbaseAsyncResponse {
+        const previousValueIndex = values.findIndex(value => value.id === value.id);
+
+        try {
+            const record = await pocketbase.collection('value').update(value.id, {
+                ...value,
+                value: JSON.parse(value.value)
+            });
+            values[previousValueIndex] = JSON.parse(JSON.stringify(record));
+            return [true, record];
+        } catch (e: any) {
+            return [false, e];
+        }
+    }
+
+    return <>
+        <ContentNavigation>
+            <h1>{team.name}/{project.name}/{config.name} ({environment.name})</h1>
+        </ContentNavigation>
+        <ContentWithNavigation class="page-config">
+            <h2>Flags</h2>
+            <div class={"flag-cards"}>
+                {flags.map((flag: FlagRecord) => <FlagCard flag={flag} originalValue={getOriginalValue(flag)}
+                                                           value={getEditedValue(flag)}
+                                                           saveValue={saveOne}
+                                                           setValue={setEditedValue}/>)}
+            </div>
+            <button onClick={saveChanges
+            }>Save Changes
+            </button>
+        </ContentWithNavigation>
+    </>;
 }
 
 // Loads data for the config page (remember to change the order above if you change this)

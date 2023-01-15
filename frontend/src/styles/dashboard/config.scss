@@ -2,6 +2,14 @@
 
 .page-config {
     &.content-with-nav {
-        
+        // add basic form styles for input (types: textarea, text, checkbox .etc.)
+        input[type="text"], input[type="password"], input[type="email"], input[type="number"], input[type="url"], input[type="tel"], input[type="search"], input[type="date"], textarea {
+            @include theme('background-color', $background-color);
+            @include theme('color', $text-color);
+            border-radius: 5px;
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
     }
 }

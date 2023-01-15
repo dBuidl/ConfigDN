@@ -63,6 +63,10 @@ export interface ValueRecord extends BaseRecord {
     value: object | string | number | null;
 }
 
+export interface ValueRecordString extends ValueRecord {
+    value: string;
+}
+
 export interface ApiKeyRecord extends BaseRecord {
     environment: tPocketbaseID;
     name: string;
