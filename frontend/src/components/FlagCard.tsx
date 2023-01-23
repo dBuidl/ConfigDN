@@ -51,10 +51,12 @@ export default function FlagCard(props: { flag: FlagRecord, originalValue: Value
     function getLastSaveStatusMessage() {
         if (lastSaveStatus === null) return null;
 
-        if (lastSaveStatus[0]) {
+        if (lastSaveStatus[0] === 1) {
             return <p>Value saved successfully.</p>
-        } else {
+        } else if (lastSaveStatus[0] === 0) {
             return <p>Failed to save value.</p>
+        } else {
+            return <p>{lastSaveStatus[1]}</p>
         }
     }
 
@@ -62,8 +64,9 @@ export default function FlagCard(props: { flag: FlagRecord, originalValue: Value
         <h2>{flag.name}</h2>
         <p>{flag.identifier}</p>
         {input}
-        <button onClick={onReset}>Reset</button>
-        <button onClick={save}>Save</button>
+        <button onClick={onReset} disabled={originalValue.value === value.value}>Reset</button>
+        <button onClick={save} disabled={originalValue.value === value.value}>Save
+        </button>
         {getLastSaveStatusMessage()}
     </div>;
 }

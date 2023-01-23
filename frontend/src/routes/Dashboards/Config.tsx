@@ -1,6 +1,6 @@
 import pocketbase from "../../libraries/Pocketbase";
 import {useLoaderData} from "react-router-dom";
-import React, {useMemo, useState} from "preact/compat";
+import React, {useEffect, useMemo, useState} from "preact/compat";
 import {
     ApiKeyRecord,
     ConfigRecord,
@@ -15,11 +15,18 @@ import FlagCard from "../../components/FlagCard";
 import {Record} from "pocketbase";
 import "../../styles/dashboard/config.scss";
 
-export type tPocketbaseAsyncResponse = Promise<[true, Record] | [false, any]>;
-export type tPocketbaseResponse = [true, Record] | [false, any];
+export type tPocketbaseAsyncResponse = Promise<tPocketbaseResponse>;
+export type tPocketbaseResponse = [1, Record] | [0, any] | [-1, string];
 
 export default function Config() {
     const [environment, team, project, config, flags, valuesInDB, apiKeys] = useLoaderData() as ConfigLoaderData;
+    const valuesProcessed = useMemo(() => valuesInDB.map((v) => {
+        v.value = JSON.stringify(v.value);
+
+        return v as ValueRecordString;
+    }), [valuesInDB]);
+    const [originalValues, setOriginalValues] = useState<ValueRecordString[]>(valuesProcessed);
+    const [editedValues, setEditedValues] = useState<ValueRecordString[]>(JSON.parse(JSON.stringify(originalValues)));
 
     if (typeof environment === "undefined") {
         return <div class="content">
@@ -27,15 +34,6 @@ export default function Config() {
             <h1>No environments found!</h1>
         </div>;
     }
-
-    const values = useMemo(() => valuesInDB.map(v => {
-        v.value = JSON.stringify(v.value);
-
-        return v;
-    }) as ValueRecordString[], [valuesInDB])
-
-    const [editedValues, setEditedValues] = useState<ValueRecordString[]>(JSON.parse(JSON.stringify(values))); // deep copy
-    console.log(editedValues);
 
     function setEditedValue(value: ValueRecordString) {
         setEditedValues(ev => ev.map((v) => v.id === value.id ? value : v));
@@ -46,7 +44,21 @@ export default function Config() {
     }
 
     function getOriginalValue(flag: FlagRecord): ValueRecordString {
-        return values.find((v) => v.flag === flag.id) as ValueRecordString; // values are created at the same time as flags, so we know it'll exist here
+        return originalValues.find((v) => v.flag === flag.id) as ValueRecordString; // values are created at the same time as flags, so we know it'll exist here
+    }
+
+    function setOriginalValue(valueUnsafe: ValueRecordString) {
+        // we need to clone the value here because otherwise the originalValues state will be updated with the edited value
+        const value = JSON.parse(JSON.stringify(valueUnsafe));
+
+        setOriginalValues(ov => ov.map((v) => v.id === value.id ? value : v));
+    }
+
+    function toValueRecordString(value: ValueRecord): ValueRecordString {
+        return {
+            ...value,
+            value: JSON.stringify(value.value)
+        }
     }
 
     function saveChanges(e: Event) {
@@ -54,31 +66,39 @@ export default function Config() {
 
         for (let i = 0; i < editedValues.length; i++) {
             const editedValue = editedValues[i];
-            const previousValueIndex = values.findIndex(value => value.id === editedValue.id);
-            const previousValue = values[previousValueIndex];
+            const previousValueIndex = originalValues.findIndex(value => value.id === editedValue.id);
+            const previousValue = originalValues[previousValueIndex];
 
             if (JSON.stringify(previousValue.value) !== JSON.stringify(editedValues[i].value)) {
                 pocketbase.collection('value').update(editedValue.id, {
                     ...editedValue,
                     value: JSON.parse(editedValue.value)
                 });
-                values[previousValueIndex] = JSON.parse(JSON.stringify(editedValue));
+                setOriginalValue(editedValue); // the function ensures it'll be a distinct clone
             }
         }
     }
 
     async function saveOne(value: ValueRecordString): tPocketbaseAsyncResponse {
-        const previousValueIndex = values.findIndex(value => value.id === value.id);
+        const previousValueIndex = originalValues.findIndex(val => val.id === value.id);
+
+        // check if previous value is the same as the new value
+        if (JSON.stringify(originalValues[previousValueIndex].value) === JSON.stringify(value.value)) {
+            return [-1, "Value is the same as the previous value"];
+        }
 
         try {
-            const record = await pocketbase.collection('value').update(value.id, {
+            const newVal = {
                 ...value,
                 value: JSON.parse(value.value)
-            });
-            values[previousValueIndex] = JSON.parse(JSON.stringify(record));
-            return [true, record];
+            }
+
+            const record = await pocketbase.collection('value').update(value.id, newVal);
+            setOriginalValue(toValueRecordString(record as unknown as ValueRecord));
+            setEditedValue(toValueRecordString(record as unknown as ValueRecord));
+            return [1, record];
         } catch (e: any) {
-            return [false, e];
+            return [0, e];
         }
     }
 
