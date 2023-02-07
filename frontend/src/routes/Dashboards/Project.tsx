@@ -2,8 +2,7 @@ import pocketbase from "../../libraries/Pocketbase";
 import {ConfigRecord, EnvironmentRecord, ProjectRecord, TeamRecord} from "../../types/Structures";
 import {useLoaderData, useNavigate} from "react-router-dom";
 import React from "preact/compat";
-import {ContentNavigation, ContentWithNavigation} from "../../components/Content";
-import "../../styles/dashboard/project.scss";
+import {ContentNavigation, ContentWithNavigation} from "../../components/old/Content";
 
 export default function Project() {
     const [team, project, configs, environments] = useLoaderData() as ProjectLoaderData;

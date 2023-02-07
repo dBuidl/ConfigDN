@@ -1,14 +1,16 @@
-import Navigation from "../components/Navigation";
 import React from "preact/compat";
-import "../styles/auth.scss";
 import pocketbase from "../libraries/Pocketbase";
 import {ClientResponseError} from "pocketbase";
 import {useNavigate} from "react-router-dom";
 import URLS from "../helpers/URLS";
 import {DatabaseInsertError} from "../types/Errors";
-import ValidatedInput from "../components/ValidatedInput";
+import ValidatedInput from "../components/old/ValidatedInput";
 import useAuthRedirect from "../hooks/useAuthRedirect";
-import ErrorIfExists from "../components/ErrorIfExists";
+import ErrorIfExists from "../components/old/ErrorIfExists";
+import logo from "../assets/images/raster/logo.png";
+import NavBarLinksContainer from "../components/navbar/NavBarLinksContainer";
+import NavAuthLinks from "../components/navbar/NavAuthLinks";
+import NavBar from "../components/navbar/NavBar";
 
 export default function Login() {
     const [email, setEmail] = React.useState("");
@@ -46,7 +48,11 @@ export default function Login() {
     }
 
     return <div className={"auth-page"}>
-        <Navigation/>
+        <NavBar logo={logo}>
+            <NavBarLinksContainer>
+                <NavAuthLinks/>
+            </NavBarLinksContainer>
+        </NavBar>
 
         <div className="auth-container">
             <form className="form" onSubmit={loginToAccount}>

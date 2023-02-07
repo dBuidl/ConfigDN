@@ -1,7 +1,7 @@
-import {UserRecord} from "../types/Structures";
+import {UserRecord} from "../../types/Structures";
 import {JSX} from "preact";
-import ExpandIsEmpty from "../helpers/ExpandIsEmpty";
-import pocketbase from "../libraries/Pocketbase";
+import ExpandIsEmpty from "../../helpers/ExpandIsEmpty";
+import pocketbase from "../../libraries/Pocketbase";
 
 export default function ExpandUserSection(props: { title: string, expand: UserRecord[] | UserRecord | undefined }): JSX.Element {
     const {expand} = props;

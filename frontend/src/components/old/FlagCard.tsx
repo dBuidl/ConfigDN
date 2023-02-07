@@ -1,8 +1,8 @@
-import {FlagRecord, ValueRecordString} from "../types/Structures";
+import {FlagRecord, ValueRecordString} from "../../types/Structures";
 import React, {useState} from "preact/compat";
-import {fieldTypeToInputType} from "../types/Conversions";
+import {fieldTypeToInputType} from "../../types/Conversions";
 import {JSX} from "preact";
-import {tPocketbaseAsyncResponse, tPocketbaseResponse} from "../routes/Dashboards/Config";
+import {tPocketbaseAsyncResponse, tPocketbaseResponse} from "../../routes/Dashboards/Config";
 
 export default function FlagCard(props: { flag: FlagRecord, originalValue: ValueRecordString, value: ValueRecordString, setValue: (values: ValueRecordString) => void, saveValue: (value: ValueRecordString) => tPocketbaseAsyncResponse }) {
     const [lastSaveStatus, setLastSaveStatus] = useState<tPocketbaseResponse | null>(null);

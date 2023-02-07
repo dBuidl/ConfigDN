@@ -1,10 +1,9 @@
 import React, {useEffect} from "preact/compat";
-import "../styles/sidebar.scss";
-import pocketbase from "../libraries/Pocketbase";
+import pocketbase from "../../libraries/Pocketbase";
 import {ClientResponseError} from "pocketbase";
-import {Link} from "react-router-dom";
-import {ConfigRecord, EnvironmentRecord, ProjectRecord, TeamRecord} from "../types/Structures";
-import useAuthValid from "../hooks/useAuthValid";
+import {ConfigRecord, EnvironmentRecord, ProjectRecord, TeamRecord} from "../../types/Structures";
+import useAuthValid from "../../hooks/useAuthValid";
+import SidebarObject from "./SidebarObject";
 
 export interface SidebarBase {
     id: string,
@@ -88,43 +87,25 @@ export default function Sidebar() {
         })();
     }, [authValid]);
 
-    return <div className="sidebar">
+    return <nav className="sidebar">
         {loading && <div className="loading">Loading...</div>}
-
-        <span className="sidebar-divider"/>
 
         {/* print data hierarchy here */}
         {data.map((team: SidebarTeam) => {
             return <>
-                <div className="team">
-                    <div className="team-name">
-                        <Link to={team.id}>{team.name}</Link>
-                        <div className="team-projects">
-                            {team.projects.map((project: SidebarProject) => {
-                                return <div className="project">
-                                    <div className="project-name">
-                                        <Link
-                                            to={team.id + "/" + project.id}>{project.name}</Link>
-                                        <div className="project-configs">
-                                            {project.configs.map((config: SidebarConfig) => {
-                                                return <div className="config">
-                                                    <div className="config-name">
-                                                        <Link
-                                                            to={team.id + "/" + project.id + "/" + config.id + (config.environments.length > 0 ? "/" + config.environments[0].id : "")}>{config.name}</Link>
-                                                    </div>
-                                                </div>
-                                            })}
-                                        </div>
-                                    </div>
-                                </div>
+                <SidebarObject type="team" url={team.id} name={team.name}>
+                    {team.projects.map((project: SidebarProject) => {
+                        return <SidebarObject type="project" name={project.name} url={team.id + "/" + project.id}>
+                            {project.configs.map((config: SidebarConfig) => {
+                                return <SidebarObject type="config" name={config.name}
+                                                      url={team.id + "/" + project.id + "/" + config.id + (config.environments.length > 0 ? "/" + config.environments[0].id : "")}/>
                             })}
-                        </div>
-                    </div>
-                </div>
-                <span className="sidebar-divider"/>
+                        </SidebarObject>
+                    })}
+                </SidebarObject>
             </>
         })}
 
         {error && <div className="error">{error}</div>}
-    </div>;
+    </nav>;
 }

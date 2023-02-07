@@ -1,16 +1,22 @@
 import React from "preact/compat";
-import Navigation from "../components/Navigation";
-import Sidebar from "../components/Sidebar";
-import "../styles/dashboard/base.scss";
+import Sidebar from "../components/sidebar/Sidebar";
 import {Outlet} from "react-router-dom";
 import URLS from "../helpers/URLS";
 import useAuthRedirect from "../hooks/useAuthRedirect";
+import logo from "../assets/images/raster/logo.png";
+import NavBarLinksContainer from "../components/navbar/NavBarLinksContainer";
+import NavAuthLinks from "../components/navbar/NavAuthLinks";
+import NavBar from "../components/navbar/NavBar";
 
 export default function Dashboard() {
     useAuthRedirect(URLS.LOGIN, false);
 
     return <>
-        <Navigation/>
+        <NavBar logo={logo}>
+            <NavBarLinksContainer>
+                <NavAuthLinks/>
+            </NavBarLinksContainer>
+        </NavBar>
 
         <div className="dashboard">
             <Sidebar/>

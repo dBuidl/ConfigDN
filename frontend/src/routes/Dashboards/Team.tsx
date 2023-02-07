@@ -1,10 +1,9 @@
 import pocketbase from "../../libraries/Pocketbase";
 import {useLoaderData, useNavigate} from "react-router-dom";
 import {ProjectRecord, TeamRecord} from "../../types/Structures";
-import ExpandUserSection from "../../components/ExpandUserSection";
+import ExpandUserSection from "../../components/old/ExpandUserSection";
 import React from "preact/compat";
-import {ContentNavigation, ContentWithNavigation} from "../../components/Content";
-import "../../styles/dashboard/team.scss";
+import {ContentNavigation, ContentWithNavigation} from "../../components/old/Content";
 
 export default function Team() {
     const [team, projects] = useLoaderData() as TeamLoaderData;

@@ -1,29 +1,27 @@
-import '../styles/theme.scss'
 import React from "preact/compat";
-import Navigation from "../components/Navigation";
-import "../styles/home.scss";
+import Page from "../components/general/Page";
+import NavBar from "../components/navbar/NavBar";
+import logo from "../assets/images/raster/logo.png";
+import NavBarLinksContainer from "../components/navbar/NavBarLinksContainer";
+import Content from "../components/general/Content";
+import Demo from "../components/homepage/Demo";
+import NavAuthLinks from "../components/navbar/NavAuthLinks";
 
 export function Home() {
-  return <>
-    <Navigation/>
+    return <>
+        <Page>
+            <NavBar logo={logo}>
+                <NavBarLinksContainer>
+                    <NavAuthLinks/>
+                </NavBarLinksContainer>
+            </NavBar>
 
-    <div className="page-home">
-      <div class={"banner"}>
-        <h1>Simple yet powerful feature flags for you and your team.</h1>
-        <p>Manage your feature flags in a simple and intuitive way.</p>
-      </div>
+            <Content pageName={"homepage"}>
+                <h1 class={"page-title"}>Smart, super easy feature flag management for individuals, teams and
+                    open-sourcerers</h1>
 
-      <div class="demo">
-        <div class="demo-dashboard">
-
-        </div>
-        <div class="demo-devices">
-          <div class="demo-device phone">
-            <div class="demo-device-frame">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </>;
+                <Demo/>
+            </Content>
+        </Page>
+    </>;
 }

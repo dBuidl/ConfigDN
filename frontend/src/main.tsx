@@ -1,6 +1,7 @@
-import {render} from 'preact'
-import {Home} from './routes/Home'
-import './styles/index.scss'
+import {render} from 'preact';
+import {Home} from './routes/Home';
+import './styles/style.scss';
+import './styles/minireset.css';
 import React from "preact/compat";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import Login from "./routes/Login";

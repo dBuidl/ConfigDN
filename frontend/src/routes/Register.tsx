@@ -1,6 +1,4 @@
-import Navigation from "../components/Navigation";
 import React from "preact/compat";
-import "../styles/auth.scss";
 import pocketbase from "../libraries/Pocketbase";
 import {ClientResponseError} from "pocketbase";
 import ErrorsAsStringDict from "../helpers/ErrorsAsStringDict";
@@ -8,8 +6,12 @@ import URLS from "../helpers/URLS";
 import {DatabaseInsertError} from "../types/Errors";
 import useAuthRedirect from "../hooks/useAuthRedirect";
 import {useNavigate} from "react-router-dom";
-import ValidatedInput from "../components/ValidatedInput";
-import ErrorIfExists from "../components/ErrorIfExists";
+import ValidatedInput from "../components/old/ValidatedInput";
+import ErrorIfExists from "../components/old/ErrorIfExists";
+import logo from "../assets/images/raster/logo.png";
+import NavBarLinksContainer from "../components/navbar/NavBarLinksContainer";
+import NavAuthLinks from "../components/navbar/NavAuthLinks";
+import NavBar from "../components/navbar/NavBar";
 
 export default function Register() {
     const [username, setUsername] = React.useState("");
@@ -62,7 +64,11 @@ export default function Register() {
     }
 
     return <div className={"auth-page"}>
-        <Navigation/>
+        <NavBar logo={logo}>
+            <NavBarLinksContainer>
+                <NavAuthLinks/>
+            </NavBarLinksContainer>
+        </NavBar>
 
         <div className="auth-container">
             <form className="form" onSubmit={createAccount}>

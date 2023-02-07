@@ -1,7 +1,7 @@
 import pocketbase from "../../libraries/Pocketbase";
 import {useLoaderData, useNavigate} from "react-router-dom";
 import {TeamRecord} from "../../types/Structures";
-import {Content} from "../../components/Content";
+import {Content} from "../../components/old/Content";
 
 export default function Overview() {
     const [teams] = useLoaderData() as OverviewData;

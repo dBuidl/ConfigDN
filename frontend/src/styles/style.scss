@@ -1,0 +1,758 @@
+/* SCSS HEX */
+$black: #000000ff;
+$charleston-green: #1f2a2dff;
+$celadon-blue: #0080aaff;
+$gainsboro: #dce6e8ff;
+$cyber-yellow: #ffd027ff;
+
+/* SCSS HEX */
+$black: #000000ff;
+$oxford-blue: mix(#14213dff, #fff, 92%);
+$orange-web: #fca311ff;
+$platinum: #e5e5e5ff;
+$white: #ffffffff;
+
+$nav-height: 70px;
+$sidebar-width: 300px;
+
+:root {
+    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+
+    color-scheme: light dark;
+    color: $gainsboro;
+    background-color: $charleston-green;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+a {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+}
+
+// When there's no sidebar
+.page {
+    display: grid;
+    grid-template-columns: $sidebar-width 1fr;
+    grid-template-rows: $nav-height 1fr;
+    grid-column-gap: 10px;
+    min-height: 100vh;
+
+    div.content {
+        grid-area: 1 / 1 / 3 / 3;
+    }
+
+    nav.navbar, div.page-transition {
+        grid-area: 1 / 1 / 2 / 3;
+
+        + div.content {
+            grid-area: 2 / 1 / 3 / 3;
+        }
+    }
+}
+
+// When there's a sidebar
+nav.sidebar ~ .page {
+    // Content should avoid the first column
+    div.content {
+        grid-area: 1 / 2 / 3 / 3;
+        margin: 0 10px 10px 10px;
+        border-radius: 10px;
+    }
+
+    // Navbar should always be full width
+    nav.navbar, div.page-transition {
+        grid-area: 1 / 1 / 2 / 3;
+
+        // Content should avoid the 1st column
+        + div.content {
+            grid-area: 2 / 2 / 3 / 3;
+        }
+    }
+}
+
+// Navbar brand and bar
+nav.navbar {
+    display: flex;
+    position: relative;
+    z-index: 100;
+    background-color: $charleston-green;
+
+    // Could have this slide across when entering the dashboard
+    .navbar-brand {
+        border-radius: 50px;
+        height: 70px;
+        width: 70px;
+        background-color: $charleston-green;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        z-index: 50;
+
+        .navbar-logo {
+            height: 80%;
+            width: 80%;
+            border-radius: 50px;
+            background-color: $celadon-blue;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            img {
+                width: 80%;
+                height: 80%;
+            }
+        }
+    }
+
+    // Navbar Links
+    .navbar-links {
+        flex: 100%;
+        height: 50px;
+        margin: 10px 10px 0 -10px;
+        z-index: 25;
+        background-color: $celadon-blue;
+        border-radius: 0 10px 10px 0;
+        overflow: hidden;
+        display: flex;
+        justify-content: flex-end;
+
+        // Navbar with breadcrumb
+        .navbar-links-breadcrumb {
+            flex: 100% 1 1;
+            background-color: mix($oxford-blue, $celadon-blue);
+
+            padding-left: 30px;
+
+            display: flex;
+            align-items: center;
+            padding-top: 3px;
+            font-size: 1.6em;
+            line-height: initial;
+            font-weight: bold;
+
+            .breadcrumb-page:hover {
+                text-decoration: underline;
+            }
+
+            .breadcrumb-spacer {
+                margin: 0 5px;
+            }
+        }
+
+        .navbar-link {
+            height: 100%;
+            padding: 7px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+
+            .navbar-link__text {
+                margin-top: 35px;
+                transition-duration: 0.5s;
+            }
+
+            .navbar-link__decoration {
+                width: 60%;
+                background-color: $oxford-blue;
+                border-radius: 50px;
+                align-items: center;
+                flex: 0 0 8px;
+                margin-top: 25px;
+                transition-duration: 0.5s;
+                line-height: 1em;
+                font-size: 1em;
+                display: inline-flex;
+                opacity: 0;
+
+                .navbar-link__decoration__switch {
+                    height: 6px;
+                    background-color: $white;
+                    border-radius: 50px;
+                    display: inline-block;
+                    margin: 0 2px;
+                    transition-duration: 0.5s;
+                    flex: 0 0 6px;
+                }
+            }
+
+            &:hover {
+                .navbar-link__text {
+                    margin-top: 0;
+                }
+
+                .navbar-link__decoration {
+                    margin-top: 0;
+                    opacity: 1;
+                }
+            }
+
+            &.navbar-link__active {
+                .navbar-link__text {
+                    margin-top: 0;
+                }
+
+                .navbar-link__decoration {
+                    margin-top: 0;
+                    opacity: 1;
+
+                    .navbar-link__decoration__switch {
+                        margin-left: calc(100% - 8px);
+                    }
+                }
+            }
+        }
+    }
+}
+
+.page .content {
+    margin: 0;
+}
+
+// Page content
+.page .content.homepage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .page-title {
+        text-align: center;
+        font-size: 2.5em;
+        line-height: initial;
+        font-weight: bold;
+        margin-bottom: 50px;
+        justify-self: auto;
+    }
+
+    .content-demo {
+        width: 80%;
+        max-width: 1200px;
+        height: 200px;
+        border-radius: 10px;
+        display: flex;
+        flex-wrap: wrap;
+
+        .content-demo-flags {
+            flex: 400px 1 0;
+            height: 100%;
+            background: mix($charleston-green, #000, 70%);
+            border-radius: 10px;
+        }
+
+        .content-demo-site {
+            flex: 400px 1 0;
+            height: 100%;
+            background: mix($charleston-green, #000, 70%);
+            border-radius: 10px;
+        }
+
+        .content-demo-arrow {
+            flex: 100px 0 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: auto;
+
+            svg {
+                font-size: 75px;
+                width: 75%;
+                fill: $white;
+            }
+        }
+    }
+}
+
+// Remove left margin if the sidebar is present (grid takes care of the space)
+nav.sidebar ~ .page .content {
+    margin-left: 0;
+}
+
+// Sidebar
+nav.sidebar {
+    position: fixed;
+    margin: 0;
+
+    border-radius: 0 10px 10px 0;
+    padding: 10px 0;
+
+    top: $nav-height;
+    left: 0;
+    bottom: 10px;
+    width: $sidebar-width;
+    background-color: $oxford-blue;
+
+    .sidebar-team {
+        display: flex;
+        flex-direction: column;
+        padding-top: 10px;
+
+        &:first-of-type {
+            padding-top: 0;
+        }
+
+        // Team details
+        div.sidebar-team-details {
+            display: flex;
+            align-items: center;
+
+            div.sidebar-team-decoration {
+                width: 10px;
+                height: 25px;
+                display: inline-block;
+
+                color: $celadon-blue;
+
+                svg {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+
+            .sidebar-team-text {
+                padding-left: 5px;
+
+                font-size: 1.5em;
+                display: inline-block;
+            }
+        }
+
+        .sidebar-project-decoration-svg-has-config-before {
+            display: none;
+        }
+
+        .sidebar-project:has(.sidebar-config) + .sidebar-project {
+            .sidebar-project-decoration-svg-has-project-before {
+                display: none;
+            }
+
+            .sidebar-project-decoration-svg-has-config-before {
+                display: inline;
+            }
+        }
+
+        .sidebar-project {
+            display: flex;
+            flex-direction: column;
+
+            // Project Details
+            div.sidebar-project-details {
+                display: flex;
+                align-items: center;
+
+                div.sidebar-project-decoration {
+                    width: 20px;
+                    height: 25px;
+                    display: inline-block;
+
+                    color: $celadon-blue;
+
+                    svg {
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+
+                .sidebar-project-text {
+                    padding-left: 5px;
+                    font-size: 1.2em;
+                    display: inline-block;
+                }
+            }
+
+            .sidebar-config {
+                display: flex;
+                flex-direction: column;
+
+                div.sidebar-config-details {
+                    display: flex;
+                    align-items: center;
+
+                    div.sidebar-config-decoration {
+                        width: 30px;
+                        height: 25px;
+                        display: inline-block;
+
+                        color: $celadon-blue;
+
+                        svg {
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+
+                    .sidebar-config-text {
+                        font-size: 1em;
+                        display: inline-block;
+                        padding-left: 5px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Make the Navbar sticky when the sidebar is shown (Dashboard pages)
+.sidebar + .page nav.navbar {
+    position: sticky;
+    top: 0;
+}
+
+// Page transition element
+div.page-transition {
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+// Colors
+.background--oxford-blue {
+    background-color: $oxford-blue;
+}
+
+.background--celadon-blue {
+    background-color: $celadon-blue;
+}
+
+.text--oxford-blue {
+    color: $oxford-blue;
+}
+
+.text--celadon-blue {
+    color: $celadon-blue;
+}
+
+.text--charleston-green {
+    color: $charleston-green;
+}
+
+// Shows a little bit of the next page (so you can see the color transition and know to keep scrolling down)
+.page--shorter {
+    min-height: calc(100vh - 20px);
+}
+
+// Dashboard - Selector
+.page .content.dashboard {
+    .dashboard-objects {
+        > h1 {
+            font-size: 2em;
+            line-height: initial;
+        }
+
+        margin-top: 50px;
+
+        &:first-of-type {
+            margin-top: 0;
+        }
+
+        .dashboard-objects-list {
+            display: flex;
+
+            .dashboard-objects-object {
+                background-color: $celadon-blue;
+                border-radius: 5px;
+                overflow: hidden;
+                width: 300px;
+
+                margin-left: 10px;
+
+                &:first-of-type {
+                    margin-left: 0;
+                }
+
+                .dashboard-objects-object-header {
+                    background-color: mix($oxford-blue, $celadon-blue, 60%);
+                    display: flex;
+                    padding: 5px 10px;
+                    align-items: center;
+
+                    .dashboard-objects-object-icon {
+                        width: 50px;
+                        height: 50px;
+                        border-radius: 50px;
+                        background-color: $cyber-yellow;
+                        overflow: hidden;
+                        padding: 2px;
+
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        svg {
+                            fill: $black;
+                        }
+                    }
+
+                    .dashboard-objects-object-name {
+                        font-size: 1.4em;
+                        font-weight: bold;
+                        margin-left: 10px;
+                        user-select: none;
+                    }
+                }
+
+                .dashboard-objects-object-body {
+                    padding: 5px 10px;
+
+                    p {
+                        user-select: none;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Dashboard (Config)
+.page .content.dashboard.dashboard-config {
+    display: flex;
+    flex-direction: column;
+
+    .dashboard-spacer {
+        flex: 10px 1 0;
+    }
+
+    .setting-cards {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+
+        .setting-card {
+            background-color: $celadon-blue;
+            border-radius: 10px;
+            overflow: hidden;
+            flex: 400px 1 1;
+
+            .setting-card-header {
+                background-color: mix($oxford-blue, $celadon-blue, 60%);
+                padding: 5px;
+
+                .setting-card-title {
+                    font-weight: bold;
+                    font-size: 1.2em;
+                    line-height: initial;
+                }
+
+                .setting-card-key {
+                    margin-left: auto;
+                    font-size: 1em;
+                    line-height: initial;
+                }
+            }
+
+            .setting-card-body {
+                padding: 5px;
+                display: flex;
+
+                .setting-card-value {
+                    flex: 95% 1 1;
+
+                    border-radius: 5px 0 0 5px;
+
+                    border: 1px solid $white;
+                    background: $charleston-green;
+                    padding: 5px;
+                    font-size: 1.1em;
+
+                    &:focus, &:active {
+                        outline: 2px solid $orange-web;
+                    }
+                }
+
+                .setting-card-button {
+                    flex: 5% 1 1;
+
+                    border-radius: 0 5px 5px 0;
+                    border: 1px solid $white;
+                    background: $charleston-green;
+
+                    &:hover, &:focus {
+                        background: mix($charleston-green, $white, 80%);
+                    }
+
+                    &:active {
+                        background: mix($charleston-green, $white, 70%)
+                    }
+                }
+            }
+
+            .setting-card-footer {
+                padding: 5px;
+                display: flex;
+                justify-content: end;
+                gap: 10px;
+
+                .setting-card-button {
+                    font-size: 1.1em;
+                    padding: 5px;
+                }
+            }
+        }
+    }
+
+    .setting-buttons {
+        margin-top: 10px;
+
+        .setting-buttons-button {
+            flex: 5% 1 1;
+
+            font-size: 1.2em;
+            border-radius: 5px;
+            padding: 5px 10px;
+            border: 1px solid $white;
+            background: $celadon-blue;
+
+            &:hover, &:focus {
+                background: mix($celadon-blue, $white, 80%);
+            }
+
+            &:active {
+                background: mix($celadon-blue, $white, 70%)
+            }
+
+            &.button__save-all {
+                background: mix($celadon-blue, $oxford-blue, 40%);
+
+                &:hover, &:focus {
+                    background: mix(mix($celadon-blue, $oxford-blue, 40%), $white, 80%);
+                }
+
+                &:active {
+                    background: mix(mix($celadon-blue, $oxford-blue, 40%), $white, 70%)
+                }
+            }
+        }
+    }
+
+    // API Key section
+    .api-info {
+        background: $celadon-blue;
+        border-radius: 10px;
+        padding: 15px 10px;
+
+        .api-info-title {
+            font-size: 1.5em;
+            line-height: initial;
+            font-weight: bold;
+        }
+
+        .language-buttons {
+            margin-bottom: 10px;
+
+            .language-button {
+                background: $oxford-blue;
+                border-radius: 10px;
+                padding: 5px 10px;
+                font-size: 1.2em;
+                line-height: initial;
+                border: none;
+                font-weight: bold;
+
+                &.selected {
+                    background-color: $cyber-yellow;
+                    color: black;
+
+                    &:hover {
+                        background-color: mix($cyber-yellow, $oxford-blue, 90%);
+                    }
+
+                    &:active {
+                        background-color: mix($cyber-yellow, $oxford-blue, 80%);
+                    }
+                }
+
+                &:hover {
+                    background-color: mix($oxford-blue, white, 80%);
+                }
+
+                &:active {
+                    background-color: mix($oxford-blue, white, 90%);
+                }
+            }
+        }
+
+        .api-info-box {
+            background-color: black;
+            padding: 5px 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .api-info-section-title {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+    }
+}
+
+// Dialog
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: mix(#ffffff00, #ffffff, 40%);
+    display: flex;
+    align-items: safe center;
+    justify-content: safe center;
+
+    .dialog {
+        background-color: $charleston-green;
+        width: 600px;
+        max-width: 100vw;
+
+        border-radius: 10px;
+        padding: 10px;
+
+        .dialog-header {
+            .dialog-heading {
+                font-size: 1.4em;
+                font-weight: bold;
+                line-height: initial;
+            }
+
+            margin-bottom: 10px;
+        }
+    }
+
+    .dialog-footer {
+        .dialog-action {
+            font-size: 1.1em;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+
+            &.dialog-action__save {
+                background-color: $celadon-blue;
+            }
+
+            &.dialog-action__cancel {
+                background-color: #aaa;
+                color: black;
+            }
+        }
+    }
+}

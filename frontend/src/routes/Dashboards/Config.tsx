@@ -1,6 +1,6 @@
 import pocketbase from "../../libraries/Pocketbase";
 import {useLoaderData} from "react-router-dom";
-import React, {useEffect, useMemo, useState} from "preact/compat";
+import React, {useMemo, useState} from "preact/compat";
 import {
     ApiKeyRecord,
     ConfigRecord,
@@ -10,10 +10,9 @@ import {
     TeamRecord,
     ValueRecord, ValueRecordString
 } from "../../types/Structures";
-import {ContentNavigation, ContentWithNavigation} from "../../components/Content";
-import FlagCard from "../../components/FlagCard";
+import {ContentNavigation, ContentWithNavigation} from "../../components/old/Content";
+import FlagCard from "../../components/old/FlagCard";
 import {Record} from "pocketbase";
-import "../../styles/dashboard/config.scss";
 
 export type tPocketbaseAsyncResponse = Promise<tPocketbaseResponse>;
 export type tPocketbaseResponse = [1, Record] | [0, any] | [-1, string];
