@@ -1,40 +1,50 @@
 import pocketbase from "../../libraries/Pocketbase";
 import {useLoaderData, useNavigate} from "react-router-dom";
 import {ProjectRecord, TeamRecord} from "../../types/Structures";
-import ExpandUserSection from "../../components/old/ExpandUserSection";
+import DashboardUserSection from "../../components/dashboard/DashboardUserSection";
 import React from "preact/compat";
-import {ContentNavigation, ContentWithNavigation} from "../../components/old/Content";
+import DashboardObjects from "../../components/dashboard/DashboardObjects";
+import DashboardObjectsTitle from "../../components/dashboard/DashboardObjectsTitle";
+import DashboardObjectsList from "../../components/dashboard/DashboardObjectsList";
+import DashboardObject from "../../components/dashboard/DashboardObject";
+import DashboardObjectHeader from "../../components/dashboard/DashboardObjectHeader";
+import DashboardObjectHeaderName from "../../components/dashboard/DashboardObjectHeaderName";
+import DashboardObjectHeaderIcon from "../../components/dashboard/DashboardObjectHeaderIcon";
+// @ts-ignore
+import Jdenticon from "react-jdenticon";
+import Content from "../../components/general/Content";
 
 export default function Team() {
     const [team, projects] = useLoaderData() as TeamLoaderData;
     const navigate = useNavigate();
 
-    return <>
-        <ContentNavigation>
-            <h1>{team.name}</h1>
-        </ContentNavigation>
-        <ContentWithNavigation class={"page-team"}>
-            {/* List of people (only shown to the owner), loop through each expand prop and render a <ExpandUserSection /> */}
-            {team.owner === pocketbase.authStore.model?.id && <div class="user-list">
-                <ExpandUserSection title={"Owner"} expand={team.expand.owner}/>
-                <ExpandUserSection title={"Admins"} expand={team.expand.admins}/>
-                <ExpandUserSection title={"Editors"} expand={team.expand.editors}/>
-                <ExpandUserSection title={"Viewers"} expand={team.expand.viewers}/>
-            </div>}
+    return <Content pageName={"dashboard"}>
+        {/* List of projects */}
+        <DashboardObjects>
+            <DashboardObjectsTitle>Projects</DashboardObjectsTitle>
+            <DashboardObjectsList>
+                {projects.map((project: ProjectRecord) => <DashboardObject
+                    onClick={() => navigate(`./${project.id}`)}>
+                    <DashboardObjectHeader>
+                        <DashboardObjectHeaderIcon>
+                            <Jdenticon value={project.name}/>
+                        </DashboardObjectHeaderIcon>
+                        <DashboardObjectHeaderName>{project.name}</DashboardObjectHeaderName>
+                    </DashboardObjectHeader>
+                </DashboardObject>)}
+            </DashboardObjectsList>
+        </DashboardObjects>
 
-            {/* List of projects */}
-            <div class="sub-item-list">
-                <h2>Projects</h2>
-                <div class={"project-cards"}>
-                    {projects.map((project: ProjectRecord) => <div class={"project-card"}
-                                                                   onClick={() => navigate(`./${project.id}`)}>
-                        <img src={`https://robohash.org/${project.name}.png?set=set4&size=150x150`} alt={project.name}/>
-                        <h3>{project.name}</h3>
-                    </div>)}
-                </div>
-            </div>
-        </ContentWithNavigation>
-    </>;
+        {team.owner === pocketbase.authStore.model?.id && <DashboardObjects>
+            <DashboardObjectsTitle>Members</DashboardObjectsTitle>
+            <DashboardObjectsList>
+                <DashboardUserSection title={"Owner"} expand={team.expand.owner}/>
+                <DashboardUserSection title={"Admin"} expand={team.expand.admins}/>
+                <DashboardUserSection title={"Editor"} expand={team.expand.editors}/>
+                <DashboardUserSection title={"Viewer"} expand={team.expand.viewers}/>
+            </DashboardObjectsList>
+        </DashboardObjects>}
+    </Content>;
 }
 
 export function teamLoader({params}: { params: any }) {

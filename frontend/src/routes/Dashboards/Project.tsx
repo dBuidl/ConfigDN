@@ -2,35 +2,51 @@ import pocketbase from "../../libraries/Pocketbase";
 import {ConfigRecord, EnvironmentRecord, ProjectRecord, TeamRecord} from "../../types/Structures";
 import {useLoaderData, useNavigate} from "react-router-dom";
 import React from "preact/compat";
-import {ContentNavigation, ContentWithNavigation} from "../../components/old/Content";
+import Content from "../../components/general/Content";
+import DashboardObjectsTitle from "../../components/dashboard/DashboardObjectsTitle";
+import DashboardObjectsList from "../../components/dashboard/DashboardObjectsList";
+import DashboardObject from "../../components/dashboard/DashboardObject";
+import DashboardObjectHeader from "../../components/dashboard/DashboardObjectHeader";
+import DashboardObjectHeaderIcon from "../../components/dashboard/DashboardObjectHeaderIcon";
+import DashboardObjectHeaderName from "../../components/dashboard/DashboardObjectHeaderName";
+import DashboardObjects from "../../components/dashboard/DashboardObjects";
+// @ts-ignore
+import Jdenticon from "react-jdenticon";
 
 export default function Project() {
     const [team, project, configs, environments] = useLoaderData() as ProjectLoaderData;
     const navigate = useNavigate();
 
-    return <>
-        <ContentNavigation>
-            <h1>{team.name}/{project.name}</h1>
-        </ContentNavigation>
-        <ContentWithNavigation class={"page-project"}>
-            <h2>Environments</h2>
-            <div class={"environment-cards"}>
-                {environments.map((environment: EnvironmentRecord) => <div class={"environment-card"}>
-                    <img src={`https://robohash.org/${environment.name}.png?set=set4&size=150x150`}
-                         alt={environment.name}/>
-                    <h3>{environment.name}</h3>
-                </div>)}
-            </div>
-            <h2>Configs</h2>
-            <div class={"config-cards"}>
-                {configs.map((config: ConfigRecord) => <div class={"config-card"}
-                                                            onClick={() => environments.length === 0 ? navigate(`./${config.id}`) : navigate(`./${config.id}/${environments[0].id}`)}>
-                    <img src={`https://robohash.org/${config.name}.png?set=set4&size=150x150`} alt={config.name}/>
-                    <h3>{config.name}</h3>
-                </div>)}
-            </div>
-        </ContentWithNavigation>
-    </>;
+    return <Content pageName={"dashboard"}>
+        <DashboardObjects>
+            <DashboardObjectsTitle>Environments</DashboardObjectsTitle>
+            <DashboardObjectsList>
+                {environments.map((environment: EnvironmentRecord) => <DashboardObject>
+                    <DashboardObjectHeader>
+                        <DashboardObjectHeaderIcon>
+                            <Jdenticon value={environment.name}/>
+                        </DashboardObjectHeaderIcon>
+                        <DashboardObjectHeaderName>{environment.name}</DashboardObjectHeaderName>
+                    </DashboardObjectHeader>
+                </DashboardObject>)}
+            </DashboardObjectsList>
+        </DashboardObjects>
+
+        <DashboardObjects>
+            <DashboardObjectsTitle>Configs</DashboardObjectsTitle>
+            <DashboardObjectsList>
+                {configs.map((config: ConfigRecord) => <DashboardObject
+                    onClick={() => environments.length === 0 ? navigate(`./${config.id}`) : navigate(`./${config.id}/${environments[0].id}`)}>
+                    <DashboardObjectHeader>
+                        <DashboardObjectHeaderIcon>
+                            <Jdenticon value={config.name}/>
+                        </DashboardObjectHeaderIcon>
+                        <DashboardObjectHeaderName>{config.name}</DashboardObjectHeaderName>
+                    </DashboardObjectHeader>
+                </DashboardObject>)}
+            </DashboardObjectsList>
+        </DashboardObjects>
+    </Content>;
 }
 
 export function projectLoader({params}: { params: any }) {

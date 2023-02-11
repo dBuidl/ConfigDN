@@ -1,22 +1,39 @@
 import pocketbase from "../../libraries/Pocketbase";
 import {useLoaderData, useNavigate} from "react-router-dom";
 import {TeamRecord} from "../../types/Structures";
-import {Content} from "../../components/old/Content";
+import DashboardObjects from "../../components/dashboard/DashboardObjects";
+import DashboardObjectsTitle from "../../components/dashboard/DashboardObjectsTitle";
+import DashboardObjectsList from "../../components/dashboard/DashboardObjectsList";
+import DashboardObject from "../../components/dashboard/DashboardObject";
+import DashboardObjectHeader from "../../components/dashboard/DashboardObjectHeader";
+import DashboardObjectHeaderIcon from "../../components/dashboard/DashboardObjectHeaderIcon";
+import DashboardObjectHeaderName from "../../components/dashboard/DashboardObjectHeaderName";
+import React from "preact/compat";
+import Content from "../../components/general/Content";
+// @ts-ignore
+import Jdenticon from "react-jdenticon";
 
 export default function Overview() {
     const [teams] = useLoaderData() as OverviewData;
     const navigate = useNavigate();
 
-    return <Content class={"page-overview"}>
-        <h1>Overview</h1>
-
-        <div class={"team-cards"}>
-            {teams.map((team: TeamRecord) => <div class={"team-card"} onClick={() => navigate(`./${team.id}`)}>
-                <img src={`https://robohash.org/${team.name}.png?set=set4&size=150x150`} alt={team.name}/>
-                <h3>{team.name}</h3>
-            </div>)}
-        </div>
-    </Content>
+    return <Content pageName={"dashboard"}>
+        {/* List of teams */}
+        <DashboardObjects>
+            <DashboardObjectsTitle>Teams</DashboardObjectsTitle>
+            <DashboardObjectsList>
+                {teams.map((team: TeamRecord) => <DashboardObject
+                    onClick={() => navigate(`./${team.id}`)}>
+                    <DashboardObjectHeader>
+                        <DashboardObjectHeaderIcon>
+                            <Jdenticon value={team.name}/>
+                        </DashboardObjectHeaderIcon>
+                        <DashboardObjectHeaderName>{team.name}</DashboardObjectHeaderName>
+                    </DashboardObjectHeader>
+                </DashboardObject>)}
+            </DashboardObjectsList>
+        </DashboardObjects>
+    </Content>;
 }
 
 export type OverviewData = [TeamRecord[]];

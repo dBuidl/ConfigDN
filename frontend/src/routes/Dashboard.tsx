@@ -7,21 +7,22 @@ import logo from "../assets/images/raster/logo.png";
 import NavBarLinksContainer from "../components/navbar/NavBarLinksContainer";
 import NavAuthLinks from "../components/navbar/NavAuthLinks";
 import NavBar from "../components/navbar/NavBar";
+import Page from "../components/general/Page";
 
 export default function Dashboard() {
     useAuthRedirect(URLS.LOGIN, false);
 
     return <>
-        <NavBar logo={logo}>
-            <NavBarLinksContainer>
-                <NavAuthLinks/>
-            </NavBarLinksContainer>
-        </NavBar>
+        <Sidebar/>
 
-        <div className="dashboard">
-            <Sidebar/>
-
+        <Page>
+            <NavBar logo={logo}>
+                <NavBarLinksContainer>
+                    <NavAuthLinks/>
+                </NavBarLinksContainer>
+            </NavBar>
+            
             <Outlet/>
-        </div>
+        </Page>
     </>
 }

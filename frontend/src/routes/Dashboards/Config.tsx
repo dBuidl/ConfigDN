@@ -10,9 +10,9 @@ import {
     TeamRecord,
     ValueRecord, ValueRecordString
 } from "../../types/Structures";
-import {ContentNavigation, ContentWithNavigation} from "../../components/old/Content";
 import FlagCard from "../../components/old/FlagCard";
 import {Record} from "pocketbase";
+import Content from "../../components/general/Content";
 
 export type tPocketbaseAsyncResponse = Promise<tPocketbaseResponse>;
 export type tPocketbaseResponse = [1, Record] | [0, any] | [-1, string];
@@ -102,10 +102,7 @@ export default function Config() {
     }
 
     return <>
-        <ContentNavigation>
-            <h1>{team.name}/{project.name}/{config.name} ({environment.name})</h1>
-        </ContentNavigation>
-        <ContentWithNavigation class="page-config">
+        <Content pageName="dashboard">
             <h2>Flags</h2>
             <div class={"flag-cards"}>
                 {flags.map((flag: FlagRecord) => <FlagCard flag={flag} originalValue={getOriginalValue(flag)}
@@ -116,7 +113,7 @@ export default function Config() {
             <button onClick={saveChanges
             }>Save Changes
             </button>
-        </ContentWithNavigation>
+        </Content>
     </>;
 }
 

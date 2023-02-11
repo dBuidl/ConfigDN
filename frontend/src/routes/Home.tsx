@@ -6,12 +6,18 @@ import NavBarLinksContainer from "../components/navbar/NavBarLinksContainer";
 import Content from "../components/general/Content";
 import Demo from "../components/homepage/Demo";
 import NavAuthLinks from "../components/navbar/NavAuthLinks";
+import {faGithub} from "@fortawesome/free-brands-svg-icons/faGithub";
+import NavBarLink from "../components/navbar/NavBarLink";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 export function Home() {
     return <>
         <Page>
             <NavBar logo={logo}>
                 <NavBarLinksContainer>
+                    <NavBarLink isExternal href="https://github.com/dBuidl/ConfigDN">
+                        <FontAwesomeIcon icon={faGithub}/>
+                    </NavBarLink>
                     <NavAuthLinks/>
                 </NavBarLinksContainer>
             </NavBar>
