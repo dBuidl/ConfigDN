@@ -13,6 +13,10 @@ import {
 import FlagCard from "../../components/old/FlagCard";
 import {Record} from "pocketbase";
 import Content from "../../components/general/Content";
+import DashboardSpacer from "../../components/dashboard/DashboardSpacer";
+import ApiInfo from "../../components/dashboard/config/ApiInfo";
+import SettingButtons from "../../components/dashboard/config/SettingButtons";
+import SettingButton from "../../components/dashboard/config/SettingButton";
 
 export type tPocketbaseAsyncResponse = Promise<tPocketbaseResponse>;
 export type tPocketbaseResponse = [1, Record] | [0, any] | [-1, string];
@@ -101,20 +105,25 @@ export default function Config() {
         }
     }
 
-    return <>
-        <Content pageName="dashboard">
-            <h2>Flags</h2>
-            <div class={"flag-cards"}>
-                {flags.map((flag: FlagRecord) => <FlagCard flag={flag} originalValue={getOriginalValue(flag)}
-                                                           value={getEditedValue(flag)}
-                                                           saveValue={saveOne}
-                                                           setValue={setEditedValue}/>)}
-            </div>
-            <button onClick={saveChanges
-            }>Save Changes
-            </button>
-        </Content>
-    </>;
+    return <Content pageName="dashboard dashboard-config">
+        <h2>Flags</h2>
+        <div class={"flag-cards"}>
+            {flags.map((flag: FlagRecord) => <FlagCard flag={flag} originalValue={getOriginalValue(flag)}
+                                                       value={getEditedValue(flag)}
+                                                       saveValue={saveOne}
+                                                       setValue={setEditedValue}/>)}
+        </div>
+
+        <SettingButtons>
+            <SettingButton type={"New Flag"}/>
+            <SettingButton type={"Reset All"}/>
+            <SettingButton type={"Save All"}/>
+        </SettingButtons>
+
+        <DashboardSpacer/>
+
+        <ApiInfo apiKey={"temp1"}/>
+    </Content>;
 }
 
 // Loads data for the config page (remember to change the order above if you change this)
