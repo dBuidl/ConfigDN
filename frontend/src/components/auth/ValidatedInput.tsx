@@ -18,17 +18,17 @@ export default function ValidatedInput(props: { errors: { [key: string]: string 
         props.valueUpdate(e.target.value);
     }
 
-    return <div className="form-input">
-        <label htmlFor={id}>{props.label}</label>
+    return <div className="auth-form-input">
+        <label class="auth-form-input-label" htmlFor={id}>{props.label}</label>
         <input
             type={props.type || "text"}
             name={props.name}
             id={id}
             value={props.value}
             onChange={onChange}
-            className={error ? "error" : ""}
+            className={`auth-form-input-field ${error ? "error" : ""}`}
         />
-        {error.length > 0 ? <div className="error-message">Error: {error}</div> : null}
+        {error.length > 0 ? <div className="auth-form-input-error">Error: {error}</div> : null}
     </div>;
 
 }

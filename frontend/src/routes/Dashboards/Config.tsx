@@ -10,13 +10,16 @@ import {
     TeamRecord,
     ValueRecord, ValueRecordString
 } from "../../types/Structures";
-import FlagCard from "../../components/old/FlagCard";
+import SettingCard from "../../components/dashboard/config/SettingCard";
 import {Record} from "pocketbase";
 import Content from "../../components/general/Content";
 import DashboardSpacer from "../../components/dashboard/DashboardSpacer";
 import ApiInfo from "../../components/dashboard/config/ApiInfo";
 import SettingButtons from "../../components/dashboard/config/SettingButtons";
 import SettingButton from "../../components/dashboard/config/SettingButton";
+import SettingCards from "../../components/dashboard/config/SettingCards";
+import DashboardNavbar from "../../components/navbar/DashboardNavbar";
+import NavBarBreadcrumbs from "../../components/navbar/NavBarBreadcrumbs";
 
 export type tPocketbaseAsyncResponse = Promise<tPocketbaseResponse>;
 export type tPocketbaseResponse = [1, Record] | [0, any] | [-1, string];
@@ -105,25 +108,34 @@ export default function Config() {
         }
     }
 
-    return <Content pageName="dashboard dashboard-config">
-        <h2>Flags</h2>
-        <div class={"flag-cards"}>
-            {flags.map((flag: FlagRecord) => <FlagCard flag={flag} originalValue={getOriginalValue(flag)}
-                                                       value={getEditedValue(flag)}
-                                                       saveValue={saveOne}
-                                                       setValue={setEditedValue}/>)}
-        </div>
+    function resetAll() {
+        setEditedValues(JSON.parse(JSON.stringify(originalValues)));
+    }
 
-        <SettingButtons>
-            <SettingButton type={"New Flag"}/>
-            <SettingButton type={"Reset All"}/>
-            <SettingButton type={"Save All"}/>
-        </SettingButtons>
+    return <>
+        <DashboardNavbar>
+            <NavBarBreadcrumbs team={team} project={project} environment={environment} config={config}/>
+        </DashboardNavbar>
+        <Content pageName="dashboard dashboard-config">
+            <SettingCards>
+                <h2>Flags</h2>
+                {flags.map((flag: FlagRecord) => <SettingCard flag={flag} originalValue={getOriginalValue(flag)}
+                                                              value={getEditedValue(flag)}
+                                                              saveValue={saveOne}
+                                                              setValue={setEditedValue}/>)}
+            </SettingCards>
 
-        <DashboardSpacer/>
+            <SettingButtons>
+                <SettingButton type={"New Flag"}/> {/* todo: hook this up */}
+                <SettingButton onClick={resetAll} type={"Reset All"}/>
+                <SettingButton onClick={saveChanges} type={"Save All"}/>
+            </SettingButtons>
 
-        <ApiInfo apiKey={"temp1"}/>
-    </Content>;
+            <DashboardSpacer/>
+
+            <ApiInfo config={config.name} environment={environment.name} apiKey={apiKeys[0]?.key}/>
+        </Content>
+    </>;
 }
 
 // Loads data for the config page (remember to change the order above if you change this)

@@ -3,10 +3,6 @@ import Sidebar from "../components/sidebar/Sidebar";
 import {Outlet} from "react-router-dom";
 import URLS from "../helpers/URLS";
 import useAuthRedirect from "../hooks/useAuthRedirect";
-import logo from "../assets/images/raster/logo.png";
-import NavBarLinksContainer from "../components/navbar/NavBarLinksContainer";
-import NavAuthLinks from "../components/navbar/NavAuthLinks";
-import NavBar from "../components/navbar/NavBar";
 import Page from "../components/general/Page";
 
 export default function Dashboard() {
@@ -16,12 +12,6 @@ export default function Dashboard() {
         <Sidebar/>
 
         <Page>
-            <NavBar logo={logo}>
-                <NavBarLinksContainer>
-                    <NavAuthLinks/>
-                </NavBarLinksContainer>
-            </NavBar>
-            
             <Outlet/>
         </Page>
     </>

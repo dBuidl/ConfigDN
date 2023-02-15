@@ -12,28 +12,32 @@ import React from "preact/compat";
 import Content from "../../components/general/Content";
 // @ts-ignore
 import Jdenticon from "react-jdenticon";
+import DashboardNavbar from "../../components/navbar/DashboardNavbar";
 
 export default function Overview() {
     const [teams] = useLoaderData() as OverviewData;
     const navigate = useNavigate();
 
-    return <Content pageName={"dashboard"}>
-        {/* List of teams */}
-        <DashboardObjects>
-            <DashboardObjectsTitle>Teams</DashboardObjectsTitle>
-            <DashboardObjectsList>
-                {teams.map((team: TeamRecord) => <DashboardObject
-                    onClick={() => navigate(`./${team.id}`)}>
-                    <DashboardObjectHeader>
-                        <DashboardObjectHeaderIcon>
-                            <Jdenticon value={team.name}/>
-                        </DashboardObjectHeaderIcon>
-                        <DashboardObjectHeaderName>{team.name}</DashboardObjectHeaderName>
-                    </DashboardObjectHeader>
-                </DashboardObject>)}
-            </DashboardObjectsList>
-        </DashboardObjects>
-    </Content>;
+    return <>
+        <DashboardNavbar/>
+        <Content pageName={"dashboard"}>
+            {/* List of teams */}
+            <DashboardObjects>
+                <DashboardObjectsTitle>Teams</DashboardObjectsTitle>
+                <DashboardObjectsList>
+                    {teams.map((team: TeamRecord) => <DashboardObject
+                        onClick={() => navigate(`./${team.id}`)}>
+                        <DashboardObjectHeader>
+                            <DashboardObjectHeaderIcon>
+                                <Jdenticon value={team.name}/>
+                            </DashboardObjectHeaderIcon>
+                            <DashboardObjectHeaderName>{team.name}</DashboardObjectHeaderName>
+                        </DashboardObjectHeader>
+                    </DashboardObject>)}
+                </DashboardObjectsList>
+            </DashboardObjects>
+        </Content>
+    </>;
 }
 
 export type OverviewData = [TeamRecord[]];

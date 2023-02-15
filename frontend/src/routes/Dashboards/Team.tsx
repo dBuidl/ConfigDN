@@ -13,38 +13,45 @@ import DashboardObjectHeaderIcon from "../../components/dashboard/DashboardObjec
 // @ts-ignore
 import Jdenticon from "react-jdenticon";
 import Content from "../../components/general/Content";
+import DashboardNavbar from "../../components/navbar/DashboardNavbar";
+import NavBarBreadcrumbs from "../../components/navbar/NavBarBreadcrumbs";
 
 export default function Team() {
     const [team, projects] = useLoaderData() as TeamLoaderData;
     const navigate = useNavigate();
 
-    return <Content pageName={"dashboard"}>
-        {/* List of projects */}
-        <DashboardObjects>
-            <DashboardObjectsTitle>Projects</DashboardObjectsTitle>
-            <DashboardObjectsList>
-                {projects.map((project: ProjectRecord) => <DashboardObject
-                    onClick={() => navigate(`./${project.id}`)}>
-                    <DashboardObjectHeader>
-                        <DashboardObjectHeaderIcon>
-                            <Jdenticon value={project.name}/>
-                        </DashboardObjectHeaderIcon>
-                        <DashboardObjectHeaderName>{project.name}</DashboardObjectHeaderName>
-                    </DashboardObjectHeader>
-                </DashboardObject>)}
-            </DashboardObjectsList>
-        </DashboardObjects>
+    return <>
+        <DashboardNavbar>
+            <NavBarBreadcrumbs team={team}/>
+        </DashboardNavbar>
+        <Content pageName={"dashboard"}>
+            {/* List of projects */}
+            <DashboardObjects>
+                <DashboardObjectsTitle>Projects</DashboardObjectsTitle>
+                <DashboardObjectsList>
+                    {projects.map((project: ProjectRecord) => <DashboardObject
+                        onClick={() => navigate(`./${project.id}`)}>
+                        <DashboardObjectHeader>
+                            <DashboardObjectHeaderIcon>
+                                <Jdenticon value={project.name}/>
+                            </DashboardObjectHeaderIcon>
+                            <DashboardObjectHeaderName>{project.name}</DashboardObjectHeaderName>
+                        </DashboardObjectHeader>
+                    </DashboardObject>)}
+                </DashboardObjectsList>
+            </DashboardObjects>
 
-        {team.owner === pocketbase.authStore.model?.id && <DashboardObjects>
-            <DashboardObjectsTitle>Members</DashboardObjectsTitle>
-            <DashboardObjectsList>
-                <DashboardUserSection title={"Owner"} expand={team.expand.owner}/>
-                <DashboardUserSection title={"Admin"} expand={team.expand.admins}/>
-                <DashboardUserSection title={"Editor"} expand={team.expand.editors}/>
-                <DashboardUserSection title={"Viewer"} expand={team.expand.viewers}/>
-            </DashboardObjectsList>
-        </DashboardObjects>}
-    </Content>;
+            {team.owner === pocketbase.authStore.model?.id && <DashboardObjects>
+                <DashboardObjectsTitle>Members</DashboardObjectsTitle>
+                <DashboardObjectsList>
+                    <DashboardUserSection title={"Owner"} expand={team.expand.owner}/>
+                    <DashboardUserSection title={"Admin"} expand={team.expand.admins}/>
+                    <DashboardUserSection title={"Editor"} expand={team.expand.editors}/>
+                    <DashboardUserSection title={"Viewer"} expand={team.expand.viewers}/>
+                </DashboardObjectsList>
+            </DashboardObjects>}
+        </Content>
+    </>;
 }
 
 export function teamLoader({params}: { params: any }) {

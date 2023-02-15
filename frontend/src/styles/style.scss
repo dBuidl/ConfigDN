@@ -166,6 +166,7 @@ nav.navbar {
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            flex-shrink: 0;
 
             .navbar-link__text {
                 margin-top: 35px;
@@ -540,6 +541,12 @@ div.page-transition {
         flex-wrap: wrap;
         gap: 10px;
 
+        > h2 {
+            font-size: 2em;
+            line-height: initial;
+            width: 100%;
+        }
+
         .setting-card {
             background-color: $celadon-blue;
             border-radius: 10px;
@@ -582,6 +589,54 @@ div.page-transition {
                     }
                 }
 
+                // rounded switch for checkboxes
+                .setting-card-value-switch {
+                    position: relative;
+                    display: inline-block;
+                    width: 60px;
+                    height: 34px;
+
+                    .setting-card-value {
+                        opacity: 0;
+                        width: 0;
+                        height: 0;
+                    }
+
+                    .setting-card-value:checked + .setting-card-value-slider {
+                        background-color: mix($oxford-blue, $celadon-blue, 60%);
+                    }
+
+                    .setting-card-value:checked + .setting-card-value-slider:before {
+                        transform: translateX(26px);
+                    }
+
+                    .setting-card-value-slider {
+                        position: absolute;
+                        cursor: pointer;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background-color: #ccc;
+                        -webkit-transition: .4s;
+                        transition: .4s;
+                        border-radius: 34px;
+
+                        &:before {
+                            position: absolute;
+                            content: "";
+                            height: 26px;
+                            width: 26px;
+                            left: 4px;
+                            bottom: 4px;
+                            background-color: white;
+                            -webkit-transition: .4s;
+                            transition: .4s;
+                            border-radius: 50%;
+                        }
+                    }
+                }
+
                 .setting-card-button {
                     flex: 5% 1 1;
 
@@ -602,12 +657,21 @@ div.page-transition {
             .setting-card-footer {
                 padding: 5px;
                 display: flex;
+                align-items: center;
                 justify-content: end;
                 gap: 10px;
 
                 .setting-card-button {
                     font-size: 1.1em;
                     padding: 5px;
+                }
+
+                .setting-card-save-status-message {
+                    margin-right: 10px;
+                    font-size: 1.5em;
+                    line-height: initial;
+                    margin-top: auto;
+                    margin-bottom: auto;
                 }
             }
         }
@@ -624,6 +688,11 @@ div.page-transition {
             padding: 5px 10px;
             border: 1px solid $white;
             background: $celadon-blue;
+            margin-left: 10px;
+
+            &:first-of-type {
+                margin-left: 0;
+            }
 
             &:hover, &:focus {
                 background: mix($celadon-blue, $white, 80%);
@@ -670,6 +739,11 @@ div.page-transition {
                 line-height: initial;
                 border: none;
                 font-weight: bold;
+                margin-left: 10px;
+
+                &:first-of-type {
+                    margin-left: 0;
+                }
 
                 &.selected {
                     background-color: $cyber-yellow;
@@ -754,6 +828,96 @@ div.page-transition {
             &.dialog-action__cancel {
                 background-color: #aaa;
                 color: black;
+            }
+        }
+    }
+}
+
+// Auth pages (login, register)
+.page.auth-page {
+    .content.auth-content {
+        background-color: rgba(255, 255, 255, 0.1);
+        display: flex;
+        justify-content: safe center;
+        align-items: safe center;
+
+        form.auth-form {
+            background-color: $celadon-blue;
+            overflow: hidden;
+            border-radius: 10px;
+            width: 400px;
+            max-width: 100vw;
+
+            .auth-form-header {
+                background-color: mix($oxford-blue, $celadon-blue, 60%);
+                padding: 5px 5px 0;
+
+                p {
+                    font-size: 1.5em;
+                    line-height: 1.5em;
+                    font-weight: bold;
+                    margin: 0;
+                }
+            }
+
+            .auth-form-body {
+                padding: 10px;
+
+                .auth-form-input {
+                    margin-bottom: 10px;
+                }
+
+                .auth-form-input-label {
+                    font-size: 1.2em;
+                    line-height: 1.2em;
+                    font-weight: bold;
+                }
+
+                .auth-form-input-field {
+                    font-size: 1.2em;
+                    line-height: 1.2em;
+                    padding: 5px;
+                    border: none;
+                    border-radius: 5px;
+                    background-color: $oxford-blue;
+                    color: white;
+                    width: 100%;
+                }
+
+                .auth-form-input-error {
+                    font-size: 1.1em;
+                    line-height: 1.1em;
+                    color: mix(red, $white, 60%);
+                }
+            }
+
+            .auth-form-footer {
+                padding: 0 10px 10px;
+
+                // submit button + overall error message
+                .auth-form-submit-button {
+                    font-size: 1.2em;
+                    line-height: 1.2em;
+                    padding: 5px 10px;
+                    border: none;
+                    border-radius: 5px;
+                    background-color: mix($oxford-blue, $celadon-blue, 80%);
+                    color: $white;
+                    font-weight: bold;
+                    width: 100%;
+
+                    &:hover {
+                        background-color: mix($oxford-blue, $celadon-blue, 70%);
+                    }
+                }
+
+                .auth-form-submit-error {
+                    margin-top: 10px;
+                    font-size: 1.1em;
+                    line-height: 1.1em;
+                    font-weight: bold;
+                    color: mix(red, $white, 60%);
+                }
             }
         }
     }
