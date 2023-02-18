@@ -9,14 +9,12 @@ import {faUpRightAndDownLeftFromCenter} from "@fortawesome/free-solid-svg-icons/
 export default function SettingCard(props: { flag: FlagRecord, originalValue: ValueRecordString, value: ValueRecordString, setValue: (values: ValueRecordString) => void, saveValue: (value: ValueRecordString) => tPocketbaseAsyncResponse }) {
     const [lastSaveStatus, setLastSaveStatus] = useState<tPocketbaseResponse | null>(null);
     const {flag, originalValue, value, setValue, saveValue} = props;
-    // todo: need to fix originalValue
 
     const inputType = fieldTypeToInputType(flag.type);
 
     let input: JSX.Element;
 
     function save() {
-        // todo: tell the user whether it was successful
         saveValue(value).then((status) => {
             setLastSaveStatus(status);
 

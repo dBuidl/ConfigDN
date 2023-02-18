@@ -4,8 +4,8 @@ import './styles/style.scss';
 import './styles/minireset.css';
 import React from "preact/compat";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import Login from "./routes/Login";
-import Register from "./routes/Register";
+import Login, {loginLoader} from "./routes/Login";
+import Register, {registerLoader} from "./routes/Register";
 import URLS from "./helpers/URLS";
 import ErrorNotFound from "./routes/ErrorNotFound";
 import Dashboard from "./routes/Dashboard";
@@ -15,8 +15,7 @@ import Project, {projectLoader} from "./routes/Dashboards/Project";
 import Config, {configLoader} from "./routes/Dashboards/Config";
 import DashboardError from "./routes/Dashboards/DashboardError";
 import Overview, {overviewLoader} from "./routes/Dashboards/Overview";
-
-// TODO: remember that react-router now has loaders (https://reactrouter.com/en/main/route/loader) which can be used to load data before rendering the component
+import OAuth from "./routes/OAuth";
 
 const router = createBrowserRouter([
     {
@@ -27,10 +26,16 @@ const router = createBrowserRouter([
     {
         path: URLS.LOGIN,
         element: <Login/>,
+        loader: loginLoader,
     },
     {
         path: URLS.REGISTER,
         element: <Register/>,
+        loader: registerLoader,
+    },
+    {
+        path: URLS.OAUTH2_REDIRECT,
+        element: <OAuth/>,
     },
     {
         path: URLS.DASHBOARD,

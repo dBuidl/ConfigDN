@@ -4,6 +4,7 @@ const URLS: { [key: string]: string } = {
     HOME: "/",
     DASHBOARD: "/dashboard",
     LOGOUT: "/auth/logout",
+    OAUTH2_REDIRECT: "/auth/oauth",
 }
 
 export default URLS;

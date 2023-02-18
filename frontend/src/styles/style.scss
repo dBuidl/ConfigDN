@@ -798,7 +798,7 @@ div.page-transition {
     .dialog {
         background-color: $charleston-green;
         width: 600px;
-        max-width: 100vw;
+        max-width: 90vw;
 
         border-radius: 10px;
         padding: 10px;
@@ -811,6 +811,10 @@ div.page-transition {
             }
 
             margin-bottom: 10px;
+        }
+
+        &.dialog__wide {
+            width: 1000px;
         }
     }
 
@@ -836,7 +840,6 @@ div.page-transition {
 // Auth pages (login, register)
 .page.auth-page {
     .content.auth-content {
-        background-color: rgba(255, 255, 255, 0.1);
         display: flex;
         justify-content: safe center;
         align-items: safe center;
@@ -908,6 +911,51 @@ div.page-transition {
 
                     &:hover {
                         background-color: mix($oxford-blue, $celadon-blue, 70%);
+                    }
+                }
+
+                .auth-form-oauth2 {
+                    p {
+                        font-size: 1.1em;
+                        line-height: 1.1em;
+                        font-weight: bold;
+                        margin: 10px 0 0;
+                    }
+
+                    .auth-form-oauth2-buttons {
+                        display: flex;
+                        flex-direction: column;
+                        margin-top: 2px;
+
+                        .auth-form-oauth2-button {
+                            font-size: 2em;
+                            line-height: 1.1em;
+                            padding: 5px 10px;
+                            border: none;
+                            border-radius: 5px;
+                            background: mix($oxford-blue, $celadon-blue, 60%);
+                            color: $white;
+                            font-weight: bold;
+                            justify-content: center;
+                            align-items: center;
+                            display: flex;
+
+                            p {
+                                font-size: 0.7em;
+                                display: inline-block;
+                                line-height: 1.2em;
+                                margin: 5px 0 0 10px;
+                                user-select: none;
+                            }
+
+                            &:hover {
+                                background-color: mix($oxford-blue, $celadon-blue, 70%);
+                            }
+
+                            &:active {
+                                background-color: mix($oxford-blue, $celadon-blue, 80%);
+                            }
+                        }
                     }
                 }
 
