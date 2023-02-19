@@ -1,7 +1,7 @@
 import {PropsWithChildren} from "preact/compat";
 
-export default function DialogBody(props: PropsWithChildren) {
-    return <div className="dialog-body">
+export default function DialogFooter(props: PropsWithChildren) {
+    return <div className="dialog-footer">
         {props.children}
     </div>;
 }

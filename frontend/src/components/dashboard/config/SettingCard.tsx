@@ -5,10 +5,29 @@ import {JSX} from "preact";
 import {tPocketbaseAsyncResponse, tPocketbaseResponse} from "../../../routes/Dashboards/Config";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUpRightAndDownLeftFromCenter} from "@fortawesome/free-solid-svg-icons/faUpRightAndDownLeftFromCenter";
+import DialogWide from "../../dialog/DialogWide";
+import DialogBody from "../../dialog/DialogBody";
+import DialogFooter from "../../dialog/DialogFooter";
+import DialogHeader from "../../dialog/DialogHeader";
+import useDialog from "../../../hooks/useDialog";
 
 export default function SettingCard(props: { flag: FlagRecord, originalValue: ValueRecordString, value: ValueRecordString, setValue: (values: ValueRecordString) => void, saveValue: (value: ValueRecordString) => tPocketbaseAsyncResponse }) {
     const [lastSaveStatus, setLastSaveStatus] = useState<tPocketbaseResponse | null>(null);
     const {flag, originalValue, value, setValue, saveValue} = props;
+    const [setDialogShowing, dialog] = useDialog(<DialogWide>
+        <DialogHeader>
+            <h1 className="dialog-heading">Update {flag.name} Value</h1>
+        </DialogHeader>
+        <DialogBody>
+                        <textarea className="dialog-input-large" value={value.value}
+                                  onInput={e => setValue({...value, value: e?.currentTarget?.value})}/>
+        </DialogBody>
+        <DialogFooter>
+            <button className="dialog-action dialog-action__save"
+                    onClick={() => setDialogShowing(false)}>Done
+            </button>
+        </DialogFooter>
+    </DialogWide>);
 
     const inputType = fieldTypeToInputType(flag.type);
 
@@ -22,7 +41,8 @@ export default function SettingCard(props: { flag: FlagRecord, originalValue: Va
         })
     }
 
-    let inputExpandButton: React.JSX.Element | null = <button className="setting-card-button"
+    let inputExpandButton: React.JSX.Element | null = <button onClick={() => setDialogShowing(true)}
+                                                              className="setting-card-button"
                                                               title="Expand Editor"><FontAwesomeIcon
         icon={faUpRightAndDownLeftFromCenter}/></button>;
 
@@ -82,5 +102,6 @@ export default function SettingCard(props: { flag: FlagRecord, originalValue: Va
             <button class="setting-card-button" onClick={save} disabled={originalValue.value === value.value}>Save
             </button>
         </div>
+        {dialog}
     </div>;
 }

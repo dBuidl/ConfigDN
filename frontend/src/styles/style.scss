@@ -664,6 +664,9 @@ div.page-transition {
                 .setting-card-button {
                     font-size: 1.1em;
                     padding: 5px;
+                    background-color: rgb(43, 42, 51);
+                    border-radius: 5px;
+                    border: 1px solid rgb(117, 116, 122);
                 }
 
                 .setting-card-save-status-message {
@@ -790,7 +793,8 @@ div.page-transition {
     bottom: 0;
     right: 0;
     z-index: 1000;
-    background-color: mix(#ffffff00, #ffffff, 40%);
+    background-color: mix(#ffffff00,
+            #ffffff, 40%);
     display: flex;
     align-items: safe center;
     justify-content: safe center;
@@ -818,20 +822,59 @@ div.page-transition {
         }
     }
 
+    .dialog-body {
+        margin-top: 5px;
+        margin-bottom: 5px;
+
+        // Large Value Editor (Textarea)
+        .dialog-input-large {
+            width: 100%;
+            height: 300px;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 1.2em;
+            background-color: $oxford-blue;
+            color: $white;
+            resize: none;
+        }
+    }
+
     .dialog-footer {
         .dialog-action {
             font-size: 1.1em;
             padding: 10px;
             border: none;
             border-radius: 5px;
+            margin-left: 10px;
+
+            &:first-of-type {
+                margin-left: 0;
+            }
 
             &.dialog-action__save {
                 background-color: $celadon-blue;
+
+                &:hover {
+                    background-color: mix($celadon-blue, $oxford-blue, 70%);
+                }
+
+                &:active {
+                    background-color: mix($celadon-blue, $oxford-blue, 60%);
+                }
             }
 
             &.dialog-action__cancel {
                 background-color: #aaa;
                 color: black;
+
+                &:hover {
+                    background-color: mix(#aaa, #fff, 70%);
+                }
+
+                &:active {
+                    background-color: mix(#aaa, #fff, 60%);
+                }
             }
         }
     }

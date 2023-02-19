@@ -1,7 +1,11 @@
 import {PropsWithChildren} from "preact/compat";
 
-export default function DialogBody(props: PropsWithChildren) {
-    return <div className="dialog-body">
+interface DialogBodyProps extends PropsWithChildren {
+    class?: string;
+}
+
+export default function DialogBody(props: DialogBodyProps) {
+    return <div className={`dialog-body ${props.class ?? ""}`}>
         {props.children}
     </div>;
 }
