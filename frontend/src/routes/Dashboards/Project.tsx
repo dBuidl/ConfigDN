@@ -14,6 +14,8 @@ import DashboardObjects from "../../components/dashboard/DashboardObjects";
 import Jdenticon from "react-jdenticon";
 import DashboardNavbar from "../../components/navbar/DashboardNavbar";
 import NavBarBreadcrumbs from "../../components/navbar/NavBarBreadcrumbs";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPlus} from "@fortawesome/free-solid-svg-icons/faPlus";
 
 export default function Project() {
     const [team, project, configs, environments] = useLoaderData() as ProjectLoaderData;
@@ -35,6 +37,15 @@ export default function Project() {
                             <DashboardObjectHeaderName>{environment.name}</DashboardObjectHeaderName>
                         </DashboardObjectHeader>
                     </DashboardObject>)}
+                    <DashboardObject
+                        onClick={() => null}>
+                        <DashboardObjectHeader>
+                            <DashboardObjectHeaderIcon>
+                                <FontAwesomeIcon icon={faPlus}/>
+                            </DashboardObjectHeaderIcon>
+                            <DashboardObjectHeaderName>New Environment</DashboardObjectHeaderName>
+                        </DashboardObjectHeader>
+                    </DashboardObject>
                 </DashboardObjectsList>
             </DashboardObjects>
 
@@ -50,6 +61,15 @@ export default function Project() {
                             <DashboardObjectHeaderName>{config.name}</DashboardObjectHeaderName>
                         </DashboardObjectHeader>
                     </DashboardObject>)}
+                    <DashboardObject
+                        onClick={() => null}>
+                        <DashboardObjectHeader>
+                            <DashboardObjectHeaderIcon>
+                                <FontAwesomeIcon icon={faPlus}/>
+                            </DashboardObjectHeaderIcon>
+                            <DashboardObjectHeaderName>New Config</DashboardObjectHeaderName>
+                        </DashboardObjectHeader>
+                    </DashboardObject>
                 </DashboardObjectsList>
             </DashboardObjects>
         </Content>

@@ -1,9 +1,20 @@
 import {ComponentChild} from "preact";
-import {StateUpdater, useState} from "preact/compat";
+import {StateUpdater, useEffect, useState} from "preact/compat";
 import DialogOverlay from "../components/dialog/DialogOverlay";
 
-export default function useDialog(dialog: ComponentChild): [StateUpdater<boolean>, ComponentChild] {
+interface DialogOptions {
+    afterSetShowing?: (showing: boolean) => void;
+}
+
+export default function useDialog(dialog: ComponentChild, options?: DialogOptions): [StateUpdater<boolean>, ComponentChild] {
     const [showing, setShowing] = useState(false);
+
+    // call afterSetShowing when showing changes
+    useEffect(() => {
+        if (options?.afterSetShowing) {
+            options.afterSetShowing(showing);
+        }
+    }, [showing]);
 
     function onOverlayClick(event: Event) {
         if (event.target === event.currentTarget) {

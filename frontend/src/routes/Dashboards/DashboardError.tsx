@@ -14,14 +14,14 @@ export default function DashboardError() {
     if (error instanceof ClientResponseError) {
         switch (error.status) {
             case 404:
-                content = <Content pageName="dashboard">
+                content = <Content pageName="dashboard dashboard-error">
                     <img src={Error404SVG} alt="404"/>
-                    <h1>Error 404</h1>
+                    <h1>404</h1>
                     <p>{error.message}</p>
                 </Content>;
                 break;
             default:
-                content = <Content pageName="dashboard">
+                content = <Content pageName="dashboard dashboard-error">
                     <img src={ErrorSVG} alt="500"/>
                     <h1>500</h1>
                     <p>{error.message}</p>
@@ -29,7 +29,7 @@ export default function DashboardError() {
                 break;
         }
     } else {
-        content = <Content pageName="dashboard">
+        content = <Content pageName="dashboard dashboard-error">
             <img src={ErrorSVG} alt="500"/>
             <h1>500</h1>
             <p>{error.message}</p>

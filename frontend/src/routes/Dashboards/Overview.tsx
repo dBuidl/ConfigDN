@@ -22,25 +22,59 @@ import DialogBody from "../../components/dialog/DialogBody";
 import DialogFooter from "../../components/dialog/DialogFooter";
 
 export default function Overview() {
-    const [teams] = useLoaderData() as OverviewData;
+    const [teamsData] = useLoaderData() as OverviewData;
+    const [teams, setTeams] = React.useState<TeamRecord[]>(teamsData);
+    const [newTeamName, setNewTeamName] = React.useState<string>('');
+    const [error, setError] = React.useState<string>('');
     const navigate = useNavigate();
+
+    const createTeam = () => {
+        if (newTeamName.length === 0) {
+            setError('Error: Team name cannot be empty.');
+            setTimeout(() => setError(''), 5000);
+            return;
+        }
+
+        pocketbase.collection('team').create({
+            name: newTeamName,
+            owner: [pocketbase.authStore?.model?.id],
+        }).then((team) => {
+            setTeams([...teams, team as unknown as TeamRecord]);
+            setNewTeamName('');
+            setCreateTeamDialogShowing(false);
+        }).catch((error) => {
+            setError("Error Creating Team: " + error.message);
+            setTimeout(() => setError(''), 5000);
+        });
+    }
+
+    // create team dialog
     const [setCreateTeamDialogShowing, createTeamDialog] = useDialog(<Dialog>
         <DialogHeader>
             <h1 class="dialog-heading">Create Team</h1>
         </DialogHeader>
         <DialogBody class="dialog-form">
-            <p class="di">Enter the name of the team you want to create.</p>
-            <input type="text" placeholder="Team Name"/>
+            <label class="dialog-input-label">Team Name:</label>
+            <input class="dialog-input" value={newTeamName} onChange={(e) => setNewTeamName(e?.currentTarget.value)}
+                   type="text"
+                   placeholder="Team Name"/>
         </DialogBody>
         <DialogFooter>
             <button className="dialog-action dialog-action__save"
-                    onClick={() => null}>Create
+                    onClick={() => createTeam()}>Create
             </button>
             <button className="dialog-action dialog-action__cancel"
                     onClick={() => setCreateTeamDialogShowing(false)}>Cancel
             </button>
+            <p class="dialog-error">{error}</p>
         </DialogFooter>
-    </Dialog>);
+    </Dialog>, {
+        afterSetShowing: (showing) => {
+            if (!showing) {
+                setNewTeamName('');
+            }
+        }
+    });
 
     return <>
         <DashboardNavbar/>

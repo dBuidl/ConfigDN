@@ -455,6 +455,26 @@ div.page-transition {
 
 // Dashboard - Selector
 .page .content.dashboard {
+    // error made up of classless SVG, h1 and p
+    &.dashboard-error {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        text-align: center;
+
+        h1 {
+            font-size: 3em;
+            line-height: 1.2em;
+        }
+
+        p {
+            font-size: 1.5em;
+            line-height: 1.2em;
+        }
+    }
+
     .dashboard-objects {
         > h1 {
             font-size: 2em;
@@ -826,6 +846,24 @@ div.page-transition {
         margin-top: 5px;
         margin-bottom: 5px;
 
+        &.dialog-form {
+            .dialog-input-label {
+                font-size: 1.2em;
+                line-height: initial;
+                margin-bottom: 5px;
+            }
+
+            .dialog-input {
+                width: 100%;
+                border: none;
+                border-radius: 5px;
+                padding: 10px;
+                font-size: 1.2em;
+                background-color: $oxford-blue;
+                color: $white;
+            }
+        }
+
         // Large Value Editor (Textarea)
         .dialog-input-large {
             width: 100%;
@@ -841,6 +879,13 @@ div.page-transition {
     }
 
     .dialog-footer {
+        .dialog-error {
+            color: red;
+            font-size: 1.2em;
+            line-height: initial;
+            margin-bottom: 10px;
+        }
+
         .dialog-action {
             font-size: 1.1em;
             padding: 10px;
