@@ -1,7 +1,6 @@
 import {UserRecord} from "../../types/Structures";
 import {JSX} from "preact";
 import ExpandIsEmpty from "../../helpers/ExpandIsEmpty";
-import pocketbase from "../../libraries/Pocketbase";
 import DashboardObjectHeader from "./DashboardObjectHeader";
 import DashboardObjectHeaderIcon from "./DashboardObjectHeaderIcon";
 import DashboardObjectHeaderName from "./DashboardObjectHeaderName";
@@ -32,8 +31,6 @@ export default function DashboardUserSection(props: { title: string, expand: Use
                     <DashboardObjectBodyInfo>
                         {props.title}
                         {user.name ? <p>{user.name}</p> : <></>}
-                        {user.emailVisibility || user.id === pocketbase.authStore.model?.id ? <p>{user.email}</p> :
-                            <p>Email Hidden</p>}
                     </DashboardObjectBodyInfo>
                 </DashboardObjectBody>
             </DashboardObject>)}
@@ -51,8 +48,6 @@ export default function DashboardUserSection(props: { title: string, expand: Use
             <DashboardObjectBodyInfo>
                 {props.title}
                 {expand.name ? <p>{expand.name}</p> : <></>}
-                {expand.emailVisibility || expand.id === pocketbase.authStore.model?.id ? <p>{expand.email}</p> :
-                    <p>Email Hidden</p>}
             </DashboardObjectBodyInfo>
         </DashboardObjectBody>
     </DashboardObject>;

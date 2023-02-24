@@ -13,8 +13,8 @@ import NavBar from "../components/navbar/NavBar";
 import Content from "../components/general/Content";
 import Page from "../components/general/Page";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import store from "store/dist/store.modern";
 import {faGithub} from "@fortawesome/free-brands-svg-icons/faGithub";
+import loginWithOauth from "../helpers/loginWithOauth";
 
 export default function Login() {
     const [email, setEmail] = React.useState("");
@@ -60,22 +60,6 @@ export default function Login() {
         setLoginEnabled(true);
     }
 
-    function loginWithOauth(e: Event, providerName: string) {
-        e.preventDefault();
-
-        for (let i = 0; i < oAuthData.authProviders.length; i++) {
-            const provider = oAuthData.authProviders[i];
-            if (provider.name === providerName) {
-                store.set("provider", provider);
-                const redirectUrl = location.origin + URLS.OAUTH2_REDIRECT;
-
-                console.log(provider.authUrl + redirectUrl);
-                window.location.href = provider.authUrl + redirectUrl;
-                break;
-            }
-        }
-    }
-
     return <Page class="auth-page">
         <NavBar logo={logo}>
             <NavBarLinksContainer>
@@ -104,7 +88,7 @@ export default function Login() {
                         <p>Or login with:</p>
                         <div class="auth-form-oauth2-buttons">
                             <button class="auth-form-oauth2-button" type="button"
-                                    onClick={e => loginWithOauth(e, "github")} disabled={!loginEnabled}>
+                                    onClick={e => loginWithOauth(e, "github", oAuthData)} disabled={!loginEnabled}>
                                 <FontAwesomeIcon icon={faGithub}/><p>GitHub</p>
                             </button>
                         </div>

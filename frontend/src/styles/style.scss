@@ -169,8 +169,18 @@ nav.navbar {
             flex-shrink: 0;
 
             .navbar-link__text {
-                margin-top: 35px;
+                margin-top: 32px;
                 transition-duration: 0.5s;
+
+                div {
+                    display: inline-block;
+
+                    svg {
+                        height: 2em;
+                        width: 2em;
+                        margin: 0 2px;
+                    }
+                }
             }
 
             .navbar-link__decoration {
@@ -489,6 +499,8 @@ div.page-transition {
 
         .dashboard-objects-list {
             display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
 
             .dashboard-objects-object {
                 background-color: $celadon-blue;
@@ -498,12 +510,6 @@ div.page-transition {
 
                 &.dashboard-objects-object__clickable {
                     cursor: pointer;
-                }
-
-                margin-left: 10px;
-
-                &:first-of-type {
-                    margin-left: 0;
                 }
 
                 .dashboard-objects-object-header {
@@ -861,6 +867,102 @@ div.page-transition {
                 font-size: 1.2em;
                 background-color: $oxford-blue;
                 color: $white;
+            }
+
+            // downshift dropdown
+            // outer container for everything
+            .dialog-input-dropdown {
+                position: relative;
+                width: 100%;
+                margin-bottom: 5px;
+
+                // dropdown toggle (text and arrow)
+                .dialog-input-dropdown-dropdown {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    border: none;
+                    border-radius: 5px;
+                    padding: 10px;
+                    font-size: 1.2em;
+                    background-color: $oxford-blue;
+                    color: $white;
+                    cursor: pointer;
+
+                    .dialog-input-dropdown-dropdown-text {
+                        flex: 1;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        user-select: none;
+                        white-space: nowrap;
+                        line-height: 1em;
+                    }
+
+                    .dialog-input-dropdown-dropdown-input {
+                        // search inside dropdown
+                        width: 100%;
+                        height: 100%;
+                        border: none;
+                        outline: none;
+                        padding: 0;
+                        font-size: 1em;
+                        background-color: transparent;
+                    }
+
+                    .dialog-input-dropdown-dropdown-arrow {
+                        font-size: 1.2em;
+                        margin-left: 10px;
+                    }
+                }
+
+                // Dropdown items
+                .dialog-input-dropdown-dropdown-items {
+                    position: absolute;
+                    z-index: 1000;
+                    background-color: mix($oxford-blue, $celadon-blue, 80%);
+                    border-radius: 5px;
+                    padding: 0;
+                    font-size: 1.2em;
+                    color: $white;
+                    cursor: pointer;
+                    width: 100%;
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                    max-height: 50vh;
+
+                    &.dialog-input-dropdown-dropdown-items__hidden {
+                        display: none;
+                    }
+
+                    .dialog-input-dropdown-dropdown-item {
+                        padding: 10px;
+
+                        .dialog-input-dropdown-dropdown-item-name {
+                            font-weight: bold;
+                            display: block;
+                            font-size: 1em;
+                        }
+
+                        .dialog-input-dropdown-dropdown-item-username {
+                            font-size: 0.8em;
+                            display: block;
+                            color: $white;
+                        }
+
+                        &.dialog-input-dropdown-dropdown-item__selected {
+                            background-color: mix($oxford-blue, $celadon-blue, 50%);
+                        }
+
+                        &.dialog-input-dropdown-dropdown-item__highlighted {
+                            background-color: mix($oxford-blue, $celadon-blue, 70%);
+                        }
+
+                        &:last-of-type {
+                            border-bottom: none;
+                            margin-bottom: 0;
+                        }
+                    }
+                }
             }
         }
 

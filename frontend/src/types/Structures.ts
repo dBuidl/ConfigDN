@@ -1,14 +1,8 @@
 // This file contains the structures of the PocketBase database as well as some custom types to explain the data.
 
-export interface BaseRecord {
-    collectionId: string;
-    collectionName: string;
-    created: string;
-    updated: string;
-    id: tPocketbaseID;
-}
+import {Record} from "pocketbase";
 
-export interface UserRecord extends BaseRecord {
+export interface UserRecord extends Record {
     avatar: string;
     email: string;
     emailVisibility: boolean;
@@ -17,7 +11,7 @@ export interface UserRecord extends BaseRecord {
     verified: boolean;
 }
 
-export interface TeamRecord extends BaseRecord {
+export interface TeamRecord extends Record {
     admins: tPocketbaseID[],
     editors: tPocketbaseID[],
     expand: {
@@ -32,17 +26,17 @@ export interface TeamRecord extends BaseRecord {
     viewers: tPocketbaseID[],
 }
 
-export interface ProjectRecord extends BaseRecord {
+export interface ProjectRecord extends Record {
     team: tPocketbaseID,
     name: string,
 }
 
-export interface ConfigRecord extends BaseRecord {
+export interface ConfigRecord extends Record {
     project: tPocketbaseID,
     name: string,
 }
 
-export interface FlagRecord extends BaseRecord {
+export interface FlagRecord extends Record {
     name: string;
     identifier: string;
     config: tPocketbaseID;
@@ -52,12 +46,12 @@ export interface FlagRecord extends BaseRecord {
     allowedValues: object | null;
 }
 
-export interface EnvironmentRecord extends BaseRecord {
+export interface EnvironmentRecord extends Record {
     name: string;
     project: tPocketbaseID;
 }
 
-export interface ValueRecord extends BaseRecord {
+export interface ValueRecord extends Record {
     flag: tPocketbaseID;
     environment: tPocketbaseID;
     value: object | string | number | null;
@@ -67,7 +61,7 @@ export interface ValueRecordString extends ValueRecord {
     value: string;
 }
 
-export interface ApiKeyRecord extends BaseRecord {
+export interface ApiKeyRecord extends Record {
     environment: tPocketbaseID;
     name: string;
     key: string;

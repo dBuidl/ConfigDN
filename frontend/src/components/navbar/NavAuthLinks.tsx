@@ -13,7 +13,7 @@ export default function NavAuthLinks() {
         return <>
             <NavBarLink href={URLS.DASHBOARD}>
                 <FontAwesomeIcon
-                    icon={faUserCircle}/>&nbsp;{pocketbase.authStore?.model?.name || pocketbase.authStore?.model?.username}
+                    icon={faUserCircle}/>&nbsp;{pocketbase.authStore?.model?.username}
             </NavBarLink>
             <NavBarLink href={URLS.LOGOUT}>Logout</NavBarLink>
         </>;

@@ -64,7 +64,7 @@ export default function Config() {
         return {
             ...value,
             value: JSON.stringify(value.value)
-        }
+        } as ValueRecordString;
     }
 
     function saveChanges(e: Event) {
@@ -100,8 +100,8 @@ export default function Config() {
             }
 
             const record = await pocketbase.collection('value').update(value.id, newVal);
-            setOriginalValue(toValueRecordString(record as unknown as ValueRecord));
-            setEditedValue(toValueRecordString(record as unknown as ValueRecord));
+            setOriginalValue(toValueRecordString(record as ValueRecord));
+            setEditedValue(toValueRecordString(record as ValueRecord));
             return [1, record];
         } catch (e: any) {
             return [0, e];
@@ -122,7 +122,7 @@ export default function Config() {
                 {flags.map((flag: FlagRecord) => <SettingCard flag={flag} originalValue={getOriginalValue(flag)}
                                                               value={getEditedValue(flag)}
                                                               saveValue={saveOne}
-                                                              setValue={setEditedValue}/>)}
+                                                              setValue={setEditedValue}/>)}id = @request.auth.id
             </SettingCards>
 
             <SettingButtons>

@@ -15,7 +15,7 @@ import Page from "../components/general/Page";
 import Content from "../components/general/Content";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faGithub} from "@fortawesome/free-brands-svg-icons/faGithub";
-import store from "store/dist/store.modern";
+import loginWithOauth from "../helpers/loginWithOauth";
 
 export default function Register() {
     const [username, setUsername] = React.useState("");
@@ -39,7 +39,7 @@ export default function Register() {
                 email,
                 password,
                 passwordConfirm,
-                emailVisibility: true, // allow team members to see email (only team members can view profiles of other users)
+                emailVisibility: false,
             });
 
             await pocketbase.collection('users').authWithPassword(email, password);
@@ -66,22 +66,6 @@ export default function Register() {
         }
 
         setRegisterEnabled(true);
-    }
-
-    function loginWithOauth(e: Event, providerName: string) {
-        e.preventDefault();
-
-        for (let i = 0; i < oAuthData.authProviders.length; i++) {
-            const provider = oAuthData.authProviders[i];
-            if (provider.name === providerName) {
-                store.set("provider", provider);
-                const redirectUrl = location.origin + URLS.OAUTH2_REDIRECT;
-
-                console.log(provider.authUrl + redirectUrl);
-                window.location.href = provider.authUrl + redirectUrl;
-                break;
-            }
-        }
     }
 
     return <Page class="auth-page">
@@ -117,7 +101,7 @@ export default function Register() {
                         <p>Or login with:</p>
                         <div className="auth-form-oauth2-buttons">
                             <button className="auth-form-oauth2-button" type="button"
-                                    onClick={e => loginWithOauth(e, "github")}>
+                                    onClick={e => loginWithOauth(e, "github", oAuthData)}>
                                 <FontAwesomeIcon icon={faGithub}/><p>GitHub</p>
                             </button>
                         </div>

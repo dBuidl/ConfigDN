@@ -39,7 +39,7 @@ export default function Overview() {
             name: newTeamName,
             owner: [pocketbase.authStore?.model?.id],
         }).then((team) => {
-            setTeams([...teams, team as unknown as TeamRecord]);
+            setTeams([...teams, team as TeamRecord]);
             setNewTeamName('');
             setCreateTeamDialogShowing(false);
         }).catch((error) => {
