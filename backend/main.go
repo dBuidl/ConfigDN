@@ -45,7 +45,7 @@ func main() {
 				// check whether the api key exists
 				var apiKeyRecord ApiKeyRecord
 
-				err := app.DB().Select("*").From("api_key").Where(dbx.HashExp{"key": key}).One(&apiKeyRecord)
+				err := app.Dao().DB().Select("*").From("api_key").Where(dbx.HashExp{"key": key}).One(&apiKeyRecord)
 
 				// if we error out, return an error
 				if err != nil {
@@ -71,7 +71,7 @@ func main() {
 				// todo: fix this for new database structure
 
 				// select flag.identifier, value.value, value.updated
-				err = app.DB().Select("value.updated", "value.value", "flag.identifier").From("api_key").Where(dbx.HashExp{"api_key.key": key}).
+				err = app.Dao().DB().Select("value.updated", "value.value", "flag.identifier").From("api_key").Where(dbx.HashExp{"api_key.key": key}).
 					InnerJoin("flag", dbx.NewExp("api_key.config=flag.config")).
 					InnerJoin("environment", dbx.NewExp("environment.id=api_key.environment")).
 					InnerJoin("value", dbx.NewExp("value.flag=flag.id and value.environment=environment.id")).

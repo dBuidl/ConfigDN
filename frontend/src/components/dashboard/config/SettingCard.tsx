@@ -20,7 +20,10 @@ export default function SettingCard(props: { flag: FlagRecord, originalValue: Va
         </DialogHeader>
         <DialogBody>
                         <textarea className="dialog-input-large" value={value.value}
-                                  onInput={e => setValue({...value, value: e?.currentTarget?.value})}/>
+                                  onInput={e => setValue({
+                                      ...value,
+                                      value: e.currentTarget.value
+                                  } as ValueRecordString)}/>
         </DialogBody>
         <DialogFooter>
             <button className="dialog-action dialog-action__save"
@@ -49,17 +52,20 @@ export default function SettingCard(props: { flag: FlagRecord, originalValue: Va
     switch (inputType) {
         case "text":
             input = <input type={inputType} value={value.value} class="setting-card-value"
-                           onInput={e => setValue({...value, value: e?.currentTarget?.value})}/>;
+                           onInput={e => setValue({...value, value: e.currentTarget.value} as ValueRecordString)}/>;
             break;
         case "number":
             input = <input type={inputType} value={value.value} class="setting-card-value"
-                           onInput={e => setValue({...value, value: e?.currentTarget?.value})}/>
+                           onInput={e => setValue({...value, value: e.currentTarget.value} as ValueRecordString)}/>
             inputExpandButton = null;
             break;
         case "checkbox":
             input = <label className="setting-card-value-switch">
                 <input type={inputType} checked={value.value === "true"} className="setting-card-value"
-                       onClick={e => setValue({...value, value: e?.currentTarget?.checked ? "true" : "false"})}/>
+                       onClick={e => setValue({
+                           ...value,
+                           value: e.currentTarget.checked ? "true" : "false"
+                       } as ValueRecordString)}/>
                 <span className="setting-card-value-slider"></span>
             </label>;
             inputExpandButton = null;
