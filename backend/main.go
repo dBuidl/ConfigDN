@@ -2,13 +2,14 @@ package main
 
 import (
 	"encoding/json"
-	"log"
-	"net/http"
-
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase"
+	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/core"
+	"log"
+	"net/http"
+	"os"
 )
 
 func main() {
@@ -16,7 +17,17 @@ func main() {
 
 	// this is the public config api
 
+	var publicDir string
+	app.RootCmd.PersistentFlags().StringVar(
+		&publicDir,
+		"publicDir",
+		"./pb_public",
+		"the directory to serve static files",
+	)
+
 	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
+		e.Router.GET("/*", apis.StaticDirectoryHandler(os.DirFS(publicDir), true)) // fallback to index for SPA
+
 		_, err := e.Router.AddRoute(echo.Route{
 			Method: http.MethodGet,
 			Path:   "/public_api/v1/get_config",
