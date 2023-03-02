@@ -12,10 +12,10 @@ export default function ValidatedInput(props: { errors: { [key: string]: string 
         }
     }, [props.errors]);
 
-    function onChange(e: any) {
+    function onChange(e: React.ChangeEvent<HTMLInputElement>) {
         e.preventDefault();
         e.stopPropagation();
-        props.valueUpdate(e.target.value);
+        props.valueUpdate(e.currentTarget.value);
     }
 
     return <div className="auth-form-input">

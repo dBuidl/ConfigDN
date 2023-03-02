@@ -1,11 +1,11 @@
 import pocketbase from "../../libraries/Pocketbase";
-import {useLoaderData} from "react-router-dom";
-import React, {useMemo, useState} from "preact/compat";
+import {Link, useLoaderData} from "react-router-dom";
+import React, {useEffect, useMemo, useState} from "preact/compat";
 import {
     ApiKeyRecord,
     ConfigRecord,
     EnvironmentRecord,
-    FlagRecord,
+    FlagRecord, flagTypeArray,
     ProjectRecord,
     TeamRecord,
     ValueRecord, ValueRecordString
@@ -20,26 +20,91 @@ import SettingButton from "../../components/dashboard/config/SettingButton";
 import SettingCards from "../../components/dashboard/config/SettingCards";
 import DashboardNavbar from "../../components/navbar/DashboardNavbar";
 import NavBarBreadcrumbs from "../../components/navbar/NavBarBreadcrumbs";
+import cryptoRandomString from "crypto-random-string";
+import useDialog from "../../hooks/useDialog";
+import Dialog from "../../components/dialog/Dialog";
+import DialogHeader from "../../components/dialog/DialogHeader";
+import DialogBody from "../../components/dialog/DialogBody";
+import DialogFooter from "../../components/dialog/DialogFooter";
+import DashboardSelect, {DashboardSelectItem} from "../../components/dashboard/DashboardSelect";
 
 export type tPocketbaseAsyncResponse = Promise<tPocketbaseResponse>;
 export type tPocketbaseResponse = [1, Record] | [0, any] | [-1, string];
 
 export default function Config() {
-    const [environment, team, project, config, flags, valuesInDB, apiKeys] = useLoaderData() as ConfigLoaderData;
-    const valuesProcessed = useMemo(() => valuesInDB.map((v) => {
+    const [environment, team, project, config, flagsData, valuesInDB, apiKeysData] = useLoaderData() as ConfigLoaderData;
+    const valuesProcessedData = useMemo(() => valuesInDB.map((v) => {
         v.value = JSON.stringify(v.value);
 
         return v as ValueRecordString;
     }), [valuesInDB]);
+
+    // These values can be updated during the session, so we need to keep track of them separately
+    const [valuesProcessed, setValuesProcessed] = useState<ValueRecordString[]>(valuesProcessedData);
+    const [flags, setFlags] = useState<FlagRecord[]>(flagsData);
+    const [apiKeys, setApiKeys] = useState<ApiKeyRecord[]>(apiKeysData);
+
     const [originalValues, setOriginalValues] = useState<ValueRecordString[]>(valuesProcessed);
     const [editedValues, setEditedValues] = useState<ValueRecordString[]>(JSON.parse(JSON.stringify(originalValues)));
+
+    const [newFlagName, setNewFlagName] = useState<string>('');
+    const [newFlagIdentifier, setNewFlagIdentifier] = useState<string>('');
+    const [newFlagType, setNewFlagType] = useState<DashboardSelectItem | null>(null);
+    const [newFlagError, setNewFlagError] = useState<string>('');
+
+    const createNewFlag = () => {
+        // todo: finish this function
+    }
+
+    const [setNewFlagDialogShowing, newFlagDialog] = useDialog(<Dialog>
+        <DialogHeader>
+            <h1 className="dialog-heading">Create Flag</h1>
+        </DialogHeader>
+        <DialogBody class="dialog-form">
+            <label class="dialog-input-label">Flag Name:</label>
+            <input type="text" class="dialog-input" value={newFlagName} placeholder="Flag Name"
+                   onInput={(e) => setNewFlagName(e.currentTarget.value)}/>
+            <label class="dialog-input-label">Flag Identifier:</label>
+            <input type="text" class="dialog-input" value={newFlagIdentifier} placeholder="Flag Identifier"
+                   onInput={(e) => setNewFlagIdentifier(e.currentTarget.value)}/>
+            <label class="dialog-input-label">Flag Type:</label>
+            <DashboardSelect items={flagTypeArray}/>
+        </DialogBody>
+        <DialogFooter>
+            <button class="dialog-action dialog-action__save" onClick={() => createNewFlag()}>Create
+            </button>
+            <button class="dialog-action dialog-action__cancel"
+                    onClick={() => setNewFlagDialogShowing(false)}>Cancel
+            </button>
+            <p className="dialog-error">{newFlagError}</p>
+        </DialogFooter>
+    </Dialog>);
 
     if (typeof environment === "undefined") {
         return <div class="content">
             {/* todo: should probably suggest how to create an environment here */}
             <h1>No environments found!</h1>
+            <p>Go back to the <Link to="../">project page</Link> to create a new environment.</p>
         </div>;
     }
+
+    useEffect(() => {
+        console.log('apiKeys', apiKeys)
+        console.log('environment', environment)
+
+        if ((apiKeys.length) === 0 && typeof environment !== "undefined") {
+            pocketbase.collection('api_key').create({
+                environment: environment.id,
+                config: config.id,
+                name: `Default API Key For ${team.name}/${project.name}/${config.name}/${environment.name}`,
+                key: cryptoRandomString({length: 45, type: 'alphanumeric'})
+            }).then((response) => {
+                setApiKeys([response as ApiKeyRecord]);
+            }).catch((error) => {
+                console.error(error);
+            });
+        }
+    }, [apiKeys]);
 
     function setEditedValue(value: ValueRecordString) {
         setEditedValues(ev => ev.map((v) => v.id === value.id ? value : v));
@@ -122,11 +187,12 @@ export default function Config() {
                 {flags.map((flag: FlagRecord) => <SettingCard flag={flag} originalValue={getOriginalValue(flag)}
                                                               value={getEditedValue(flag)}
                                                               saveValue={saveOne}
-                                                              setValue={setEditedValue}/>)}id = @request.auth.id
+                                                              setValue={setEditedValue}/>)}
             </SettingCards>
 
             <SettingButtons>
-                <SettingButton type={"New Flag"}/> {/* todo: hook this up */}
+                <SettingButton onClick={() => setNewFlagDialogShowing(true)}
+                               type={"New Flag"}/>
                 <SettingButton onClick={resetAll} type={"Reset All"}/>
                 <SettingButton onClick={saveChanges} type={"Save All"}/>
             </SettingButtons>
@@ -148,7 +214,7 @@ export function configLoader({params}: { params: any }) {
             pocketbase.collection('config').getOne(params.config, {}),
             pocketbase.collection('flag').getFullList(undefined, {filter: `config = "${params.config}"`}),
             pocketbase.collection('value').getFullList(undefined, {filter: `environment = "${params.environment}" && flag.config = "${params.config}"`}),
-            pocketbase.collection('api_key').getList(1, 50, {filter: `config = "${params.config}" && environment = "${params.environment}"`}),
+            pocketbase.collection('api_key').getFullList(undefined, {filter: `config = "${params.config}" && environment = "${params.environment}"`}),
         ]);
     } else {
         return Promise.all([

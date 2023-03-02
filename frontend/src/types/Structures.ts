@@ -1,6 +1,7 @@
 // This file contains the structures of the PocketBase database as well as some custom types to explain the data.
 
 import {Record} from "pocketbase";
+import {DashboardSelectItem} from "../components/dashboard/DashboardSelect";
 
 export interface UserRecord extends Record {
     avatar: string;
@@ -81,3 +82,11 @@ export type tPocketbaseID = string;
 export type tUUIDv4 = string;
 
 export type tFlagType = "boolean" | "string" | "number" | "json" | "array";
+
+export const flagTypeArray: DashboardSelectItem[] = [
+    {value: "boolean", title: "Boolean", description: "True or false"},
+    {value: "string", title: "String", description: "A string of text"},
+    {value: "number", title: "Number", description: "A number"},
+    {value: "json", title: "JSON", description: "A JSON object"},
+    {value: "array", title: "Array", description: "A JSON array of values"},
+]
