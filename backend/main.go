@@ -68,8 +68,6 @@ func main() {
 				// var to hold the config key->value info
 				var data []ConfigKeyValueInfo
 
-				// todo: fix this for new database structure
-
 				// select flag.identifier, value.value, value.updated
 				err = app.Dao().DB().Select("value.updated", "value.value", "flag.identifier").From("api_key").Where(dbx.HashExp{"api_key.key": key}).
 					InnerJoin("flag", dbx.NewExp("api_key.config=flag.config")).
