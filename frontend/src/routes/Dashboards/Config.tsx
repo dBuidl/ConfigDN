@@ -257,7 +257,6 @@ export default function Config() {
 
     if (typeof environment === "undefined") {
         return <div class="content">
-            {/* todo: should probably suggest how to create an environment here */}
             <h1>No environments found!</h1>
             <p>Go back to the <Link to="../">project page</Link> to create a new environment.</p>
         </div>;
