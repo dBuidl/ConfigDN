@@ -131,7 +131,6 @@ nav.navbar {
         z-index: 25;
         background-color: $celadon-blue;
         border-radius: 0 10px 10px 0;
-        overflow: hidden;
         display: flex;
         justify-content: flex-end;
 
@@ -148,6 +147,102 @@ nav.navbar {
             font-size: 1.6em;
             line-height: initial;
             font-weight: bold;
+
+            // downshift dropdown
+            // outer container for everything
+            .dialog-input-dropdown {
+                position: relative;
+                height: auto;
+                width: auto;
+                margin-top: auto;
+                margin-bottom: auto;
+
+                // dropdown toggle (text and arrow)
+                .dialog-input-dropdown-dropdown {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    border: none;
+                    border-radius: 5px;
+                    padding: 3px;
+                    font-size: 1em;
+                    line-height: 1.2em;
+                    background-color: $oxford-blue;
+                    color: $white;
+                    cursor: pointer;
+                    width: 100%;
+
+                    .dialog-input-dropdown-dropdown-text {
+                        flex: 1;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        user-select: none;
+                        white-space: nowrap;
+                        line-height: 1em;
+                    }
+
+                    .dialog-input-dropdown-dropdown-input {
+                        // search inside dropdown
+                        width: 100%;
+                        height: 100%;
+                        border: none;
+                        outline: none;
+                        padding: 0;
+                        font-size: 1em;
+                        background-color: transparent;
+                    }
+
+                    .dialog-input-dropdown-dropdown-icon {
+                        font-size: 1em;
+                        padding-left: 5px;
+                    }
+                }
+
+                // Dropdown items
+                .dialog-input-dropdown-dropdown-items {
+                    position: absolute;
+                    z-index: 1000;
+                    background-color: mix($oxford-blue, $celadon-blue, 80%);
+                    border-radius: 5px;
+                    padding: 0;
+                    font-size: 1em;
+                    color: $white;
+                    cursor: pointer;
+                    width: auto;
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                    max-height: 50vh;
+
+                    &.dialog-input-dropdown-dropdown-items__hidden {
+                        display: none;
+                    }
+
+                    .dialog-input-dropdown-dropdown-item {
+                        padding: 10px;
+
+                        .dialog-input-dropdown-dropdown-item-name {
+                            font-weight: bold;
+                            display: block;
+                            font-size: 1em;
+                            // don't let words wrap
+                            white-space: nowrap;
+                        }
+
+                        &.dialog-input-dropdown-dropdown-item__selected {
+                            background-color: mix($oxford-blue, $celadon-blue, 50%);
+                        }
+
+                        &.dialog-input-dropdown-dropdown-item__highlighted {
+                            background-color: mix($oxford-blue, $celadon-blue, 70%);
+                        }
+
+                        &:last-of-type {
+                            border-bottom: none;
+                            margin-bottom: 0;
+                        }
+                    }
+                }
+            }
 
             .breadcrumb-page:hover {
                 text-decoration: underline;

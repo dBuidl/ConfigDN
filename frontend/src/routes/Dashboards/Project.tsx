@@ -1,7 +1,7 @@
 import pocketbase from "../../libraries/Pocketbase";
 import {ConfigRecord, EnvironmentRecord, ProjectRecord, TeamRecord} from "../../types/Structures";
 import {useLoaderData, useNavigate} from "react-router-dom";
-import React from "preact/compat";
+import React, {useEffect, useState} from "preact/compat";
 import Content from "../../components/general/Content";
 import DashboardObjectsTitle from "../../components/dashboard/DashboardObjectsTitle";
 import DashboardObjectsList from "../../components/dashboard/DashboardObjectsList";
@@ -26,13 +26,22 @@ export default function Project() {
     const [team, project, configsData, environmentsData] = useLoaderData() as ProjectLoaderData;
     const navigate = useNavigate();
 
-    const [configs, setConfigs] = React.useState<ConfigRecord[]>(configsData);
-    const [environments, setEnvironments] = React.useState<EnvironmentRecord[]>(environmentsData);
+    const [configs, setConfigs] = useState<ConfigRecord[]>([]);
+    const [environments, setEnvironments] = useState<EnvironmentRecord[]>([]);
 
-    const [newConfigName, setNewConfigName] = React.useState<string>('');
-    const [newEnvironmentName, setNewEnvironmentName] = React.useState<string>('');
-    const [configError, setConfigError] = React.useState<string>('');
-    const [environmentError, setEnvironmentError] = React.useState<string>('');
+    const [newConfigName, setNewConfigName] = useState<string>('');
+    const [newEnvironmentName, setNewEnvironmentName] = useState<string>('');
+    const [configError, setConfigError] = useState<string>('');
+    const [environmentError, setEnvironmentError] = useState<string>('');
+
+    // Handles react router not updating the page when the user navigates to the same page with different params (and the initial load)
+    useEffect(() => {
+        setConfigs(configsData);
+    }, [configsData]);
+
+    useEffect(() => {
+        setEnvironments(environmentsData);
+    }, [environmentsData]);
 
     const createConfig = () => {
         if (newConfigName.length === 0) {

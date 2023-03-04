@@ -20,13 +20,14 @@ export interface DashboardSelectItem {
 
 }
 
-interface DashboardSelectProps {
+interface SelectInputProps {
     items: DashboardSelectItem[]
     onSelectedItemChange?: (value: DashboardSelectItem | null) => void
     defaultValue?: DashboardSelectItem | null
+    selectText?: string
 }
 
-export default function DashboardSelect(props: DashboardSelectProps) {
+export default function SelectInput(props: SelectInputProps) {
     const {
         isOpen,
         selectedItem,
@@ -55,7 +56,7 @@ export default function DashboardSelect(props: DashboardSelectProps) {
                 {...getToggleButtonProps()}
             >
                 <label {...getLabelProps()}
-                       class="dialog-input-dropdown-dropdown-text">{selectedItem ? itemToString(selectedItem) : 'Select User'}</label>
+                       class="dialog-input-dropdown-dropdown-text">{selectedItem ? itemToString(selectedItem) : props.selectText ?? 'Select Item'}</label>
                 <span class="dialog-input-dropdown-dropdown-icon">{isOpen ? <FontAwesomeIcon icon={faCaretUp}/> :
                     <FontAwesomeIcon icon={faCaretDown}/>}</span>
             </div>

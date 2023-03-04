@@ -2,7 +2,7 @@ import pocketbase from "../../libraries/Pocketbase";
 import {useLoaderData, useNavigate} from "react-router-dom";
 import {ProjectRecord, TeamRecord, UserRecord} from "../../types/Structures";
 import DashboardUserSection from "../../components/dashboard/DashboardUserSection";
-import React, {useState} from "preact/compat";
+import React, {useEffect, useState} from "preact/compat";
 import DashboardObjects from "../../components/dashboard/DashboardObjects";
 import DashboardObjectsTitle from "../../components/dashboard/DashboardObjectsTitle";
 import DashboardObjectsList from "../../components/dashboard/DashboardObjectsList";
@@ -23,7 +23,7 @@ import DialogHeader from "../../components/dialog/DialogHeader";
 import DialogBody from "../../components/dialog/DialogBody";
 import DialogFooter from "../../components/dialog/DialogFooter";
 import DashboardUserSelect from "../../components/dashboard/DashboardUserSelect";
-import DashboardSelect, {DashboardSelectItem} from "../../components/dashboard/DashboardSelect";
+import SelectInput, {DashboardSelectItem} from "../../components/dashboard/SelectInput";
 
 const userRoles: DashboardSelectItem[] = [
     {
@@ -54,6 +54,15 @@ export default function Team() {
     const [team, setTeam] = useState<TeamRecord>(teamData);
     const [reset, setReset] = useState<boolean>(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        setTeam(teamData);
+    }, [teamData]);
+
+    useEffect(() => {
+        setProjects(projectsData);
+    });
+
 
     const [setProjectCreateDialogShowing, projectCreateDialog] = useDialog(<Dialog>
         <DialogHeader>
@@ -91,7 +100,7 @@ export default function Team() {
             <label class="dialog-input-label">User:</label>
             <DashboardUserSelect users={userData} onSelectedUserChange={setUserToAdd} reset={reset}/>
             <label class="dialog-input-label">Role:</label>
-            <DashboardSelect items={userRoles} onSelectedItemChange={setUserRole} defaultValue={userRole}/>
+            <SelectInput items={userRoles} onSelectedItemChange={setUserRole} defaultValue={userRole}/>
         </DialogBody>
         <DialogFooter>
             <button className="dialog-action dialog-action__save"

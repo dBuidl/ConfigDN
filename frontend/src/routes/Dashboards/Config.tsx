@@ -1,6 +1,6 @@
 import pocketbase from "../../libraries/Pocketbase";
 import {Link, useLoaderData} from "react-router-dom";
-import React, {useEffect, useMemo, useState} from "preact/compat";
+import React, {useEffect, useState} from "preact/compat";
 import {
     ApiKeyRecord,
     ConfigRecord,
@@ -26,34 +26,185 @@ import Dialog from "../../components/dialog/Dialog";
 import DialogHeader from "../../components/dialog/DialogHeader";
 import DialogBody from "../../components/dialog/DialogBody";
 import DialogFooter from "../../components/dialog/DialogFooter";
-import DashboardSelect, {DashboardSelectItem} from "../../components/dashboard/DashboardSelect";
+import SelectInput, {DashboardSelectItem} from "../../components/dashboard/SelectInput";
 
 export type tPocketbaseAsyncResponse = Promise<tPocketbaseResponse>;
 export type tPocketbaseResponse = [1, Record] | [0, any] | [-1, string];
 
+function specialJsonStringify(value: any, type: any) {
+    switch (type) {
+        case 'json':
+            return JSON.stringify(value);
+        case 'array':
+            return JSON.stringify(value);
+        case 'string':
+            return stringStringify(value);
+        case 'boolean':
+            return JSON.stringify(value);
+        case 'number':
+            return JSON.stringify(value);
+        default:
+            return JSON.stringify(value);
+    }
+}
+
+function stringParse(value: string) {
+    // remove quotes from before and after string (and unescape quotes)
+    // but only if the string is quoted
+    if (value.startsWith('"') && value.endsWith('"')) {
+        return value.substring(1, value.length - 1).replace('\\"', '"');
+    } else {
+        return value;
+    }
+}
+
+function stringStringify(value: string) {
+    // escape quotes and add quotes before and after string
+    return '"' + value.replace('"', '\\"') + '"';
+}
+
+function specialJsonLoad(value: any, type: any) {
+    if (type === "string") return stringParse(value);
+    return specialJsonStringify(value, type);
+}
+
+function specialJsonParse(value: string, type: any) {
+    console.log(value, type)
+    switch (type) {
+        case 'json':
+            return JSON.parse(value);
+        case 'array':
+            return JSON.parse(value);
+        case 'string':
+            return stringParse(value);
+        case 'boolean':
+            return JSON.parse(value);
+        case 'number':
+            return JSON.parse(value);
+        default:
+            return JSON.parse(value);
+    }
+}
+
+function getDefaultValueRecordString(type: string): ValueRecordString {
+    return {
+        id: '',
+        config: '',
+        environment: '',
+        key: '',
+        type: type,
+        value: specialJsonStringify(getDefaultValue(type), type),
+    } as unknown as ValueRecordString;
+}
+
+function getDefaultValue(type: string) {
+    switch (type) {
+        case 'string':
+            return '';
+        case 'boolean':
+            return false;
+        case 'number':
+            return 0;
+        case 'json':
+            return {};
+        case 'array':
+            return [];
+        default:
+            return '';
+    }
+}
+
 export default function Config() {
     const [environment, team, project, config, flagsData, valuesInDB, apiKeysData] = useLoaderData() as ConfigLoaderData;
-    const valuesProcessedData = useMemo(() => valuesInDB.map((v) => {
-        v.value = JSON.stringify(v.value);
-
-        return v as ValueRecordString;
-    }), [valuesInDB]);
 
     // These values can be updated during the session, so we need to keep track of them separately
-    const [valuesProcessed, setValuesProcessed] = useState<ValueRecordString[]>(valuesProcessedData);
-    const [flags, setFlags] = useState<FlagRecord[]>(flagsData);
+    const [flags, setFlags] = useState<FlagRecord[]>([]);
     const [apiKeys, setApiKeys] = useState<ApiKeyRecord[]>(apiKeysData);
 
-    const [originalValues, setOriginalValues] = useState<ValueRecordString[]>(valuesProcessed);
-    const [editedValues, setEditedValues] = useState<ValueRecordString[]>(JSON.parse(JSON.stringify(originalValues)));
+    const [originalValues, setOriginalValues] = useState<ValueRecordString[]>([]);
+    const [editedValues, setEditedValues] = useState<ValueRecordString[]>([]);
 
     const [newFlagName, setNewFlagName] = useState<string>('');
     const [newFlagIdentifier, setNewFlagIdentifier] = useState<string>('');
+    const [newFlagIdentifierIsDefault, setNewFlagIdentifierIsDefault] = useState<boolean>(true);
     const [newFlagType, setNewFlagType] = useState<DashboardSelectItem | null>(null);
     const [newFlagError, setNewFlagError] = useState<string>('');
 
+    useEffect(() => {
+        setFlags(flagsData);
+    }, [flagsData]);
+
+    useEffect(() => {
+        console.log(valuesInDB, flagsData)
+        const newValues = valuesInDB.map((v) => {
+            const type = flagsData.find(f => f.id === v.flag)?.type;
+
+            v.value = specialJsonLoad(v.value, type);
+
+            return v as ValueRecordString;
+        });
+
+        setOriginalValues(JSON.parse(JSON.stringify(newValues)));
+        setEditedValues(JSON.parse(JSON.stringify(newValues)));
+    }, [valuesInDB, flagsData]);
+
+    useEffect(() => {
+        setApiKeys(apiKeysData);
+    }, [apiKeysData]);
+
     const createNewFlag = () => {
-        // todo: finish this function
+        // create flag and value records
+        if (newFlagName === '') {
+            setNewFlagError('Flag name cannot be blank');
+            setTimeout(() => setNewFlagError(''), 5000);
+            return;
+        }
+
+        if (newFlagIdentifier === '') {
+            setNewFlagError('Flag identifier cannot be blank');
+            setTimeout(() => setNewFlagError(''), 5000);
+            return;
+        }
+
+        if (newFlagType === null) {
+            setNewFlagError('Flag type cannot be blank');
+            setTimeout(() => setNewFlagError(''), 5000);
+            return;
+        }
+
+        if (environment === undefined) {
+            setNewFlagError('Environment not found');
+            setTimeout(() => setNewFlagError(''), 5000);
+            return;
+        }
+
+        pocketbase.collection('flag').create({
+            config: config.id,
+            type: newFlagType.value,
+            name: newFlagName,
+            identifier: newFlagIdentifier
+        }).then((responseFlag) => {
+            pocketbase.collection('value').create({
+                environment: environment.id,
+                flag: responseFlag.id,
+                value: getDefaultValue(newFlagType.value)
+            }).then((response) => {
+                setFlags(flags => [...flags, responseFlag as FlagRecord]);
+
+                // update value to use string
+                response.value = specialJsonStringify(response.value, newFlagType.value);
+
+                setEditedValues(editedValues => [...editedValues, JSON.parse(JSON.stringify(response as ValueRecordString))]);
+                setOriginalValues(originalValues => [...originalValues, JSON.parse(JSON.stringify(response as ValueRecordString))]);
+
+                setNewFlagDialogShowing(false);
+            }).catch((error) => {
+                console.error(error);
+            });
+        }).catch((error) => {
+            console.error(error);
+            setNewFlagError('An error occurred while creating the flag');
+        });
     }
 
     const [setNewFlagDialogShowing, newFlagDialog] = useDialog(<Dialog>
@@ -63,12 +214,26 @@ export default function Config() {
         <DialogBody class="dialog-form">
             <label class="dialog-input-label">Flag Name:</label>
             <input type="text" class="dialog-input" value={newFlagName} placeholder="Flag Name"
-                   onInput={(e) => setNewFlagName(e.currentTarget.value)}/>
+                   onInput={(e) => {
+                       setNewFlagName(e.currentTarget.value);
+
+                       if (newFlagIdentifierIsDefault) {
+                           // camelcase the name
+                           let camelCased = e.currentTarget.value.replace(/^\w|[A-Z]|\b\w/g, function (word, index) {
+                               return index === 0 ? word.toLowerCase() : word.toUpperCase();
+                           }).replace(/\W+/g, '');
+
+                           setNewFlagIdentifier(camelCased);
+                       }
+                   }}/>
             <label class="dialog-input-label">Flag Identifier:</label>
             <input type="text" class="dialog-input" value={newFlagIdentifier} placeholder="Flag Identifier"
-                   onInput={(e) => setNewFlagIdentifier(e.currentTarget.value)}/>
+                   onInput={(e) => {
+                       setNewFlagIdentifierIsDefault(false);
+                       setNewFlagIdentifier(e.currentTarget.value);
+                   }}/>
             <label class="dialog-input-label">Flag Type:</label>
-            <DashboardSelect items={flagTypeArray}/>
+            <SelectInput selectText="Select Type" items={flagTypeArray} onSelectedItemChange={setNewFlagType}/>
         </DialogBody>
         <DialogFooter>
             <button class="dialog-action dialog-action__save" onClick={() => createNewFlag()}>Create
@@ -78,7 +243,17 @@ export default function Config() {
             </button>
             <p className="dialog-error">{newFlagError}</p>
         </DialogFooter>
-    </Dialog>);
+    </Dialog>, {
+        afterSetShowing: (showing) => {
+            if (!showing) {
+                setNewFlagName('');
+                setNewFlagIdentifier('');
+                setNewFlagType(null);
+                setNewFlagIdentifierIsDefault(true);
+                setNewFlagError('');
+            }
+        }
+    });
 
     if (typeof environment === "undefined") {
         return <div class="content">
@@ -88,11 +263,9 @@ export default function Config() {
         </div>;
     }
 
+    // create missing api key
     useEffect(() => {
-        console.log('apiKeys', apiKeys)
-        console.log('environment', environment)
-
-        if ((apiKeys.length) === 0 && typeof environment !== "undefined") {
+        if ((apiKeysData.length) === 0 && typeof environment !== "undefined") {
             pocketbase.collection('api_key').create({
                 environment: environment.id,
                 config: config.id,
@@ -104,18 +277,41 @@ export default function Config() {
                 console.error(error);
             });
         }
-    }, [apiKeys]);
+    }, [apiKeysData]);
+
+    // create missing values
+    useEffect(() => {
+        for (let i = 0; i < flagsData.length; i++) {
+            const flag = flagsData[i];
+
+            if (valuesInDB.find((v) => v.flag === flag.id) === undefined) {
+                pocketbase.collection('value').create({
+                    environment: environment.id,
+                    flag: flag.id,
+                    value: getDefaultValue(flag.type)
+                }).then((response) => {
+                    // update value to use string
+                    response.value = specialJsonStringify(response.value, flag.type);
+
+                    setEditedValues(editedValues => [...editedValues, JSON.parse(JSON.stringify(response as ValueRecordString))]);
+                    setOriginalValues(originalValues => [...originalValues, JSON.parse(JSON.stringify(response as ValueRecordString))]);
+                }).catch((error) => {
+                    console.error(error);
+                });
+            }
+        }
+    }, [flagsData, valuesInDB]);
 
     function setEditedValue(value: ValueRecordString) {
         setEditedValues(ev => ev.map((v) => v.id === value.id ? value : v));
     }
 
     const getEditedValue = (flag: FlagRecord): ValueRecordString => {
-        return editedValues.find((v) => v.flag === flag.id) as ValueRecordString; // values are created at the same time as flags, so we know it'll exist here
+        return editedValues.find((v) => v.flag === flag.id) ?? getDefaultValueRecordString(flag.type) as ValueRecordString; // values don't exist for a very small amount of time, so we need to handle this
     }
 
     function getOriginalValue(flag: FlagRecord): ValueRecordString {
-        return originalValues.find((v) => v.flag === flag.id) as ValueRecordString; // values are created at the same time as flags, so we know it'll exist here
+        return originalValues.find((v) => v.flag === flag.id) ?? getDefaultValueRecordString(flag.type) as ValueRecordString; // values don't exist for a very small amount of time, so we need to handle this
     }
 
     function setOriginalValue(valueUnsafe: ValueRecordString) {
@@ -126,9 +322,10 @@ export default function Config() {
     }
 
     function toValueRecordString(value: ValueRecord): ValueRecordString {
+        const type = flagsData.find((f) => f.id === value.flag)?.type;
         return {
             ...value,
-            value: JSON.stringify(value.value)
+            value: specialJsonLoad(value.value, type)
         } as ValueRecordString;
     }
 
@@ -143,7 +340,7 @@ export default function Config() {
             if (JSON.stringify(previousValue.value) !== JSON.stringify(editedValues[i].value)) {
                 pocketbase.collection('value').update(editedValue.id, {
                     ...editedValue,
-                    value: JSON.parse(editedValue.value)
+                    value: specialJsonParse(editedValue.value, flagsData.find((f) => f.id === editedValue.flag)?.type)
                 });
                 setOriginalValue(editedValue); // the function ensures it'll be a distinct clone
             }
@@ -161,7 +358,7 @@ export default function Config() {
         try {
             const newVal = {
                 ...value,
-                value: JSON.parse(value.value)
+                value: specialJsonParse(value.value, flagsData.find((f) => f.id === value.flag)?.type)
             }
 
             const record = await pocketbase.collection('value').update(value.id, newVal);
@@ -179,7 +376,8 @@ export default function Config() {
 
     return <>
         <DashboardNavbar>
-            <NavBarBreadcrumbs team={team} project={project} environment={environment} config={config}/>
+            <NavBarBreadcrumbs team={team} project={project} environment={environment}
+                               config={config}/>
         </DashboardNavbar>
         <Content pageName="dashboard dashboard-config">
             <SettingCards>
@@ -201,10 +399,11 @@ export default function Config() {
 
             <ApiInfo config={config.name} environment={environment.name} apiKey={apiKeys[0]?.key}/>
         </Content>
+        {newFlagDialog}
     </>;
 }
 
-// Loads data for the config page (remember to change the order above if you change this)
+// Loads data for the config page (remember to change the order above if you change this)specialJsonLoad
 export function configLoader({params}: { params: any }) {
     if (params.environment) {
         return Promise.all([

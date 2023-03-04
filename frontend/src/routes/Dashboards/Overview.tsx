@@ -8,7 +8,7 @@ import DashboardObject from "../../components/dashboard/DashboardObject";
 import DashboardObjectHeader from "../../components/dashboard/DashboardObjectHeader";
 import DashboardObjectHeaderIcon from "../../components/dashboard/DashboardObjectHeaderIcon";
 import DashboardObjectHeaderName from "../../components/dashboard/DashboardObjectHeaderName";
-import React from "preact/compat";
+import React, {useEffect} from "preact/compat";
 import Content from "../../components/general/Content";
 // @ts-ignore
 import Jdenticon from "react-jdenticon";
@@ -23,10 +23,14 @@ import DialogFooter from "../../components/dialog/DialogFooter";
 
 export default function Overview() {
     const [teamsData] = useLoaderData() as OverviewData;
-    const [teams, setTeams] = React.useState<TeamRecord[]>(teamsData);
+    const [teams, setTeams] = React.useState<TeamRecord[]>([]);
     const [newTeamName, setNewTeamName] = React.useState<string>('');
     const [error, setError] = React.useState<string>('');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        setTeams(teamsData);
+    }, [teamsData]);
 
     const createTeam = () => {
         if (newTeamName.length === 0) {

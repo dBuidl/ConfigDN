@@ -1,7 +1,7 @@
 // This file contains the structures of the PocketBase database as well as some custom types to explain the data.
 
 import {Record} from "pocketbase";
-import {DashboardSelectItem} from "../components/dashboard/DashboardSelect";
+import {DashboardSelectItem} from "../components/dashboard/SelectInput";
 
 export interface UserRecord extends Record {
     avatar: string;

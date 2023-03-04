@@ -1,6 +1,8 @@
 import {ConfigRecord, EnvironmentRecord, ProjectRecord, TeamRecord} from "../../types/Structures";
-import React from "preact/compat";
-import {Link} from "react-router-dom";
+import React, {useEffect} from "preact/compat";
+import {Link, useNavigate} from "react-router-dom";
+import SelectInput, {DashboardSelectItem} from "../dashboard/SelectInput";
+import pocketbase from "../../libraries/Pocketbase";
 
 interface NavBarBreadcrumbsProps {
     team?: TeamRecord;
@@ -9,7 +11,35 @@ interface NavBarBreadcrumbsProps {
     environment?: EnvironmentRecord;
 }
 
+function createItemsFromEnvironments(environments: EnvironmentRecord[]): DashboardSelectItem[] {
+    return environments.map((environment) => ({
+        value: environment.id,
+        title: environment.name
+    }));
+}
+
 export default function NavBarBreadcrumbs(props: NavBarBreadcrumbsProps) {
+    const navigate = useNavigate();
+    const [possibleEnvironments, setPossibleEnvironments] = React.useState<DashboardSelectItem[]>(createItemsFromEnvironments(props.environment ? [props.environment] : []));
+    const selectedEnvironment = props.environment ? {
+        value: props.environment.id,
+        title: props.environment.name
+    } : null;
+
+    useEffect(() => {
+        if (props.project) {
+            pocketbase.collection('environment').getFullList(undefined, {filter: `project = "${props.project.id}"`}).then((environments) => {
+                setPossibleEnvironments(createItemsFromEnvironments(environments as EnvironmentRecord[]));
+            });
+        }
+    }, [props.project]);
+
+    const onEnvironmentDropDownChange = (item: DashboardSelectItem | null) => {
+        if (item === null) return;
+
+        navigate("./../" + item.value);
+    }
+
     // display specified parts of the breadcrumb with the separator ">" between them
     return <div className={"navbar-links-breadcrumb"}>
         {props.team && <>
@@ -28,10 +58,13 @@ export default function NavBarBreadcrumbs(props: NavBarBreadcrumbsProps) {
                 <p>{props.config.name}</p>
             }
         </>}
-        {props.environment && <>
-            <div className="breadcrumb-spacer">&gt;</div>
-            <Link class="breadcrumb-page"
-                  to={`/dashboard/${props.team?.id}/${props.project?.id}/${props.config?.id}/${props.environment.id}`}>{props.environment.name}</Link>
-        </>}
+        {props.environment &&
+            // env should be a dropdown allowing you to select the environment you want to view
+            <>
+                <div class="breadcrumb-spacer">&gt;</div>
+                <SelectInput items={possibleEnvironments} defaultValue={selectedEnvironment}
+                             onSelectedItemChange={onEnvironmentDropDownChange}/>
+            </>
+        }
     </div>;
 }
