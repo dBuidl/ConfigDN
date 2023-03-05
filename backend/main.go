@@ -78,7 +78,7 @@ func main() {
 		Dir: migrationsDir,
 	})
 
-	// migrate command (with js templates)
+	// migrate command (with go templates)
 	migratecmd.MustRegister(app, app.RootCmd, &migratecmd.Options{
 		TemplateLang: migratecmd.TemplateLangGo,
 		Automigrate:  automigrate,

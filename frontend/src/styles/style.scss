@@ -628,6 +628,41 @@ div.page-transition {
                         }
                     }
 
+                    .dashboard-objects-object-actions {
+                        display: flex;
+                        gap: 10px;
+                        justify-content: flex-end;
+                        //noinspection CssRedundantUnit
+                        flex: 0px 1 0;
+                        height: 100%;
+
+                        .dashboard-objects-object-action {
+                            // form style button for action, clean with dark background
+                            background-color: $oxford-blue;
+                            border: none;
+                            border-radius: 5px;
+                            padding: 5px 10px;
+                            color: $white;
+                            flex: 35px 0 0;
+                            height: 100%;
+
+                            // hover (grey the color slightly)
+                            &:hover {
+                                color: mix($oxford-blue, $white, 20%);
+                            }
+
+                            // active (grey the color more)
+                            &:active {
+                                color: mix($oxford-blue, $white, 40%);
+                            }
+
+                            svg {
+                                width: 100%;
+                                height: 100%;
+                            }
+                        }
+                    }
+
                     .dashboard-objects-object-name {
                         font-size: 1.4em;
                         font-weight: bold;
@@ -1116,6 +1151,19 @@ div.page-transition {
 
                 &:active {
                     background-color: mix(#aaa, #fff, 60%);
+                }
+            }
+
+            &.dialog-action__delete {
+                // a dark mixed red
+                background-color: #900;
+
+                &:hover {
+                    background-color: mix(#900, #fff, 80%);
+                }
+
+                &:active {
+                    background-color: mix(#900, #fff, 70%);
                 }
             }
         }

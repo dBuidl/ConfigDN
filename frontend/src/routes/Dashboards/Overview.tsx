@@ -20,12 +20,18 @@ import Dialog from "../../components/dialog/Dialog";
 import DialogHeader from "../../components/dialog/DialogHeader";
 import DialogBody from "../../components/dialog/DialogBody";
 import DialogFooter from "../../components/dialog/DialogFooter";
+import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
+import DashboardObjectActions from "../../components/dashboard/DashboardObjectActions";
+import DashboardObjectAction from "../../components/dashboard/DashboardObjectAction";
 
 export default function Overview() {
     const [teamsData] = useLoaderData() as OverviewData;
     const [teams, setTeams] = React.useState<TeamRecord[]>([]);
     const [newTeamName, setNewTeamName] = React.useState<string>('');
     const [error, setError] = React.useState<string>('');
+    const [teamToDelete, setTeamToDelete] = React.useState<TeamRecord | null>(null);
+    const [teamToDeleteError, setTeamToDeleteError] = React.useState<string>('');
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -51,6 +57,45 @@ export default function Overview() {
             setTimeout(() => setError(''), 5000);
         });
     }
+
+    const deleteTeam = () => {
+        if (teamToDelete === null) {
+            return;
+        }
+
+        pocketbase.collection('team').delete(teamToDelete.id).then(() => {
+            setTeams(tms => tms.filter((team) => team.id !== teamToDelete.id));
+            setTeamToDelete(null);
+            setDeleteTeamDialogShowing(false);
+        }).catch((error) => {
+            setTeamToDeleteError("Error Deleting Team: " + error.message);
+            setTimeout(() => setTeamToDeleteError(''), 5000);
+        });
+    }
+
+    const [setDeleteTeamDialogShowing, deleteTeamDialog] = useDialog(<Dialog>
+        <DialogHeader>
+            <h1 class="dialog-heading">Delete Team</h1>
+        </DialogHeader>
+        <DialogBody class="dialog-form">
+            <p>Are you sure you want to delete the team {teamToDelete?.name}? This is irreversible and will delete all
+                associated configs, projects, environments and API Keys.</p>
+        </DialogBody>
+        <DialogFooter>
+            <button className="dialog-action dialog-action__delete" onClick={deleteTeam}>Delete</button>
+            <button className="dialog-action dialog-action__cancel"
+                    onClick={() => setDeleteTeamDialogShowing(false)}>Cancel
+            </button>
+            <p class="dialog-error">{teamToDeleteError}</p>
+        </DialogFooter>
+    </Dialog>, {
+        afterSetShowing: (showing) => {
+            if (!showing) {
+                setTeamToDelete(null);
+                setTeamToDeleteError('');
+            }
+        }
+    });
 
     // create team dialog
     const [setCreateTeamDialogShowing, createTeamDialog] = useDialog(<Dialog>
@@ -94,6 +139,17 @@ export default function Overview() {
                                 <Jdenticon value={team.name}/>
                             </DashboardObjectHeaderIcon>
                             <DashboardObjectHeaderName>{team.name}</DashboardObjectHeaderName>
+                            <DashboardObjectActions>
+                                {team.owner === pocketbase.authStore.model?.id ?
+                                    <DashboardObjectAction onClick={(e) => {
+                                        e.stopPropagation();
+
+                                        setTeamToDelete(team);
+                                        setDeleteTeamDialogShowing(true);
+                                    }}>
+                                        <FontAwesomeIcon icon={faTrash}/>
+                                    </DashboardObjectAction> : null}
+                            </DashboardObjectActions>
                         </DashboardObjectHeader>
                     </DashboardObject>)}
                     <DashboardObject
@@ -108,6 +164,7 @@ export default function Overview() {
                 </DashboardObjectsList>
             </DashboardObjects>
             {createTeamDialog}
+            {deleteTeamDialog}
         </Content>
     </>;
 }

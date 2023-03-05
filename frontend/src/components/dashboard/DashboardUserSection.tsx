@@ -10,8 +10,12 @@ import DashboardObject from "./DashboardObject";
 import React from "preact/compat";
 // @ts-ignore
 import Jdenticon from "react-jdenticon";
+import DashboardObjectActions from "./DashboardObjectActions";
+import DashboardObjectAction from "./DashboardObjectAction";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 
-export default function DashboardUserSection(props: { title: string, expand: UserRecord[] | UserRecord | undefined }): JSX.Element {
+export default function DashboardUserSection(props: { title: string, expand: UserRecord[] | UserRecord | undefined, onUserDelete: (e: Event, u: UserRecord) => void }): JSX.Element {
     const {expand} = props;
 
     if (typeof expand === "undefined" || ExpandIsEmpty(expand)) {
@@ -26,6 +30,11 @@ export default function DashboardUserSection(props: { title: string, expand: Use
                         <Jdenticon value={user.username}/>
                     </DashboardObjectHeaderIcon>
                     <DashboardObjectHeaderName>{user.username}</DashboardObjectHeaderName>
+                    <DashboardObjectActions>
+                        <DashboardObjectAction onClick={e => props.onUserDelete(e, user)}>
+                            <FontAwesomeIcon icon={faTrash}/>
+                        </DashboardObjectAction>
+                    </DashboardObjectActions>
                 </DashboardObjectHeader>
                 <DashboardObjectBody>
                     <DashboardObjectBodyInfo>

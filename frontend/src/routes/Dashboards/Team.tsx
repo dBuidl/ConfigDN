@@ -24,6 +24,9 @@ import DialogBody from "../../components/dialog/DialogBody";
 import DialogFooter from "../../components/dialog/DialogFooter";
 import DashboardUserSelect from "../../components/dashboard/DashboardUserSelect";
 import SelectInput, {DashboardSelectItem} from "../../components/dashboard/SelectInput";
+import DashboardObjectActions from "../../components/dashboard/DashboardObjectActions";
+import DashboardObjectAction from "../../components/dashboard/DashboardObjectAction";
+import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 
 const userRoles: DashboardSelectItem[] = [
     {
@@ -53,6 +56,11 @@ export default function Team() {
     const [memberError, setMemberError] = useState<string>("");
     const [team, setTeam] = useState<TeamRecord>(teamData);
     const [reset, setReset] = useState<boolean>(false);
+
+    const [deleteObjectType, setDeleteObjectType] = useState<string>("");
+    const [deleteObject, setDeleteObject] = useState<ProjectRecord | UserRecord | null>(null);
+    const [deleteObjectError, setDeleteObjectError] = useState<string>("");
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -61,8 +69,32 @@ export default function Team() {
 
     useEffect(() => {
         setProjects(projectsData);
-    });
+    }, [projectsData]);
 
+    const [setDeleteObjectDialogShowing, deleteObjectDialog] = useDialog(<Dialog>
+        <DialogHeader>
+            <h1 class="dialog-heading">Delete {deleteObjectType}</h1>
+        </DialogHeader>
+        <DialogBody class="dialog-form">
+            <p>Are you sure you want to remove
+                the {deleteObjectType} {deleteObject?.username ?? deleteObject?.name}?</p>
+        </DialogBody>
+        <DialogFooter>
+            <button className="dialog-action dialog-action__delete" onClick={() => deleteObjectFunc()}>Remove</button>
+            <button className="dialog-action dialog-action__cancel"
+                    onClick={() => setDeleteObjectDialogShowing(false)}>Cancel
+            </button>
+            <p class="dialog-error">{deleteObjectError}</p>
+        </DialogFooter>
+    </Dialog>, {
+        afterSetShowing: (showing) => {
+            if (!showing) {
+                setDeleteObjectType("");
+                setDeleteObject(null);
+                setDeleteObjectError("");
+            }
+        }
+    });
 
     const [setProjectCreateDialogShowing, projectCreateDialog] = useDialog(<Dialog>
         <DialogHeader>
@@ -121,6 +153,72 @@ export default function Team() {
             }
         }
     });
+
+    const deleteObjectFunc = async () => {
+        if (deleteObject === null) {
+            return;
+        }
+
+        if (deleteObjectType === "") {
+            return;
+        }
+
+        if (deleteObjectType === "project") {
+            pocketbase.collection("project").delete(deleteObject.id).then(() => {
+                setProjects(projects.filter((p) => p.id !== deleteObject.id));
+                setDeleteObjectDialogShowing(false);
+            }).catch((e) => {
+                setDeleteObjectError(e.message);
+            });
+        }
+
+        if (deleteObjectType === "user") {
+            // update team to remove the specified user
+            pocketbase.collection("team").update(team.id, {
+                admins: team.admins.filter((u) => u !== deleteObject.id),
+                editors: team.editors.filter((u) => u !== deleteObject.id),
+                viewers: team.viewers.filter((u) => u !== deleteObject.id),
+            }).then(() => {
+                setTeam((t) => {
+                    t.admins = t.admins.filter((u) => u !== deleteObject.id);
+                    t.editors = t.editors.filter((u) => u !== deleteObject.id);
+                    t.viewers = t.viewers.filter((u) => u !== deleteObject.id);
+
+                    if (t.expand.admins) {
+                        t.expand.admins = t.expand.admins.filter((u) => u.id !== deleteObject.id);
+                    }
+
+                    if (t.expand.editors) {
+                        t.expand.editors = t.expand.editors.filter((u) => u.id !== deleteObject.id);
+                    }
+
+                    if (t.expand.viewers) {
+                        t.expand.viewers = t.expand.viewers.filter((u) => u.id !== deleteObject.id);
+                    }
+
+                    return t;
+                });
+
+                setDeleteObjectDialogShowing(false);
+            }).catch((e) => {
+                setDeleteObjectError(e.message);
+            });
+        }
+    }
+
+    const onUserDelete = (e: Event, user: UserRecord) => {
+        e.stopPropagation();
+        setDeleteObjectType("user");
+        setDeleteObject(user);
+        setDeleteObjectDialogShowing(true);
+    }
+
+    const onProjectDelete = (e: Event, project: ProjectRecord) => {
+        e.stopPropagation();
+        setDeleteObjectType("project");
+        setDeleteObject(project);
+        setDeleteObjectDialogShowing(true);
+    }
 
     const addTeamMember = () => {
         // check vars
@@ -217,6 +315,11 @@ export default function Team() {
                                 <Jdenticon value={project.name}/>
                             </DashboardObjectHeaderIcon>
                             <DashboardObjectHeaderName>{project.name}</DashboardObjectHeaderName>
+                            <DashboardObjectActions>
+                                <DashboardObjectAction onClick={(e) => onProjectDelete(e, project)}>
+                                    <FontAwesomeIcon icon={faTrash}/>
+                                </DashboardObjectAction>
+                            </DashboardObjectActions>
                         </DashboardObjectHeader>
                     </DashboardObject>)}
                     <DashboardObject
@@ -234,10 +337,10 @@ export default function Team() {
             {team.owner === pocketbase.authStore.model?.id && <DashboardObjects>
                 <DashboardObjectsTitle>Members</DashboardObjectsTitle>
                 <DashboardObjectsList>
-                    <DashboardUserSection title={"Owner"} expand={team.expand.owner}/>
-                    <DashboardUserSection title={"Admin"} expand={team.expand.admins}/>
-                    <DashboardUserSection title={"Editor"} expand={team.expand.editors}/>
-                    <DashboardUserSection title={"Viewer"} expand={team.expand.viewers}/>
+                    <DashboardUserSection title={"Owner"} expand={team.expand.owner} onUserDelete={onUserDelete}/>
+                    <DashboardUserSection title={"Admin"} expand={team.expand.admins} onUserDelete={onUserDelete}/>
+                    <DashboardUserSection title={"Editor"} expand={team.expand.editors} onUserDelete={onUserDelete}/>
+                    <DashboardUserSection title={"Viewer"} expand={team.expand.viewers} onUserDelete={onUserDelete}/>
                     <DashboardObject
                         onClick={() => setUserAddDialogShowing(true)}>
                         <DashboardObjectHeader>
@@ -252,6 +355,7 @@ export default function Team() {
         </Content>
         {projectCreateDialog}
         {userAddDialog}
+        {deleteObjectDialog}
     </>;
 }
 
