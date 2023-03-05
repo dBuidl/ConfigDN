@@ -4,30 +4,100 @@ import (
 	"encoding/json"
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/dbx"
-	"github.com/pocketbase/pocketbase"
-	"github.com/pocketbase/pocketbase/apis"
-	"github.com/pocketbase/pocketbase/core"
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
+	"strings"
+	"time"
+
+	"github.com/pocketbase/pocketbase"
+	"github.com/pocketbase/pocketbase/apis"
+	"github.com/pocketbase/pocketbase/core"
+	"github.com/pocketbase/pocketbase/plugins/jsvm"
+	"github.com/pocketbase/pocketbase/plugins/migratecmd"
+
+	_ "liveconfig/migrations"
 )
 
 func main() {
 	app := pocketbase.New()
 
-	// this is the public config api
+	// ---------------------------------------------------------------
+	// Optional plugin flags:
+	// ---------------------------------------------------------------
+
+	var migrationsDir string
+	app.RootCmd.PersistentFlags().StringVar(
+		&migrationsDir,
+		"migrationsDir",
+		"",
+		"the directory with the user defined migrations",
+	)
+
+	var automigrate bool
+	app.RootCmd.PersistentFlags().BoolVar(
+		&automigrate,
+		"Automigrate",
+		true,
+		"enable/disable auto migrations",
+	)
 
 	var publicDir string
 	app.RootCmd.PersistentFlags().StringVar(
 		&publicDir,
 		"publicDir",
-		"./pb_public",
+		defaultPublicDir(),
 		"the directory to serve static files",
 	)
 
-	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		e.Router.GET("/*", apis.StaticDirectoryHandler(os.DirFS(publicDir), true)) // fallback to index for SPA
+	var indexFallback bool
+	app.RootCmd.PersistentFlags().BoolVar(
+		&indexFallback,
+		"indexFallback",
+		true,
+		"fallback the request to index.html on missing static path (eg. when pretty urls are used with SPA)",
+	)
 
+	var queryTimeout int
+	app.RootCmd.PersistentFlags().IntVar(
+		&queryTimeout,
+		"queryTimeout",
+		30,
+		"the default SELECT queries timeout in seconds",
+	)
+
+	_ = app.RootCmd.ParseFlags(os.Args[1:])
+
+	// ---------------------------------------------------------------
+	// Plugins and hooks:
+	// ---------------------------------------------------------------
+
+	// load js pb_migrations
+	jsvm.MustRegisterMigrations(app, &jsvm.MigrationsOptions{
+		Dir: migrationsDir,
+	})
+
+	// migrate command (with js templates)
+	migratecmd.MustRegister(app, app.RootCmd, &migratecmd.Options{
+		TemplateLang: migratecmd.TemplateLangGo,
+		Automigrate:  automigrate,
+		Dir:          migrationsDir,
+	})
+
+	app.OnAfterBootstrap().Add(func(e *core.BootstrapEvent) error {
+		app.Dao().ModelQueryTimeout = time.Duration(queryTimeout) * time.Second
+		return nil
+	})
+
+	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
+		// serves static files from the provided public dir (if exists)
+		e.Router.GET("/*", apis.StaticDirectoryHandler(os.DirFS(publicDir), indexFallback))
+		return nil
+	})
+
+	// Handler for public config fetching
+	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 		_, err := e.Router.AddRoute(echo.Route{
 			Method: http.MethodGet,
 			Path:   "/public_api/v1/get_config",
@@ -147,4 +217,13 @@ func main() {
 	if err := app.Start(); err != nil {
 		log.Fatal(err)
 	}
+}
+
+// the default pb_public dir location is relative to the executable
+func defaultPublicDir() string {
+	if strings.HasPrefix(os.Args[0], os.TempDir()) {
+		// most likely ran with go run
+		return "./pb_public"
+	}
+	return filepath.Join(os.Args[0], "../pb_public")
 }
