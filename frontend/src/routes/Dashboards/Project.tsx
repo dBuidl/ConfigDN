@@ -21,6 +21,9 @@ import Dialog from "../../components/dialog/Dialog";
 import DialogHeader from "../../components/dialog/DialogHeader";
 import DialogBody from "../../components/dialog/DialogBody";
 import DialogFooter from "../../components/dialog/DialogFooter";
+import DashboardObjectActions from "../../components/dashboard/DashboardObjectActions";
+import DashboardObjectAction from "../../components/dashboard/DashboardObjectAction";
+import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 
 export default function Project() {
     const [team, project, configsData, environmentsData] = useLoaderData() as ProjectLoaderData;
@@ -33,6 +36,10 @@ export default function Project() {
     const [newEnvironmentName, setNewEnvironmentName] = useState<string>('');
     const [configError, setConfigError] = useState<string>('');
     const [environmentError, setEnvironmentError] = useState<string>('');
+
+    const [deleteObjectType, setDeleteObjectType] = useState<string>(''); // config or environment
+    const [deleteObject, setDeleteObject] = useState<ConfigRecord | EnvironmentRecord | null>(null);
+    const [deleteObjectError, setDeleteObjectError] = useState<string>('');
 
     // Handles react router not updating the page when the user navigates to the same page with different params (and the initial load)
     useEffect(() => {
@@ -82,6 +89,58 @@ export default function Project() {
             setEnvironmentError('Error: Could not create environment.');
             setTimeout(() => setEnvironmentError(''), 5000);
         });
+    }
+
+    const [setDeleteObjectDialogOpen, deleteObjectDialog] = useDialog(<Dialog>
+        <DialogHeader>
+            <h1 className="dialog-heading">Delete {deleteObjectType}</h1>
+        </DialogHeader>
+        <DialogBody class="dialog-form">
+            <p>Are you sure you want to delete the {deleteObjectType} {deleteObject?.name}?</p>
+        </DialogBody>
+        <DialogFooter>
+            <button class="dialog-action dialog-action__delete" onClick={() => deleteObjectFunc()}>Delete
+            </button>
+            <button class="dialog-action dialog-action__cancel"
+                    onClick={() => setDeleteObjectDialogOpen(false)}>Cancel
+            </button>
+            <p className="dialog-error">{deleteObjectError}</p>
+        </DialogFooter>
+    </Dialog>, {
+        afterSetShowing: (showing) => {
+            if (!showing) {
+                setDeleteObjectType('');
+                setDeleteObject(null);
+                setDeleteObjectError('');
+            }
+        }
+    });
+
+    const deleteObjectFunc = () => {
+        if (deleteObject === null) {
+            setDeleteObjectError('Error: Could not delete object.');
+            return;
+        }
+
+        if (deleteObjectType === 'config') {
+            pocketbase.collection('config').delete(deleteObject?.id).then(() => {
+                setConfigs(configsNow => configsNow.filter(config => config.id !== deleteObject?.id));
+                setDeleteObjectDialogOpen(false);
+            }).catch((e) => {
+                console.error(e);
+                setDeleteObjectError('Error: Could not delete config.');
+                setTimeout(() => setDeleteObjectError(''), 5000);
+            });
+        } else if (deleteObjectType === 'environment') {
+            pocketbase.collection('environment').delete(deleteObject?.id).then(() => {
+                setEnvironments(environmentsNow => environmentsNow.filter(environment => environment.id !== deleteObject?.id));
+                setDeleteObjectDialogOpen(false);
+            }).catch((e) => {
+                console.error(e);
+                setDeleteObjectError('Error: Could not delete environment.');
+                setTimeout(() => setDeleteObjectError(''), 5000);
+            });
+        }
     }
 
     const [setCreateConfigDialogOpen, createConfigDialog] = useDialog(<Dialog>
@@ -136,6 +195,20 @@ export default function Project() {
         }
     });
 
+    const onDeleteConfig = (e: Event, config: ConfigRecord) => {
+        e.stopPropagation();
+        setDeleteObjectType('config');
+        setDeleteObject(config);
+        setDeleteObjectDialogOpen(true);
+    }
+
+    const onDeleteEnvironment = (e: Event, environment: EnvironmentRecord) => {
+        e.stopPropagation();
+        setDeleteObjectType('environment');
+        setDeleteObject(environment);
+        setDeleteObjectDialogOpen(true);
+    }
+
     return <>
         <DashboardNavbar>
             <NavBarBreadcrumbs team={team} project={project}/>
@@ -150,6 +223,11 @@ export default function Project() {
                                 <Jdenticon value={environment.name}/>
                             </DashboardObjectHeaderIcon>
                             <DashboardObjectHeaderName>{environment.name}</DashboardObjectHeaderName>
+                            <DashboardObjectActions>
+                                <DashboardObjectAction onClick={(e) => onDeleteEnvironment(e, environment)}>
+                                    <FontAwesomeIcon icon={faTrash}/>
+                                </DashboardObjectAction>
+                            </DashboardObjectActions>
                         </DashboardObjectHeader>
                     </DashboardObject>)}
                     <DashboardObject
@@ -174,6 +252,11 @@ export default function Project() {
                                 <Jdenticon value={config.name}/>
                             </DashboardObjectHeaderIcon>
                             <DashboardObjectHeaderName>{config.name}</DashboardObjectHeaderName>
+                            <DashboardObjectActions>
+                                <DashboardObjectAction onClick={(e) => onDeleteConfig(e, config)}>
+                                    <FontAwesomeIcon icon={faTrash}/>
+                                </DashboardObjectAction>
+                            </DashboardObjectActions>
                         </DashboardObjectHeader>
                     </DashboardObject>)}
                     <DashboardObject
@@ -190,6 +273,7 @@ export default function Project() {
         </Content>
         {createConfigDialog}
         {createEnvironmentDialog}
+        {deleteObjectDialog}
     </>;
 }
 

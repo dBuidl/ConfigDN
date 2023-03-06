@@ -10,8 +10,9 @@ import DialogBody from "../../dialog/DialogBody";
 import DialogFooter from "../../dialog/DialogFooter";
 import DialogHeader from "../../dialog/DialogHeader";
 import useDialog from "../../../hooks/useDialog";
+import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 
-export default function SettingCard(props: { flag: FlagRecord, originalValue: ValueRecordString, value: ValueRecordString, setValue: (values: ValueRecordString) => void, saveValue: (value: ValueRecordString) => tPocketbaseAsyncResponse }) {
+export default function SettingCard(props: { flag: FlagRecord, originalValue: ValueRecordString, value: ValueRecordString, onDelete: (e: Event, flag: FlagRecord) => void, setValue: (values: ValueRecordString) => void, saveValue: (value: ValueRecordString) => tPocketbaseAsyncResponse }) {
     const [lastSaveStatus, setLastSaveStatus] = useState<tPocketbaseResponse | null>(null);
     const {flag, originalValue, value, setValue, saveValue} = props;
     const [setDialogShowing, dialog] = useDialog(<DialogWide>
@@ -31,6 +32,24 @@ export default function SettingCard(props: { flag: FlagRecord, originalValue: Va
             </button>
         </DialogFooter>
     </DialogWide>);
+
+    const [setDeleteDialogShowing, deleteDialog] = useDialog(<DialogWide>
+        <DialogHeader>
+            <h1 className="dialog-heading">Delete {flag.name}?</h1>
+        </DialogHeader>
+        <DialogBody>
+            <p>Are you sure you want to delete the flag {flag.name}? This action cannot be undone.</p>
+        </DialogBody>
+        <DialogFooter>
+            <button className="dialog-action dialog-action__delete"
+                    onClick={(e) => props.onDelete(e, flag)}>Delete
+            </button>
+            <button className="dialog-action dialog-action__cancel"
+                    onClick={() => setDeleteDialogShowing(false)}>Cancel
+            </button>
+        </DialogFooter>
+    </DialogWide>);
+
 
     const inputType = fieldTypeToInputType(flag.type);
 
@@ -103,11 +122,15 @@ export default function SettingCard(props: { flag: FlagRecord, originalValue: Va
         </div>
         <div class="setting-card-footer">
             {getLastSaveStatusMessage()}
+            <button class="setting-card-button" onClick={() => setDeleteDialogShowing(true)}>
+                <FontAwesomeIcon icon={faTrash}/>
+            </button>
             <button class="setting-card-button" onClick={onReset} disabled={originalValue.value === value.value}>Reset
             </button>
             <button class="setting-card-button" onClick={save} disabled={originalValue.value === value.value}>Save
             </button>
         </div>
         {dialog}
+        {deleteDialog}
     </div>;
 }

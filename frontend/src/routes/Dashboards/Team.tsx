@@ -264,18 +264,20 @@ export default function Team() {
             [userRole.value]: [...team[userRole.value], userToAdd.id],
         }).then(() => {
             // need to add it manually because otherwise we lose the extra data
-            const userObjectClone = {...userToAdd} as UserRecord;
+            const userObjectClone = userToAdd.clone() as UserRecord;
 
             setTeam(team => {
-                return {
-                    ...team,
-                    [userRole.value]: [...team[userRole.value], userObjectClone.id],
-                    expand: {
-                        ...team.expand,
-                        // @ts-ignore
-                        [userRole.value]: [...team.expand[userRole.value] ?? [], userObjectClone],
-                    }
-                } as TeamRecord;
+                let teamClone = team.clone() as TeamRecord;
+
+                teamClone[userRole.value].push(userObjectClone.id);
+
+                // @ts-ignore
+                if (teamClone.expand[userRole.value]) {
+                    // @ts-ignore
+                    teamClone.expand[userRole.value].push(userObjectClone);
+                }
+
+                return teamClone;
             });
 
             setUserAddDialogShowing(false);
