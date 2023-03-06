@@ -1,6 +1,6 @@
 import Pocketbase from 'pocketbase';
-import config from './../config.json';
+import smartGetBackendUrl from "../helpers/smartGetBackendUrl";
 
-const pocketbase = new Pocketbase(config.POCKETBASE_URL);
+const pocketbase = new Pocketbase(smartGetBackendUrl());
 
 export default pocketbase;
