@@ -1,8 +1,6 @@
-import config from '../config.json';
-
 export default function smartGetBackendUrl() {
-    if (config.POCKETBASE_URL ?? "" !== "") {
-        return config.POCKETBASE_URL;
+    if (import.meta.env.VITE_BACKEND_URL ?? "" !== "") {
+        return import.meta.env.VITE_BACKEND_URL;
     }
 
     if (window.location.hostname === "localhost") {
