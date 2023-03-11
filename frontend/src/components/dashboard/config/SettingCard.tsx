@@ -14,17 +14,23 @@ import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 
 export default function SettingCard(props: { flag: FlagRecord, originalValue: ValueRecordString, value: ValueRecordString, onDelete: (e: Event, flag: FlagRecord) => void, setValue: (values: ValueRecordString) => void, saveValue: (value: ValueRecordString) => tPocketbaseAsyncResponse }) {
     const [lastSaveStatus, setLastSaveStatus] = useState<tPocketbaseResponse | null>(null);
-    const {flag, originalValue, value, setValue, saveValue} = props;
+    const {flag, originalValue, value, setValue: setValue2, saveValue} = props;
+
+    function setValue(value: string) {
+        let clone = props.value.clone() as ValueRecordString;
+
+        clone.value = value;
+
+        setValue2(clone);
+    }
+
     const [setDialogShowing, dialog] = useDialog(<DialogWide>
         <DialogHeader>
             <h1 className="dialog-heading">Update {flag.name} Value</h1>
         </DialogHeader>
         <DialogBody>
                         <textarea className="dialog-input-large" value={value.value}
-                                  onInput={e => setValue({
-                                      ...value,
-                                      value: e.currentTarget.value
-                                  } as ValueRecordString)}/>
+                                  onInput={e => setValue(e.currentTarget.value)}/>
         </DialogBody>
         <DialogFooter>
             <button className="dialog-action dialog-action__save"
@@ -71,20 +77,17 @@ export default function SettingCard(props: { flag: FlagRecord, originalValue: Va
     switch (inputType) {
         case "text":
             input = <input type={inputType} value={value.value} class="setting-card-value"
-                           onInput={e => setValue({...value, value: e.currentTarget.value} as ValueRecordString)}/>;
+                           onInput={e => setValue(e.currentTarget.value)}/>;
             break;
         case "number":
             input = <input type={inputType} value={value.value} class="setting-card-value"
-                           onInput={e => setValue({...value, value: e.currentTarget.value} as ValueRecordString)}/>
+                           onInput={e => setValue(e.currentTarget.value)}/>
             inputExpandButton = null;
             break;
         case "checkbox":
             input = <label className="setting-card-value-switch">
                 <input type={inputType} checked={value.value === "true"} className="setting-card-value"
-                       onClick={e => setValue({
-                           ...value,
-                           value: e.currentTarget.checked ? "true" : "false"
-                       } as ValueRecordString)}/>
+                       onClick={e => setValue(e.currentTarget.checked ? "true" : "false")}/>
                 <span className="setting-card-value-slider"></span>
             </label>;
             inputExpandButton = null;
@@ -93,7 +96,7 @@ export default function SettingCard(props: { flag: FlagRecord, originalValue: Va
 
     const onReset = (e: Event) => {
         e.preventDefault();
-        setValue(originalValue);
+        setValue(originalValue.value);
     }
 
     function getLastSaveStatusMessage() {

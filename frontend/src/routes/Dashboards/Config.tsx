@@ -69,7 +69,6 @@ function specialJsonLoad(value: any, type: any) {
 }
 
 function specialJsonParse(value: string, type: any) {
-    console.log(value, type)
     switch (type) {
         case 'json':
             return JSON.parse(value);
@@ -135,7 +134,6 @@ export default function Config() {
     }, [flagsData]);
 
     useEffect(() => {
-        console.log(valuesInDB, flagsData)
         const newValues = valuesInDB.map((v) => {
             const type = flagsData.find(f => f.id === v.flag)?.type;
 
@@ -146,8 +144,8 @@ export default function Config() {
             return v as ValueRecordString;
         });
 
-        setOriginalValues(JSON.parse(JSON.stringify(newValues)));
-        setEditedValues(JSON.parse(JSON.stringify(newValues)));
+        setOriginalValues(newValues.map(v => v.clone() as ValueRecordString));
+        setEditedValues(newValues.map(v => v.clone() as ValueRecordString));
     }, [valuesInDB, flagsData]);
 
     useEffect(() => {
@@ -343,7 +341,7 @@ export default function Config() {
 
             if (JSON.stringify(previousValue.value) !== JSON.stringify(editedValues[i].value)) {
                 const editedValueClone = editedValue.clone();
-                editedValueClone.value = specialJsonStringify(editedValue.value, flagsData.find((f) => f.id === editedValue.flag)?.type);
+                editedValueClone.value = specialJsonParse(editedValue.value, flagsData.find((f) => f.id === editedValue.flag)?.type);
 
                 pocketbase.collection('value').update(editedValue.id, editedValueClone);
                 setOriginalValue(editedValue); // the function ensures it'll be a distinct clone
