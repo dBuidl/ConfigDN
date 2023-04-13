@@ -21,7 +21,7 @@ builds:
 
   - id: build_noncgo
     main: ./
-    binary: pocketbase
+    binary: configdn
     ldflags:
       - -s -w -X github.com/dBuidl/ConfigDN-Test-GitHubActions.Version={{ .Version }}
     env:
