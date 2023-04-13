@@ -29,6 +29,7 @@ jobs:
       # - name: Run linter
       #   uses: golangci/golangci-lint-action@v3
 
+      # Should be built locally (./prepare_release.sh)
       - name: Build Admin dashboard UI
         run: npm --prefix=./ui ci && npm --prefix=./ui run build
 
@@ -41,6 +42,6 @@ jobs:
           workdir: './'
           distribution: goreleaser
           version: latest
-          args: release
+          args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
