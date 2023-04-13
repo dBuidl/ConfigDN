@@ -11,7 +11,7 @@ builds:
     main: ./
     binary: configdn
     ldflags:
-      - -s -w -X github.com/dBuidl/ConfigDN-Test-GitHubActions.Version={{ .Version }}
+      - -s -w -X github.com/dBuidl/ConfigDN.Version={{ .Version }}
     env:
       - CGO_ENABLED=1
     goos:
@@ -23,7 +23,7 @@ builds:
     main: ./
     binary: configdn
     ldflags:
-      - -s -w -X github.com/dBuidl/ConfigDN-Test-GitHubActions.Version={{ .Version }}
+      - -s -w -X github.com/dBuidl/ConfigDN.Version={{ .Version }}
     env:
       - CGO_ENABLED=0
     goos:
