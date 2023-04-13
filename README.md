@@ -2,6 +2,9 @@
 
 Open source configuration management and feature flags.
 
+# Hosted Version
+There is a [hosted version](https://configdn.com) of ConfigDN available. This is a fully functional version of ConfigDN, hosted by us. We plan to charge for this in the future to help fund development, but for now it is free.
+
 # Requirements
 
 - Node.js (Recommended: LTS or newer)
