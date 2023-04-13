@@ -20,7 +20,7 @@ builds:
       - amd64
 
   - id: build_noncgo
-    main: ./examples/base
+    main: ./
     binary: pocketbase
     ldflags:
       - -s -w -X github.com/dBuidl/ConfigDN-Test-GitHubActions.Version={{ .Version }}
