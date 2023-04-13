@@ -28,6 +28,9 @@ jobs:
       # - name: Run linter
       #   uses: golangci/golangci-lint-action@v3
 
+      - name: Build Admin dashboard UI
+        run: npm --prefix=./ui ci && npm --prefix=./ui run build
+
       #- name: Run tests
       #  run: go test ./...
 
