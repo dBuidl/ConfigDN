@@ -1,4 +1,4 @@
-module liveconfig
+module github.com/dBuidl/ConfigDN
 
 go 1.19
 

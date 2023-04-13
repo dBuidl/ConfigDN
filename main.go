@@ -2,9 +2,9 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/dBuidl/ConfigDN/ui"
 	"github.com/labstack/echo/v5"
 	"github.com/pocketbase/dbx"
-	"liveconfig/ui"
 	"log"
 	"net/http"
 	"os"
@@ -18,7 +18,7 @@ import (
 	"github.com/pocketbase/pocketbase/plugins/jsvm"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
 
-	_ "liveconfig/migrations"
+	_ "github.com/dBuidl/ConfigDN/migrations"
 )
 
 func main() {

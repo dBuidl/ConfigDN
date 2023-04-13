@@ -9,7 +9,7 @@ before:
 builds:
   - id: build_cgo
     main: ./
-    binary: configdn
+    binary: ConfigDN
     ldflags:
       - -s -w -X github.com/dBuidl/ConfigDN.Version={{ .Version }}
     env:
@@ -21,7 +21,7 @@ builds:
 
   - id: build_noncgo
     main: ./
-    binary: configdn
+    binary: ConfigDN
     ldflags:
       - -s -w -X github.com/dBuidl/ConfigDN.Version={{ .Version }}
     env:
