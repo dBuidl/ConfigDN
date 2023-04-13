@@ -26,7 +26,7 @@ This script also builds the UI before a release. Alternatively, you can download
 To run the project, execute the executable built by the build script:
 
 ```bash
-./ConfigDN
+./ConfigDN serve
 ```
 
 ConfigDN will then be available at:
