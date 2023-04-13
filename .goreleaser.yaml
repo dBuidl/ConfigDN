@@ -8,7 +8,7 @@ before:
 
 builds:
   - id: build_cgo
-    main: ./backend
+    main: ./
     binary: configdn
     ldflags:
       - -s -w -X github.com/dBuidl/ConfigDN-Test-GitHubActions.Version={{ .Version }}
@@ -34,9 +34,9 @@ builds:
       - amd64
       #- arm64
       #- arm
-    goarm:
+    #goarm:
       #- 7
-    ignore:
+    #ignore:
       #- goos: windows
       #  goarch: arm
       #- goos: darwin
