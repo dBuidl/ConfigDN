@@ -104,9 +104,8 @@ dist
 # TernJS port file
 .tern-port
 
-backend/pb_data.old
-backend/pb_data
+pb_data.old/
+pb_data/
 pocketbase
-backend/vendor/
-pb_data
+vendor/
 .idea

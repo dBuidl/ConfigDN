@@ -29,7 +29,7 @@ jobs:
       # - name: Run linter
       #   uses: golangci/golangci-lint-action@v3
 
-      # Should be built locally (./prepare_release.sh)
+      # Should be built locally (./build.sh)
       - name: Build Admin dashboard UI
         run: npm --prefix=./ui ci && npm --prefix=./ui run build
 
