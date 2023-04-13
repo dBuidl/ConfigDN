@@ -1,4 +1,4 @@
-project_name: configdn
+project_name: ConfigDN
 
 dist: .builds
 
@@ -28,19 +28,19 @@ builds:
       - CGO_ENABLED=0
     goos:
       - linux
-      #- windows
-      #- darwin
+      - windows
+      - darwin
     goarch:
       - amd64
-      #- arm64
-      #- arm
-    #goarm:
-      #- 7
-    #ignore:
-      #- goos: windows
-      #  goarch: arm
-      #- goos: darwin
-      #  goarch: arm
+      - arm64
+      - arm
+    goarm:
+      - 7
+    ignore:
+      - goos: windows
+        goarch: arm
+      - goos: darwin
+        goarch: arm
 
 release:
   draft: true
@@ -69,7 +69,7 @@ snapshot:
 
 changelog:
   sort: asc
-  filters:
-    exclude:
-      - '^examples:'
-      - '^ui:'
+#  filters:
+#    exclude:
+#      - '^examples:'
+#      - '^ui:'

@@ -1,8 +1,9 @@
 name: basebuild
 
 on:
-  pull_request:
   push:
+    tag:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
   goreleaser:
@@ -40,6 +41,6 @@ jobs:
           workdir: './'
           distribution: goreleaser
           version: latest
-          args: release --clean
+          args: release
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
