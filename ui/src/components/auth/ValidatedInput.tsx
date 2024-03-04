@@ -1,6 +1,6 @@
 import React, {useEffect} from "preact/compat";
 
-export default function ValidatedInput(props: { errors: { [key: string]: string }, name: string, type?: string, value: string, valueUpdate: (val: string) => void, id?: string, label?: string }) {
+export default function ValidatedInput(props: { errors: { [key: string]: string }, name: string, type?: string, value: string, valueUpdate: (val: string) => void, id?: string, label?: string, required?: boolean }) {
     const [error, setError] = React.useState("");
     const id = props.id || props.name;
 
@@ -25,6 +25,7 @@ export default function ValidatedInput(props: { errors: { [key: string]: string 
             name={props.name}
             id={id}
             value={props.value}
+            required={props.required || false}
             onChange={onChange}
             className={`auth-form-input-field ${error ? "error" : ""}`}
         />

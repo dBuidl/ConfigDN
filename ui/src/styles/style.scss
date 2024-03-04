@@ -1247,6 +1247,20 @@ div.page-transition {
                     }
                 }
 
+                .auth-form-text {
+                    font-size: 0.9em;
+                    line-height: 1.1em;
+                }
+
+                .auth-form-link {
+                    text-decoration: underline;
+                    font-size: 0.9em;
+                }
+
+                .auth-form-text>.auth-form-link {
+                    font-size: 1em;
+                }
+
                 .auth-form-oauth2 {
                     p {
                         font-size: 1.1em;
@@ -1298,6 +1312,14 @@ div.page-transition {
                     line-height: 1.1em;
                     font-weight: bold;
                     color: mix(red, $white, 60%);
+                }
+
+                .auth-form-submit-success {
+                    margin-bottom: 10px;
+                    font-size: 1.1em;
+                    line-height: 1.1em;
+                    font-weight: bold;
+                    color: mix(green, $white, 10%);
                 }
             }
         }

@@ -1,7 +1,7 @@
 import React, {useEffect} from "preact/compat";
 import pocketbase from "../libraries/Pocketbase";
 import {AuthMethodsList, ClientResponseError} from "pocketbase";
-import {useLoaderData, useNavigate, useSearchParams} from "react-router-dom";
+import {Link, useLoaderData, useNavigate, useSearchParams} from "react-router-dom";
 import URLS from "../helpers/URLS";
 import {DatabaseInsertError} from "../types/Errors";
 import ValidatedInput from "../components/auth/ValidatedInput";
@@ -83,6 +83,8 @@ export default function Login() {
                     <div class="auth-form-submit-error">
                         {errors.form ? errors.form : ""}
                     </div>
+
+                    <Link class="auth-form-link" to={URLS.FORGOT_PASSWORD}>Forgot Password?</Link>
 
                     <div class="auth-form-oauth2">
                         <p>Or login with:</p>

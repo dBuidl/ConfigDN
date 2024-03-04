@@ -75,12 +75,12 @@ func main() {
 	// ---------------------------------------------------------------
 
 	// load js pb_migrations
-	jsvm.MustRegisterMigrations(app, &jsvm.MigrationsOptions{
-		Dir: migrationsDir,
+	jsvm.MustRegister(app, jsvm.Config{
+		MigrationsDir: migrationsDir,
 	})
 
 	// migrate command (with go templates)
-	migratecmd.MustRegister(app, app.RootCmd, &migratecmd.Options{
+	migratecmd.MustRegister(app, app.RootCmd, migratecmd.Config{
 		TemplateLang: migratecmd.TemplateLangGo,
 		Automigrate:  automigrate,
 		Dir:          migrationsDir,

@@ -9,7 +9,7 @@ There is a [hosted version](https://configdn.com) of ConfigDN available. This is
 
 - Node.js (Recommended: LTS or newer)
 - NPM
-- Go 1.19+
+- Go 1.22+
 
 # Building the project
 

@@ -1,9 +1,9 @@
 // This file contains the structures of the PocketBase database as well as some custom types to explain the data.
 
-import {Record} from "pocketbase";
+import {RecordModel} from "pocketbase";
 import {DashboardSelectItem} from "../components/dashboard/SelectInput";
 
-export interface UserRecord extends Record {
+export interface UserRecord extends RecordModel {
     avatar: string;
     email: string;
     emailVisibility: boolean;
@@ -12,7 +12,7 @@ export interface UserRecord extends Record {
     verified: boolean;
 }
 
-export interface TeamRecord extends Record {
+export interface TeamRecord extends RecordModel {
     admins: tPocketbaseID[],
     editors: tPocketbaseID[],
     expand: {
@@ -27,17 +27,17 @@ export interface TeamRecord extends Record {
     viewers: tPocketbaseID[],
 }
 
-export interface ProjectRecord extends Record {
+export interface ProjectRecord extends RecordModel {
     team: tPocketbaseID,
     name: string,
 }
 
-export interface ConfigRecord extends Record {
+export interface ConfigRecord extends RecordModel {
     project: tPocketbaseID,
     name: string,
 }
 
-export interface FlagRecord extends Record {
+export interface FlagRecord extends RecordModel {
     name: string;
     identifier: string;
     config: tPocketbaseID;
@@ -47,12 +47,12 @@ export interface FlagRecord extends Record {
     allowedValues: object | null;
 }
 
-export interface EnvironmentRecord extends Record {
+export interface EnvironmentRecord extends RecordModel {
     name: string;
     project: tPocketbaseID;
 }
 
-export interface ValueRecord extends Record {
+export interface ValueRecord extends RecordModel {
     flag: tPocketbaseID;
     environment: tPocketbaseID;
     value: object | string | number | null;
@@ -62,7 +62,7 @@ export interface ValueRecordString extends ValueRecord {
     value: string;
 }
 
-export interface ApiKeyRecord extends Record {
+export interface ApiKeyRecord extends RecordModel {
     environment: tPocketbaseID;
     name: string;
     key: string;

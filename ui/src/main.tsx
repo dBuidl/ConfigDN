@@ -2,7 +2,6 @@ import {render} from 'preact';
 import {Home} from './routes/Home';
 import './styles/style.scss';
 import './styles/minireset.css';
-import React from "preact/compat";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import Login, {loginLoader} from "./routes/Login";
 import Register, {registerLoader} from "./routes/Register";
@@ -16,6 +15,7 @@ import Config, {configLoader} from "./routes/Dashboards/Config";
 import DashboardError from "./routes/Dashboards/DashboardError";
 import Overview, {overviewLoader} from "./routes/Dashboards/Overview";
 import OAuth from "./routes/OAuth";
+import ForgotPassword from "./routes/ForgotPassword";
 
 const router = createBrowserRouter([
     {
@@ -32,6 +32,10 @@ const router = createBrowserRouter([
         path: URLS.REGISTER,
         element: <Register/>,
         loader: registerLoader,
+    },
+    {
+        path: URLS.FORGOT_PASSWORD,
+        element: <ForgotPassword/>,
     },
     {
         path: URLS.OAUTH2_REDIRECT,

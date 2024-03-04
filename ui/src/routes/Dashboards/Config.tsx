@@ -1,6 +1,6 @@
 import pocketbase from "../../libraries/Pocketbase";
 import {Link, useLoaderData} from "react-router-dom";
-import React, {useEffect, useState} from "preact/compat";
+import {useEffect, useState} from "preact/compat";
 import {
     ApiKeyRecord,
     ConfigRecord,
@@ -11,7 +11,7 @@ import {
     ValueRecord, ValueRecordString
 } from "../../types/Structures";
 import SettingCard from "../../components/dashboard/config/SettingCard";
-import {Record} from "pocketbase";
+import {RecordModel} from "pocketbase";
 import Content from "../../components/general/Content";
 import DashboardSpacer from "../../components/dashboard/DashboardSpacer";
 import ApiInfo from "../../components/dashboard/config/ApiInfo";
@@ -29,7 +29,7 @@ import DialogFooter from "../../components/dialog/DialogFooter";
 import SelectInput, {DashboardSelectItem} from "../../components/dashboard/SelectInput";
 
 export type tPocketbaseAsyncResponse = Promise<tPocketbaseResponse>;
-export type tPocketbaseResponse = [1, Record] | [0, any] | [-1, string];
+export type tPocketbaseResponse = [1, RecordModel] | [0, any] | [-1, string];
 
 function specialJsonStringify(value: any, type: any) {
     switch (type) {
