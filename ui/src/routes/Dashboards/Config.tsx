@@ -137,15 +137,15 @@ export default function Config() {
         const newValues = valuesInDB.map((v) => {
             const type = flagsData.find(f => f.id === v.flag)?.type;
 
-            v = v.clone() as ValueRecordString;
+            v = {...v} as ValueRecordString;
 
             v.value = specialJsonLoad(v.value, type);
 
             return v as ValueRecordString;
         });
 
-        setOriginalValues(newValues.map(v => v.clone() as ValueRecordString));
-        setEditedValues(newValues.map(v => v.clone() as ValueRecordString));
+        setOriginalValues(newValues.map(v => ({...v} as ValueRecordString)));
+        setEditedValues(newValues.map(v => ({...v} as ValueRecordString)));
     }, [valuesInDB, flagsData]);
 
     useEffect(() => {
@@ -190,14 +190,14 @@ export default function Config() {
                 value: getDefaultValue(newFlagType.value)
             }).then((response) => {
                 setFlags(flags => {
-                    return [...flags, responseFlag.clone() as FlagRecord];
+                    return [...flags, {...responseFlag} as FlagRecord];
                 });
 
                 // update value to use string
                 response.value = specialJsonStringify(response.value, newFlagType.value);
 
-                setEditedValues(editedValues => [...editedValues, response.clone() as ValueRecordString]);
-                setOriginalValues(originalValues => [...originalValues, response.clone() as ValueRecordString]);
+                setEditedValues(editedValues => [...editedValues, {...response} as ValueRecordString]);
+                setOriginalValues(originalValues => [...originalValues, {...response} as ValueRecordString]);
 
                 setNewFlagDialogShowing(false);
             }).catch((error) => {
@@ -294,8 +294,8 @@ export default function Config() {
                     // update value to use string
                     response.value = specialJsonStringify(response.value, flag.type);
 
-                    setEditedValues(editedValues => [...editedValues, response.clone() as ValueRecordString]);
-                    setOriginalValues(originalValues => [...originalValues, response.clone() as ValueRecordString]);
+                    setEditedValues(editedValues => [...editedValues, {...response} as ValueRecordString]);
+                    setOriginalValues(originalValues => [...originalValues, {...response} as ValueRecordString]);
                 }).catch((error) => {
                     console.error(error);
                 });
@@ -325,7 +325,7 @@ export default function Config() {
     function toValueRecordString(value: ValueRecord): ValueRecordString {
         const type = flagsData.find((f) => f.id === value.flag)?.type;
 
-        const newValue = value.clone();
+        const newValue = {...value};
         newValue.value = specialJsonLoad(value.value, type);
 
         return newValue as ValueRecordString;
@@ -340,7 +340,7 @@ export default function Config() {
             const previousValue = originalValues[previousValueIndex];
 
             if (JSON.stringify(previousValue.value) !== JSON.stringify(editedValues[i].value)) {
-                const editedValueClone = editedValue.clone();
+                const editedValueClone = {...editedValue}
                 editedValueClone.value = specialJsonParse(editedValue.value, flagsData.find((f) => f.id === editedValue.flag)?.type);
 
                 pocketbase.collection('value').update(editedValue.id, editedValueClone);
@@ -358,7 +358,7 @@ export default function Config() {
         }
 
         try {
-            const newVal = value.clone();
+            const newVal = {...value};
             newVal.value = specialJsonParse(value.value, flagsData.find((f) => f.id === value.flag)?.type)
 
             const record = await pocketbase.collection('value').update(value.id, newVal);

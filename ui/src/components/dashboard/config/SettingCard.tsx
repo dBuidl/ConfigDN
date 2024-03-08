@@ -17,7 +17,7 @@ export default function SettingCard(props: { flag: FlagRecord, originalValue: Va
     const {flag, originalValue, value, setValue: setValue2, saveValue} = props;
 
     function setValue(value: string) {
-        let clone = props.value.clone() as ValueRecordString;
+        let clone = {...props.value} as ValueRecordString;
 
         clone.value = value;
 

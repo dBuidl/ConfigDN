@@ -2,7 +2,7 @@ import pocketbase from "../../libraries/Pocketbase";
 import {useLoaderData, useNavigate} from "react-router-dom";
 import {ProjectRecord, TeamRecord, UserRecord} from "../../types/Structures";
 import DashboardUserSection from "../../components/dashboard/DashboardUserSection";
-import React, {useEffect, useState} from "preact/compat";
+import {useEffect, useState} from "preact/compat";
 import DashboardObjects from "../../components/dashboard/DashboardObjects";
 import DashboardObjectsTitle from "../../components/dashboard/DashboardObjectsTitle";
 import DashboardObjectsList from "../../components/dashboard/DashboardObjectsList";
@@ -264,10 +264,10 @@ export default function Team() {
             [userRole.value]: [...team[userRole.value], userToAdd.id],
         }).then(() => {
             // need to add it manually because otherwise we lose the extra data
-            const userObjectClone = userToAdd.clone() as UserRecord;
+            const userObjectClone = {...userToAdd} as UserRecord;
 
             setTeam(team => {
-                let teamClone = team.clone() as TeamRecord;
+                let teamClone = {...team} as TeamRecord;
 
                 teamClone[userRole.value].push(userObjectClone.id);
 
