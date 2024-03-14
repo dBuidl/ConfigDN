@@ -16,6 +16,7 @@ import DashboardError from "./routes/Dashboards/DashboardError";
 import Overview, {overviewLoader} from "./routes/Dashboards/Overview";
 import OAuth from "./routes/OAuth";
 import ForgotPassword from "./routes/ForgotPassword";
+import ResetPassword from "./routes/ResetPassword";
 
 const router = createBrowserRouter([
     {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
     {
         path: URLS.FORGOT_PASSWORD,
         element: <ForgotPassword/>,
+    },
+    {
+        path: URLS.RESET_PASSWORD + "/:token",
+        element: <ResetPassword/>
     },
     {
         path: URLS.OAUTH2_REDIRECT,

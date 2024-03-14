@@ -90,3 +90,5 @@ export const flagTypeArray: DashboardSelectItem[] = [
     {value: "json", title: "JSON", description: "A JSON object"},
     {value: "array", title: "Array", description: "A JSON array of values"},
 ]
+
+export type tWebMailAPIResponse = { success: true, message: string, email: string, web_mail_url: string, service_name: string } | { success: false, message: string, email?: string };
