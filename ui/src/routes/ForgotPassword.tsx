@@ -1,6 +1,5 @@
 import React from "preact/compat";
 import pocketbase from "../libraries/Pocketbase";
-import {ClientResponseError} from "pocketbase";
 import {Link} from "react-router-dom";
 import URLS from "../helpers/URLS";
 import ValidatedInput from "../components/auth/ValidatedInput";
@@ -12,6 +11,7 @@ import NavBar from "../components/navbar/NavBar";
 import Content from "../components/general/Content";
 import Page from "../components/general/Page";
 import {tWebMailAPIResponse} from "../types/Structures";
+import ErrorsAsStringDict from "../helpers/ErrorsAsStringDict";
 
 export default function ForgotPassword() {
     const [email, setEmail] = React.useState("");
@@ -56,17 +56,7 @@ export default function ForgotPassword() {
 
             //navigate(URLS.LOGIN);
         } catch (e) {
-            console.log(e)
-            if (e instanceof ClientResponseError) {
-                // get the response data
-                const userLoginError = (e.data as ClientResponseError).message;
-
-                // set the errors
-                setErrors({"form": userLoginError});
-            } else if (e instanceof Error) {
-                // unknown error
-                setErrors({"form": e.message});
-            }
+            setErrors(ErrorsAsStringDict(e));
         }
 
         setLoginEnabled(true);

@@ -1,6 +1,5 @@
 import React from "preact/compat";
 import pocketbase from "../libraries/Pocketbase";
-import {ClientResponseError} from "pocketbase";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import URLS from "../helpers/URLS";
 import ValidatedInput from "../components/auth/ValidatedInput";
@@ -11,6 +10,7 @@ import NavAuthLinks from "../components/navbar/NavAuthLinks";
 import NavBar from "../components/navbar/NavBar";
 import Content from "../components/general/Content";
 import Page from "../components/general/Page";
+import ErrorsAsStringDict from "../helpers/ErrorsAsStringDict";
 
 export default function ResetPassword() {
     const [password, setPassword] = React.useState("");
@@ -40,59 +40,8 @@ export default function ResetPassword() {
                     navigate(URLS.LOGIN);
                 }
             }, 5000);
-
-            //navigate(URLS.LOGIN);
         } catch (e) {
-            console.log(e)
-            if (e instanceof ClientResponseError) {
-                // {"code":400,"message":"Something went wrong while processing your request.","data":{"password":{"code":"validation_length_out_of_range","message":"The length must be between 8 and 100."},"token":{"code":"validation_invalid_token","message":"Invalid or expired token."}}}
-
-                // get the response data
-                const userLoginError = (e.data as ClientResponseError).message;
-
-                // map data into {field: error}
-                const errorMap: { [key: string]: string } = {};
-
-
-                let data = e.data as ClientResponseError;
-                for (let key in data.data) {
-                    if (!data.data.hasOwnProperty(key)) continue;
-
-                    console.log(data.data[key])
-
-                    if (data.data[key].code === "validation_invalid_token") {
-                        errorMap.token = "Invalid token. Please request a new password reset link."
-                        continue;
-                    } else if (data.data[key].code === "validation_values_mismatch") {
-                        errorMap.passwordConfirm = "Passwords do not match.";
-                        continue;
-                    }
-
-                    errorMap[key] = data.data[key].message;
-                }
-
-                console.log(errorMap)
-
-                if (errorMap.passwordConfirm) {
-                    errorMap.form = errorMap.passwordConfirm;
-                }
-
-                // password is second most important error
-                if (errorMap.password) {
-                    errorMap.form = errorMap.password;
-                }
-
-                // token is the most important error (if it exists, as it means their token is invalid or expired)
-                if (errorMap.token) {
-                    errorMap.form = errorMap.token;
-                }
-
-                // set the errors
-                setErrors({"form": userLoginError, ...errorMap});
-            } else if (e instanceof Error) {
-                // unknown error
-                setErrors({"form": e.message});
-            }
+            setErrors(ErrorsAsStringDict(e));
         }
 
         setLoginEnabled(true);
@@ -111,9 +60,9 @@ export default function ResetPassword() {
                     <p>Reset Password</p>
                 </div>
                 <div class="auth-form-body">
-                    <ValidatedInput value={password} valueUpdate={setPassword} name={"email"} label={"New Password"}
+                    <ValidatedInput value={password} valueUpdate={setPassword} name={"password"} label={"New Password"}
                                     errors={errors} type={"password"} required={true} />
-                    <ValidatedInput value={passwordConfirm} valueUpdate={setPasswordConfirm} name={"email"} label={"Confirm New Password"}
+                    <ValidatedInput value={passwordConfirm} valueUpdate={setPasswordConfirm} name={"passwordConfirm"} label={"Confirm New Password"}
                                     errors={errors} type={"password"} required={true} />
                 </div>
                 <div className="auth-form-footer">
@@ -122,6 +71,7 @@ export default function ResetPassword() {
                     </button>
                     <div className="auth-form-submit-error">
                         {errors.form ? errors.form : ""}
+                        {errors.token ? errors.token : ""}
                     </div>
                     <div className="auth-form-submit-success">
                         {message ? message : ""}

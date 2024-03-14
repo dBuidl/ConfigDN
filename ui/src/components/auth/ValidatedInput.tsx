@@ -29,7 +29,7 @@ export default function ValidatedInput(props: { errors: { [key: string]: string 
             onChange={onChange}
             className={`auth-form-input-field ${error ? "error" : ""}`}
         />
-        {error.length > 0 ? <div className="auth-form-input-error">Error: {error}</div> : null}
+        {error.length > 0 ? <div className="auth-form-input-error">{error}</div> : null}
     </div>;
 
 }

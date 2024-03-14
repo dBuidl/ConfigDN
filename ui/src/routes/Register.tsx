@@ -1,9 +1,8 @@
 import React from "preact/compat";
 import pocketbase from "../libraries/Pocketbase";
-import {AuthMethodsList, ClientResponseError} from "pocketbase";
+import {AuthMethodsList} from "pocketbase";
 import ErrorsAsStringDict from "../helpers/ErrorsAsStringDict";
 import URLS from "../helpers/URLS";
-import {DatabaseInsertError} from "../types/Errors";
 import useAuthRedirect from "../hooks/useAuthRedirect";
 import {useLoaderData, useNavigate} from "react-router-dom";
 import ValidatedInput from "../components/auth/ValidatedInput";
@@ -48,21 +47,7 @@ export default function Register() {
 
             navigate(URLS.DASHBOARD);
         } catch (e) {
-            if (e instanceof ClientResponseError) {
-                // get the response data
-                const userCreateError = (e.data as DatabaseInsertError);
-
-                // check if data is empty
-                if (Object.keys(userCreateError.data).length === 0) {
-                    setErrors({form: userCreateError.message});
-                } else {
-                    // set the errors
-                    setErrors(ErrorsAsStringDict(userCreateError.data));
-                }
-            } else if (e instanceof Error) {
-                // unknown error
-                setErrors({form: e.message});
-            }
+            setErrors(ErrorsAsStringDict(e));
         }
 
         setRegisterEnabled(true);

@@ -1,9 +1,8 @@
 import React, {useEffect} from "preact/compat";
 import pocketbase from "../libraries/Pocketbase";
-import {AuthMethodsList, ClientResponseError} from "pocketbase";
+import {AuthMethodsList} from "pocketbase";
 import {Link, useLoaderData, useNavigate, useSearchParams} from "react-router-dom";
 import URLS from "../helpers/URLS";
-import {DatabaseInsertError} from "../types/Errors";
 import ValidatedInput from "../components/auth/ValidatedInput";
 import useAuthRedirect from "../hooks/useAuthRedirect";
 import logo from "../assets/images/raster/logo.png";
@@ -15,6 +14,7 @@ import Page from "../components/general/Page";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faGithub} from "@fortawesome/free-brands-svg-icons/faGithub";
 import loginWithOauth from "../helpers/loginWithOauth";
+import ErrorsAsStringDict from "../helpers/ErrorsAsStringDict";
 
 export default function Login() {
     const [email, setEmail] = React.useState("");
@@ -45,16 +45,7 @@ export default function Login() {
 
             navigate(URLS.DASHBOARD);
         } catch (e) {
-            if (e instanceof ClientResponseError) {
-                // get the response data
-                const userLoginError = (e.data as DatabaseInsertError).message;
-
-                // set the errors
-                setErrors({"form": userLoginError});
-            } else if (e instanceof Error) {
-                // unknown error
-                setErrors({"form": e.message});
-            }
+            setErrors(ErrorsAsStringDict(e as any));
         }
 
         setLoginEnabled(true);
