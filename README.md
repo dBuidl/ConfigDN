@@ -32,3 +32,5 @@ To run the project, execute the executable built by the build script:
 ConfigDN will then be available at:
 - http://localhost:8090/ - UI
 - http://localhost:8090/_/ - Admin UI (Make sure you visit this before making it public as the first person to visit it will be made an admin)
+
+If you want a prettier interface for resetting passwords, you'll need to go into the admin UI, go to the settings icon then mail settings and update the action URL for reset password to `{APP_URL}/auth/reset-password/{TOKEN}`. You should probably set up an SMTP server while you're there and check over the other settings to make sure you're happy with them.
