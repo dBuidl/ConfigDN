@@ -3,20 +3,34 @@ import URLS from "../../helpers/URLS";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUserCircle} from "@fortawesome/free-solid-svg-icons/faUserCircle";
 import pocketbase from "../../libraries/Pocketbase";
-import React from "preact/compat";
 import NavBarLink from "./NavBarLink";
+import NavBarDropdownLink, {
+    NavBarDropdownItem,
+    NavBarDropdownItemContainer,
+    NavBarDropdownLinkText
+} from "./NavBarDropdownLink";
 
 export default function NavAuthLinks() {
     const authValid = useAuthValid();
 
     if (authValid) {
-        return <>
-            <NavBarLink href={URLS.DASHBOARD}>
+        return <NavBarDropdownLink>
+            <NavBarDropdownLinkText>
                 <FontAwesomeIcon
                     icon={faUserCircle}/>&nbsp;{pocketbase.authStore?.model?.username}
-            </NavBarLink>
-            <NavBarLink href={URLS.LOGOUT}>Logout</NavBarLink>
-        </>;
+            </NavBarDropdownLinkText>
+            <NavBarDropdownItemContainer>
+                <NavBarDropdownItem>
+                    <NavBarLink href={URLS.DASHBOARD}>Dashboard</NavBarLink>
+                </NavBarDropdownItem>
+                <NavBarDropdownItem>
+                    <NavBarLink href={URLS.USER_SETTINGS}>Account</NavBarLink>
+                </NavBarDropdownItem>
+                <NavBarDropdownItem>
+                    <NavBarLink href={URLS.LOGOUT}>Logout</NavBarLink>
+                </NavBarDropdownItem>
+            </NavBarDropdownItemContainer>
+        </NavBarDropdownLink>;
     }
 
     return <>

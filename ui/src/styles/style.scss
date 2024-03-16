@@ -253,6 +253,62 @@ nav.navbar {
             }
         }
 
+        .navbar-link.navbar-link-dropdown {
+            background: none;
+            border: none;
+            position: relative;
+            overflow: visible;
+
+            .navbar-link__text {
+                margin-top: auto;
+                margin-bottom: auto;
+            }
+
+            &:hover, & {
+                >.navbar-link__text, >.navbar-link__text:hover {
+                    margin-top: auto;
+                    margin-bottom: auto;
+                }
+            }
+
+            .navbar-link-dropdown-items {
+                position: absolute;
+                top: calc(100% - 10px);
+                padding-top: 10px;
+                width: 100%;
+                height: auto;
+                display: none;
+
+                background-color: $celadon-blue;
+
+                border-bottom-left-radius: 5px;
+                border-bottom-right-radius: 5px;
+            }
+
+            &.navbar-link-dropdown__active, &:hover {
+                .navbar-link-dropdown-items {
+                    display: block;
+                }
+
+                .navbar-link {
+                    height: calc($nav-height - 20px);
+
+                    border-top: 1px solid white;
+
+                    .navbar-link__text {
+                        margin-top: 32px;
+                        margin-bottom: 0;
+                    }
+
+                    &:hover {
+                        .navbar-link__text {
+                            margin-top: 8px;
+                        }
+                    }
+                }
+            }
+        }
+
         .navbar-link {
             height: 100%;
             padding: 7px 10px;
@@ -303,11 +359,11 @@ nav.navbar {
             }
 
             &:hover {
-                .navbar-link__text {
+                >.navbar-link__text {
                     margin-top: 0;
                 }
 
-                .navbar-link__decoration {
+                >.navbar-link__decoration {
                     margin-top: 0;
                     opacity: 1;
                 }

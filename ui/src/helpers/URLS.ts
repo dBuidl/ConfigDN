@@ -8,6 +8,7 @@ const URLS: { [key: string]: string } = {
     FORGOT_PASSWORD: "/auth/forgot-password",
     RESET_PASSWORD: "/auth/reset-password/:token",
     CHANGE_PASSWORD: "/auth/change-password",
+    USER_SETTINGS: "/dashboard/user",
 }
 
 export default URLS;
