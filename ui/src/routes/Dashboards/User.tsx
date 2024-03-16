@@ -40,7 +40,7 @@ export default function User() {
         <DashboardNavbar>
             {model ? <div className={"navbar-links-breadcrumb"}>
                     <Link class="breadcrumb-page"
-                          to={`/dashboard/user`}><p>Account Settings</p></Link>
+                          to={`/dashboard/user/${model?.id}`}><p>Account Settings</p></Link>
                 </div>
                 : null}
         </DashboardNavbar>
