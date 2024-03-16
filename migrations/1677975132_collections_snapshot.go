@@ -515,7 +515,7 @@ func init() {
 				"viewRule": "",
 				"createRule": "",
 				"updateRule": "id = @request.auth.id",
-				"deleteRule": null,
+				"deleteRule": "id = @request.auth.id",
 				"options": {
 					"allowEmailAuth": true,
 					"allowOAuth2Auth": true,
