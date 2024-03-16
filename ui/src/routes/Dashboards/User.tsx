@@ -28,8 +28,6 @@ export default function User() {
             return;
         }
 
-        console.log(model?.id)
-
         pocketbase.collection('users').delete(model?.id as string).then(() => {
             pocketbase.authStore?.clear();
             navigate(URLS.HOME);
