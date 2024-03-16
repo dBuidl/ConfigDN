@@ -18,7 +18,7 @@ import OAuth from "./routes/OAuth";
 import ForgotPassword from "./routes/ForgotPassword";
 import ResetPassword from "./routes/ResetPassword";
 import ChangePassword from "./routes/ChangePassword";
-import User from "./routes/Dashboards/User";
+import User, {userLoader} from "./routes/Dashboards/User";
 
 const router = createBrowserRouter([
     {
@@ -41,7 +41,7 @@ const router = createBrowserRouter([
         element: <ForgotPassword/>,
     },
     {
-        path: URLS.RESET_PASSWORD,
+        path: URLS.RESET_PASSWORD + "/:token" ,
         element: <ResetPassword/>
     },
     {
@@ -85,8 +85,9 @@ const router = createBrowserRouter([
                 errorElement: <DashboardError/>,
             },
             {
-                path: "user",
+                path: "user/:id",
                 element: <User />,
+                loader: userLoader,
             }
         ]
     },

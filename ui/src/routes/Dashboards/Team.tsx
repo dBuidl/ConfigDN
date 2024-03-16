@@ -27,6 +27,7 @@ import SelectInput, {DashboardSelectItem} from "../../components/dashboard/Selec
 import DashboardObjectActions from "../../components/dashboard/DashboardObjectActions";
 import DashboardObjectAction from "../../components/dashboard/DashboardObjectAction";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
+import DashboardObjectBody from "../../components/dashboard/DashboardObjectBody";
 
 const userRoles: DashboardSelectItem[] = [
     {
@@ -404,6 +405,9 @@ export default function Team() {
                             </DashboardObjectHeaderIcon>
                             <DashboardObjectHeaderName>Add Member</DashboardObjectHeaderName>
                         </DashboardObjectHeader>
+                        <DashboardObjectBody>
+                            <p>Also allows transfer of ownership.</p>
+                        </DashboardObjectBody>
                     </DashboardObject>
                 </DashboardObjectsList>
             </DashboardObjects>}

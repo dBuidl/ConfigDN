@@ -1,4 +1,4 @@
-import useAuthValid from "../../hooks/useAuthValid";
+import {useAuthValidWithModel} from "../../hooks/useAuthValid";
 import URLS from "../../helpers/URLS";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUserCircle} from "@fortawesome/free-solid-svg-icons/faUserCircle";
@@ -11,7 +11,7 @@ import NavBarDropdownLink, {
 } from "./NavBarDropdownLink";
 
 export default function NavAuthLinks() {
-    const authValid = useAuthValid();
+    const [authValid, model] = useAuthValidWithModel();
 
     if (authValid) {
         return <>
@@ -23,7 +23,7 @@ export default function NavAuthLinks() {
             </NavBarDropdownLinkText>
             <NavBarDropdownItemContainer>
                 <NavBarDropdownItem>
-                    <NavBarLink href={URLS.USER_SETTINGS}>Account</NavBarLink>
+                    <NavBarLink href={URLS.USER_SETTINGS + "/" + model?.id}>Account</NavBarLink>
                 </NavBarDropdownItem>
                 <NavBarDropdownItem>
                     <NavBarLink href={URLS.LOGOUT}>Logout</NavBarLink>

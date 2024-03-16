@@ -931,6 +931,19 @@ div.page-transition {
                     background: mix(mix($celadon-blue, $oxford-blue, 40%), $white, 70%)
                 }
             }
+
+            &.button__delete-account {
+                // a dark mixed red
+                background-color: #900;
+
+                &:hover {
+                    background-color: mix(#900, #fff, 80%);
+                }
+
+                &:active {
+                    background-color: mix(#900, #fff, 70%);
+                }
+            }
         }
     }
 
@@ -1238,6 +1251,23 @@ div.page-transition {
         &:first-of-type {
             margin-top: 20px;
         }
+    }
+
+    ul.owned-teams-list {
+        padding: 10px 15px;
+
+        li {
+            list-style-type: disc;
+            text-decoration: underline;
+        }
+    }
+
+    .delete-account-warning {
+        font-size: 1.5em;
+        margin-top: 20px;
+        margin-bottom: 10px;
+
+        color: #900;
     }
 }
 
