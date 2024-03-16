@@ -14,15 +14,14 @@ export default function NavAuthLinks() {
     const authValid = useAuthValid();
 
     if (authValid) {
-        return <NavBarDropdownLink>
+        return <>
+            <NavBarLink href={URLS.DASHBOARD}>Dashboard</NavBarLink>
+            <NavBarDropdownLink>
             <NavBarDropdownLinkText>
                 <FontAwesomeIcon
                     icon={faUserCircle}/>&nbsp;{pocketbase.authStore?.model?.username}
             </NavBarDropdownLinkText>
             <NavBarDropdownItemContainer>
-                <NavBarDropdownItem>
-                    <NavBarLink href={URLS.DASHBOARD}>Dashboard</NavBarLink>
-                </NavBarDropdownItem>
                 <NavBarDropdownItem>
                     <NavBarLink href={URLS.USER_SETTINGS}>Account</NavBarLink>
                 </NavBarDropdownItem>
@@ -30,7 +29,8 @@ export default function NavAuthLinks() {
                     <NavBarLink href={URLS.LOGOUT}>Logout</NavBarLink>
                 </NavBarDropdownItem>
             </NavBarDropdownItemContainer>
-        </NavBarDropdownLink>;
+        </NavBarDropdownLink>
+            </>;
     }
 
     return <>

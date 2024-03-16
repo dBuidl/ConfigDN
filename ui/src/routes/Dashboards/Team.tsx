@@ -44,22 +44,41 @@ const userRoles: DashboardSelectItem[] = [
         title: "Admin",
         description: "Can manage, create and delete all projects, configs, environments, flags and values.",
     },
+    {
+        value: "owner",
+        title: "Owner",
+        description: "Owns this team and can change it in any way. Selecting this option will change the ownership of this team."
+    }
 ];
 
 export default function Team() {
     const [teamData, projectsData, userData] = useLoaderData() as TeamLoaderData;
     const [projects, setProjects] = useState<ProjectRecord[]>(projectsData);
     const [newProjectName, setNewProjectName] = useState<string>("");
-    const [userToAdd, setUserToAdd] = useState<UserRecord | null>(null);
-    const [userRole, setUserRole] = useState<DashboardSelectItem | null>(userRoles[0]);
+    const [userToAdd, setUserToAddInner] = useState<UserRecord | null>(null);
+    const [userRole, setUserRoleInner] = useState<DashboardSelectItem | null>(userRoles[0]);
     const [error, setError] = useState<string>("");
     const [memberError, setMemberError] = useState<string>("");
     const [team, setTeam] = useState<TeamRecord>(teamData);
     const [reset, setReset] = useState<boolean>(false);
+    const [terribleActionConfirm, setTerribleActionConfirm] = useState<boolean>(false);
 
     const [deleteObjectType, setDeleteObjectType] = useState<string>("");
     const [deleteObject, setDeleteObject] = useState<ProjectRecord | UserRecord | null>(null);
     const [deleteObjectError, setDeleteObjectError] = useState<string>("");
+
+    // reset the terrible action confirmed if either input is changed.
+    function setUserRole(item: DashboardSelectItem | null) {
+        setTerribleActionConfirm(false);
+
+        setUserRoleInner(item);
+    }
+
+    function setUserToAdd(item: UserRecord | null) {
+        setTerribleActionConfirm(false);
+
+        setUserToAddInner(item);
+    }
 
     const navigate = useNavigate();
 
@@ -135,8 +154,8 @@ export default function Team() {
             <SelectInput items={userRoles} onSelectedItemChange={setUserRole} defaultValue={userRole}/>
         </DialogBody>
         <DialogFooter>
-            <button className="dialog-action dialog-action__save"
-                    onClick={() => addTeamMember()}>Add Member
+            <button className={"dialog-action " + (userRole?.value === "owner" ? " dialog-action__delete" : " dialog-action__save")}
+                    onClick={() => addTeamMember()}>{userRole?.value === "owner" ? "Transfer Ownership" : "Add Member"}
             </button>
             <button className="dialog-action dialog-action__cancel"
                     onClick={() => setUserAddDialogShowing(false)}>Cancel
@@ -148,6 +167,7 @@ export default function Team() {
             if (!showing) {
                 setUserToAdd(null);
                 setReset(true);
+                setTerribleActionConfirm(false);
             } else {
                 setReset(false);
             }
@@ -228,6 +248,26 @@ export default function Team() {
             return;
         }
 
+        if (userRole?.value === "owner") {
+            if (!terribleActionConfirm) {
+                setMemberError("Please click again to confirm that you want to transfer ownership");
+                setTimeout(() => setMemberError(''), 5000);
+                setTerribleActionConfirm(true);
+                return;
+            }
+        } else {
+            setTerribleActionConfirm(false);
+        }
+
+        // check if the userRole is owner and warn them that they are about to transfer ownership
+        if (userRole?.value === "owner") {
+            if (team.owner === userToAdd.id) {
+                setMemberError("User is already the owner of the team");
+                setTimeout(() => setMemberError(''), 5000);
+                return;
+            }
+        }
+
         if (userRole === null) {
             setMemberError("Please select a role for the user");
             setTimeout(() => setMemberError(''), 5000);
@@ -259,22 +299,35 @@ export default function Team() {
             return;
         }
 
-        // add user to team
-        pocketbase.collection('team').update(team.id, {
+        let bodyParams: any = {
             [userRole.value]: [...team[userRole.value], userToAdd.id],
-        }).then(() => {
+        }
+
+        if (userRole.value === "owner") {
+            bodyParams = {
+                ...bodyParams,
+                owner: userToAdd.id,
+            }
+        }
+
+        // add user to team (or replace owner)
+        pocketbase.collection('team').update(team.id, bodyParams).then(() => {
             // need to add it manually because otherwise we lose the extra data
             const userObjectClone = {...userToAdd} as UserRecord;
 
             setTeam(team => {
                 let teamClone = {...team} as TeamRecord;
 
-                teamClone[userRole.value].push(userObjectClone.id);
+                if (userRole.value === "owner") {
+                    teamClone.owner = userObjectClone.id;
+                } else {
+                    teamClone[userRole.value].push(userObjectClone.id);
 
-                // @ts-ignore
-                if (teamClone.expand[userRole.value]) {
                     // @ts-ignore
-                    teamClone.expand[userRole.value].push(userObjectClone);
+                    if (teamClone.expand[userRole.value]) {
+                        // @ts-ignore
+                        teamClone.expand[userRole.value].push(userObjectClone);
+                    }
                 }
 
                 return teamClone;

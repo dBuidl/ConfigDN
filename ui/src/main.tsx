@@ -18,6 +18,7 @@ import OAuth from "./routes/OAuth";
 import ForgotPassword from "./routes/ForgotPassword";
 import ResetPassword from "./routes/ResetPassword";
 import ChangePassword from "./routes/ChangePassword";
+import User from "./routes/Dashboards/User";
 
 const router = createBrowserRouter([
     {
@@ -82,6 +83,10 @@ const router = createBrowserRouter([
                 element: <Config/>,
                 loader: configLoader,
                 errorElement: <DashboardError/>,
+            },
+            {
+                path: "user",
+                element: <User />,
             }
         ]
     },

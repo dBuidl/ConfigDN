@@ -262,6 +262,9 @@ nav.navbar {
             .navbar-link__text {
                 margin-top: auto;
                 margin-bottom: auto;
+
+
+                font-size: 1.15em;
             }
 
             &:hover, & {
@@ -740,7 +743,7 @@ div.page-transition {
 }
 
 // Dashboard (Config)
-.page .content.dashboard.dashboard-config {
+.page .content.dashboard.dashboard-config, .page .content.dashboard.dashboard-user-settings {
     display: flex;
     flex-direction: column;
 
@@ -1222,6 +1225,18 @@ div.page-transition {
                     background-color: mix(#900, #fff, 70%);
                 }
             }
+        }
+    }
+}
+
+.page .dashboard.dashboard-user-settings {
+    .action-header {
+        font-size: 2em;
+        margin-top: 50px;
+        margin-bottom: 10px;
+
+        &:first-of-type {
+            margin-top: 20px;
         }
     }
 }

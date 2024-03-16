@@ -92,8 +92,8 @@ export default function ChangePassword() {
                         {message ? message : ""}
                     </div>
 
-                    <p className="auth-form-text">Want to go back? <Link to={URLS.DASHBOARD}
-                                                                                class="auth-form-link">Dashboard</Link></p>
+                    <p className="auth-form-text">Want to go back? <Link to={URLS.USER_SETTINGS}
+                                                                                class="auth-form-link">Account Settings</Link></p>
 
                 </div>
             </form>
