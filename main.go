@@ -101,7 +101,7 @@ func main() {
 	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 		_, err := e.Router.AddRoute(echo.Route{
 			Method: http.MethodGet,
-			Path:   "/api/v1/get_config",
+			Path:   "/api/custom/v1/get_config",
 			Handler: func(c echo.Context) error {
 				// get key from auth header
 				key := c.Request().Header.Get("Authorization")
