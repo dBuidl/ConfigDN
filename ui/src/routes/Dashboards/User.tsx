@@ -39,7 +39,7 @@ export default function User() {
    return <>
         <DashboardNavbar>
             {model ? <div className={"navbar-links-breadcrumb"}>
-                    <Link class="breadcrumb-page"
+                    <Link className="breadcrumb-page"
                           to={`/dashboard/user/${model?.id}`}><p>Account Settings</p></Link>
                 </div>
                 : null}
@@ -62,7 +62,7 @@ export default function User() {
 
            <p>You currently own the following teams:</p>
 
-           <ul class="owned-teams-list">
+           <ul className="owned-teams-list">
                {
                    teams.items.map(v => <li><a href={URLS.DASHBOARD + "/" + v.id}>{v.name}</a></li>)
                }
@@ -75,7 +75,7 @@ export default function User() {
                               type={"Delete Account"}/>
            </SettingButtons>
 
-           <p class="delete-account-warning">{message}</p>
+           <p className="delete-account-warning">{message}</p>
 
            <DashboardSpacer/>
        </Content>

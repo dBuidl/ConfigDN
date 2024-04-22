@@ -60,7 +60,7 @@ export default function ChangePassword() {
         setLoginEnabled(true);
     }
 
-    return <Page class="auth-page">
+    return <Page className="auth-page">
         <NavBar logo={logo}>
             <NavBarLinksContainer>
                 <NavAuthLinks/>
@@ -68,11 +68,11 @@ export default function ChangePassword() {
         </NavBar>
 
         <Content pageName="auth-content">
-            <form class="auth-form" onSubmit={loginToAccount}>
-                <div class="auth-form-header">
+            <form className="auth-form" onSubmit={loginToAccount}>
+                <div className="auth-form-header">
                     <p>Reset Password</p>
                 </div>
-                <div class="auth-form-body">
+                <div className="auth-form-body">
                     <ValidatedInput value={oldPassword} valueUpdate={setOldPassword} name={"oldPassword"} label={"Old Password"}
                                     errors={errors} type={"password"} required={true} />
                     <ValidatedInput value={password} valueUpdate={setPassword} name={"password"} label={"New Password"}
@@ -93,7 +93,7 @@ export default function ChangePassword() {
                     </div>
 
                     <p className="auth-form-text">Want to go back? <Link to={URLS.USER_SETTINGS}
-                                                                                class="auth-form-link">Account Settings</Link></p>
+                                                                                className="auth-form-link">Account Settings</Link></p>
 
                 </div>
             </form>

@@ -47,7 +47,7 @@ export default function ResetPassword() {
         setLoginEnabled(true);
     }
 
-    return <Page class="auth-page">
+    return <Page className="auth-page">
         <NavBar logo={logo}>
             <NavBarLinksContainer>
                 <NavAuthLinks/>
@@ -55,11 +55,11 @@ export default function ResetPassword() {
         </NavBar>
 
         <Content pageName="auth-content">
-            <form class="auth-form" onSubmit={loginToAccount}>
-                <div class="auth-form-header">
+            <form className="auth-form" onSubmit={loginToAccount}>
+                <div className="auth-form-header">
                     <p>Reset Password</p>
                 </div>
-                <div class="auth-form-body">
+                <div className="auth-form-body">
                     <ValidatedInput value={password} valueUpdate={setPassword} name={"password"} label={"New Password"}
                                     errors={errors} type={"password"} required={true} />
                     <ValidatedInput value={passwordConfirm} valueUpdate={setPasswordConfirm} name={"passwordConfirm"} label={"Confirm New Password"}
@@ -78,9 +78,9 @@ export default function ResetPassword() {
                     </div>
 
                     <p className="auth-form-text">Need a new link? <Link to={URLS.FORGOT_PASSWORD}
-                                                                                class="auth-form-link">Forgot Password</Link></p>
+                                                                                className="auth-form-link">Forgot Password</Link></p>
                     <p className="auth-form-text">Remember your password? <Link to={URLS.LOGIN}
-                                                                                class="auth-form-link">Login</Link></p>
+                                                                                className="auth-form-link">Login</Link></p>
 
                 </div>
             </form>

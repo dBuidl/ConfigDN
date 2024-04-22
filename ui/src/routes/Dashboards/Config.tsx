@@ -213,9 +213,9 @@ export default function Config() {
         <DialogHeader>
             <h1 className="dialog-heading">Create Flag</h1>
         </DialogHeader>
-        <DialogBody class="dialog-form">
-            <label class="dialog-input-label">Flag Name:</label>
-            <input type="text" class="dialog-input" value={newFlagName} placeholder="Flag Name"
+        <DialogBody className="dialog-form">
+            <label className="dialog-input-label">Flag Name:</label>
+            <input type="text" className="dialog-input" value={newFlagName} placeholder="Flag Name"
                    onInput={(e) => {
                        setNewFlagName(e.currentTarget.value);
 
@@ -228,19 +228,19 @@ export default function Config() {
                            setNewFlagIdentifier(camelCased);
                        }
                    }}/>
-            <label class="dialog-input-label">Flag Identifier:</label>
-            <input type="text" class="dialog-input" value={newFlagIdentifier} placeholder="Flag Identifier"
+            <label className="dialog-input-label">Flag Identifier:</label>
+            <input type="text" className="dialog-input" value={newFlagIdentifier} placeholder="Flag Identifier"
                    onInput={(e) => {
                        setNewFlagIdentifierIsDefault(false);
                        setNewFlagIdentifier(e.currentTarget.value);
                    }}/>
-            <label class="dialog-input-label">Flag Type:</label>
+            <label className="dialog-input-label">Flag Type:</label>
             <SelectInput selectText="Select Type" items={flagTypeArray} onSelectedItemChange={setNewFlagType}/>
         </DialogBody>
         <DialogFooter>
-            <button class="dialog-action dialog-action__save" onClick={() => createNewFlag()}>Create
+            <button className="dialog-action dialog-action__save" onClick={() => createNewFlag()}>Create
             </button>
-            <button class="dialog-action dialog-action__cancel"
+            <button className="dialog-action dialog-action__cancel"
                     onClick={() => setNewFlagDialogShowing(false)}>Cancel
             </button>
             <p className="dialog-error">{newFlagError}</p>
@@ -258,7 +258,7 @@ export default function Config() {
     });
 
     if (typeof environment === "undefined") {
-        return <div class="content">
+        return <div className="content">
             <h1>No environments found!</h1>
             <p>Go back to the <Link to="../">project page</Link> to create a new environment.</p>
         </div>;

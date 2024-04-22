@@ -75,9 +75,9 @@ export default function Overview() {
 
     const [setDeleteTeamDialogShowing, deleteTeamDialog] = useDialog(<Dialog>
         <DialogHeader>
-            <h1 class="dialog-heading">Delete Team</h1>
+            <h1 className="dialog-heading">Delete Team</h1>
         </DialogHeader>
-        <DialogBody class="dialog-form">
+        <DialogBody className="dialog-form">
             <p>Are you sure you want to delete the team {teamToDelete?.name}? This is irreversible and will delete all
                 associated configs, projects, environments and API Keys.</p>
         </DialogBody>
@@ -86,7 +86,7 @@ export default function Overview() {
             <button className="dialog-action dialog-action__cancel"
                     onClick={() => setDeleteTeamDialogShowing(false)}>Cancel
             </button>
-            <p class="dialog-error">{teamToDeleteError}</p>
+            <p className="dialog-error">{teamToDeleteError}</p>
         </DialogFooter>
     </Dialog>, {
         afterSetShowing: (showing) => {
@@ -100,11 +100,11 @@ export default function Overview() {
     // create team dialog
     const [setCreateTeamDialogShowing, createTeamDialog] = useDialog(<Dialog>
         <DialogHeader>
-            <h1 class="dialog-heading">Create Team</h1>
+            <h1 className="dialog-heading">Create Team</h1>
         </DialogHeader>
-        <DialogBody class="dialog-form">
-            <label class="dialog-input-label">Team Name:</label>
-            <input class="dialog-input" value={newTeamName} onChange={(e) => setNewTeamName(e?.currentTarget.value)}
+        <DialogBody className="dialog-form">
+            <label className="dialog-input-label">Team Name:</label>
+            <input className="dialog-input" value={newTeamName} onChange={(e) => setNewTeamName(e?.currentTarget.value)}
                    type="text"
                    placeholder="Team Name"/>
         </DialogBody>
@@ -115,7 +115,7 @@ export default function Overview() {
             <button className="dialog-action dialog-action__cancel"
                     onClick={() => setCreateTeamDialogShowing(false)}>Cancel
             </button>
-            <p class="dialog-error">{error}</p>
+            <p className="dialog-error">{error}</p>
         </DialogFooter>
     </Dialog>, {
         afterSetShowing: (showing) => {

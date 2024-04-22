@@ -19,7 +19,7 @@ export default function ValidatedInput(props: { errors: { [key: string]: string 
     }
 
     return <div className="auth-form-input">
-        <label class="auth-form-input-label" htmlFor={id}>{props.label}</label>
+        <label className="auth-form-input-label" htmlFor={id}>{props.label}</label>
         <input
             type={props.type || "text"}
             name={props.name}

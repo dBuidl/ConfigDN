@@ -62,7 +62,7 @@ export default function ForgotPassword() {
         setLoginEnabled(true);
     }
 
-    return <Page class="auth-page">
+    return <Page className="auth-page">
         <NavBar logo={logo}>
             <NavBarLinksContainer>
                 <NavAuthLinks/>
@@ -70,11 +70,11 @@ export default function ForgotPassword() {
         </NavBar>
 
         <Content pageName="auth-content">
-            <form class="auth-form" onSubmit={loginToAccount}>
-                <div class="auth-form-header">
+            <form className="auth-form" onSubmit={loginToAccount}>
+                <div className="auth-form-header">
                     <p>Forgot Password?</p>
                 </div>
-                <div class="auth-form-body">
+                <div className="auth-form-body">
                     <ValidatedInput value={email} valueUpdate={setEmail} name={"email"} label={"Email"}
                                     errors={errors} type={"email"} required={true} />
                 </div>
@@ -94,9 +94,9 @@ export default function ForgotPassword() {
                     </button>
 
                     <p className="auth-form-text">Remember your password? <Link to={URLS.LOGIN}
-                                                                                class="auth-form-link">Login</Link></p>
+                                                                                className="auth-form-link">Login</Link></p>
                     <p className="auth-form-text">Need an account? <Link to={URLS.REGISTER}
-                                                                         class="auth-form-link">Register</Link></p>
+                                                                         className="auth-form-link">Register</Link></p>
 
                 </div>
             </form>

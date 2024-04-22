@@ -5,7 +5,7 @@ interface PropsWithChildrenAndOnClick extends PropsWithChildren {
 }
 
 export default function DashboardObject(props: PropsWithChildrenAndOnClick) {
-    return <div class={`dashboard-objects-object ${props.onClick ? "dashboard-objects-object__clickable" : ""}`}
+    return <div className={`dashboard-objects-object ${props.onClick ? "dashboard-objects-object__clickable" : ""}`}
                 onClick={props.onClick ? props.onClick : () => null}>
         {props.children}
     </div>;

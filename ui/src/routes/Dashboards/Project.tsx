@@ -1,7 +1,7 @@
 import pocketbase from "../../libraries/Pocketbase";
 import {ConfigRecord, EnvironmentRecord, ProjectRecord, TeamRecord} from "../../types/Structures";
 import {useLoaderData, useNavigate} from "react-router-dom";
-import React, {useEffect, useState} from "preact/compat";
+import {useEffect, useState} from "preact/compat";
 import Content from "../../components/general/Content";
 import DashboardObjectsTitle from "../../components/dashboard/DashboardObjectsTitle";
 import DashboardObjectsList from "../../components/dashboard/DashboardObjectsList";
@@ -99,9 +99,9 @@ export default function Project() {
             <p>Are you sure you want to delete the {deleteObjectType} {deleteObject?.name}?</p>
         </DialogBody>
         <DialogFooter>
-            <button class="dialog-action dialog-action__delete" onClick={() => deleteObjectFunc()}>Delete
+            <button className="dialog-action dialog-action__delete" onClick={() => deleteObjectFunc()}>Delete
             </button>
-            <button class="dialog-action dialog-action__cancel"
+            <button className="dialog-action dialog-action__cancel"
                     onClick={() => setDeleteObjectDialogOpen(false)}>Cancel
             </button>
             <p className="dialog-error">{deleteObjectError}</p>
@@ -148,14 +148,14 @@ export default function Project() {
             <h1 className="dialog-heading">Create Config</h1>
         </DialogHeader>
         <DialogBody class="dialog-form">
-            <label class="dialog-input-label">Config Name:</label>
-            <input type="text" class="dialog-input" value={newConfigName} placeholder="Config Name"
+            <label className="dialog-input-label">Config Name:</label>
+            <input type="text" className="dialog-input" value={newConfigName} placeholder="Config Name"
                    onInput={(e) => setNewConfigName(e.currentTarget.value)}/>
         </DialogBody>
         <DialogFooter>
-            <button class="dialog-action dialog-action__save" onClick={() => createConfig()}>Create
+            <button className="dialog-action dialog-action__save" onClick={() => createConfig()}>Create
             </button>
-            <button class="dialog-action dialog-action__cancel"
+            <button className="dialog-action dialog-action__cancel"
                     onClick={() => setCreateConfigDialogOpen(false)}>Cancel
             </button>
             <p className="dialog-error">{configError}</p>
@@ -174,14 +174,14 @@ export default function Project() {
             <h1 className="dialog-heading">Create Environment</h1>
         </DialogHeader>
         <DialogBody class="dialog-form">
-            <label class="dialog-input-label">Environment Name:</label>
-            <input type="text" class="dialog-input" value={newEnvironmentName} placeholder="Environment Name"
+            <label className="dialog-input-label">Environment Name:</label>
+            <input type="text" className="dialog-input" value={newEnvironmentName} placeholder="Environment Name"
                    onInput={(e) => setNewEnvironmentName(e.currentTarget.value)}/>
         </DialogBody>
         <DialogFooter>
-            <button class="dialog-action dialog-action__save" onClick={() => createEnvironment()}>Create
+            <button className="dialog-action dialog-action__save" onClick={() => createEnvironment()}>Create
             </button>
-            <button class="dialog-action dialog-action__cancel"
+            <button className="dialog-action dialog-action__cancel"
                     onClick={() => setCreateEnvironmentDialogOpen(false)}>Cancel
             </button>
             <p className="dialog-error">{environmentError}</p>

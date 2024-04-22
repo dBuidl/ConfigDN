@@ -53,7 +53,7 @@ export default function Register() {
         setRegisterEnabled(true);
     }
 
-    return <Page class="auth-page">
+    return <Page className="auth-page">
         <NavBar logo={logo}>
             <NavBarLinksContainer>
                 <NavAuthLinks/>
@@ -65,7 +65,7 @@ export default function Register() {
                 <div className="auth-form-header">
                     <p>Register</p>
                 </div>
-                <div class="auth-form-body">
+                <div className="auth-form-body">
                     <ValidatedInput value={username} valueUpdate={setUsername} name={"username"}
                                     label={"Username (optional)"}
                                     errors={errors}/>
@@ -77,7 +77,7 @@ export default function Register() {
                                     label={"Confirm Password"} type={"password"} errors={errors}/>
                 </div>
                 <div className="auth-form-footer">
-                    <button class="auth-form-submit-button" type="submit" disabled={!registerEnabled}>Register</button>
+                    <button className="auth-form-submit-button" type="submit" disabled={!registerEnabled}>Register</button>
                     <div className="auth-form-submit-error">
                         {errors.form ? errors.form : ""}
                     </div>

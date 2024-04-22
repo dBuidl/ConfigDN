@@ -1,6 +1,6 @@
 import {useCombobox} from "downshift";
 import {UserRecord} from "../../types/Structures";
-import React, {useEffect} from "preact/compat";
+import {useEffect} from "preact/compat";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCaretUp} from "@fortawesome/free-solid-svg-icons/faCaretUp";
 import {faCaretDown} from "@fortawesome/free-solid-svg-icons/faCaretDown";
@@ -49,17 +49,17 @@ export default function DashboardUserSelect(props: DashboardUserSelectProps) {
 
     // @ts-ignore
     return (
-        <div class="dialog-input-dropdown">
+        <div className="dialog-input-dropdown">
             <div
                 className="dialog-input-dropdown-dropdown"
                 {...getToggleButtonProps()}
             >
                 {!isOpen ?
                     <label {...getLabelProps()}
-                           class="dialog-input-dropdown-dropdown-text">{selectedItem ? itemToString(selectedItem) : 'Select User'}</label> :
-                    <input {...getInputProps()} class="dialog-input-dropdown-dropdown-input"
+                           className="dialog-input-dropdown-dropdown-text">{selectedItem ? itemToString(selectedItem) : 'Select User'}</label> :
+                    <input {...getInputProps()} className="dialog-input-dropdown-dropdown-input"
                            placeholder={"Search Users"}/>}
-                <span class="dialog-input-dropdown-dropdown-icon">{isOpen ? <FontAwesomeIcon icon={faCaretUp}/> :
+                <span className="dialog-input-dropdown-dropdown-icon">{isOpen ? <FontAwesomeIcon icon={faCaretUp}/> :
                     <FontAwesomeIcon icon={faCaretDown}/>}</span>
             </div>
             <ul
@@ -78,7 +78,7 @@ export default function DashboardUserSelect(props: DashboardUserSelectProps) {
                                 {...getItemProps({item, index})}
                             >
                                 <span
-                                    class="dialog-input-dropdown-dropdown-item-name">{item.username}</span>
+                                    className="dialog-input-dropdown-dropdown-item-name">{item.username}</span>
                                 <span
                                     className="dialog-input-dropdown-dropdown-item-username">{item.name ?? ""}</span>
                             </li>

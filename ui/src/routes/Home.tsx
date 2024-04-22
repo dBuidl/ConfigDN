@@ -1,4 +1,3 @@
-import React from "preact/compat";
 import Page from "../components/general/Page";
 import NavBar from "../components/navbar/NavBar";
 import logo from "../assets/images/raster/logo.png";
@@ -23,7 +22,7 @@ export function Home() {
             </NavBar>
 
             <Content pageName={"homepage"}>
-                <h1 class={"page-title"}>Smart, super easy feature flag management for individuals, teams and
+                <h1 className={"page-title"}>Smart, super easy feature flag management for individuals, teams and
                     open-sourcerers</h1>
 
                 <Demo/>

@@ -5,7 +5,7 @@ interface ContentPageProps extends PropsWithChildren {
 }
 
 export default function Content(props: ContentPageProps) {
-    return <div class={`content ${props.pageName}`}>
+    return <div className={`content ${props.pageName}`}>
         {props.children}
     </div>;
 }

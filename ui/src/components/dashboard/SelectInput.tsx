@@ -1,5 +1,5 @@
 import {useSelect} from "downshift";
-import React, {useEffect} from "preact/compat";
+import {useEffect} from "preact/compat";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCaretUp} from "@fortawesome/free-solid-svg-icons/faCaretUp";
 import {faCaretDown} from "@fortawesome/free-solid-svg-icons/faCaretDown";
@@ -50,14 +50,14 @@ export default function SelectInput(props: SelectInputProps) {
 
     // @ts-ignore
     return (
-        <div class="dialog-input-dropdown">
+        <div className="dialog-input-dropdown">
             <div
                 className="dialog-input-dropdown-dropdown"
                 {...getToggleButtonProps()}
             >
                 <label {...getLabelProps()}
-                       class="dialog-input-dropdown-dropdown-text">{selectedItem ? itemToString(selectedItem) : props.selectText ?? 'Select Item'}</label>
-                <span class="dialog-input-dropdown-dropdown-icon">{isOpen ? <FontAwesomeIcon icon={faCaretUp}/> :
+                       className="dialog-input-dropdown-dropdown-text">{selectedItem ? itemToString(selectedItem) : props.selectText ?? 'Select Item'}</label>
+                <span className="dialog-input-dropdown-dropdown-icon">{isOpen ? <FontAwesomeIcon icon={faCaretUp}/> :
                     <FontAwesomeIcon icon={faCaretDown}/>}</span>
             </div>
             <ul
@@ -76,7 +76,7 @@ export default function SelectInput(props: SelectInputProps) {
                                 {...getItemProps({item, index})}
                             >
                                 <span
-                                    class="dialog-input-dropdown-dropdown-item-name">{item.title}</span>
+                                    className="dialog-input-dropdown-dropdown-item-name">{item.title}</span>
                                 <span
                                     className="dialog-input-dropdown-dropdown-item-username">{item.description ?? ""}</span>
                             </li>

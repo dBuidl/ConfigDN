@@ -93,9 +93,9 @@ export default function Team() {
 
     const [setDeleteObjectDialogShowing, deleteObjectDialog] = useDialog(<Dialog>
         <DialogHeader>
-            <h1 class="dialog-heading">Delete {deleteObjectType}</h1>
+            <h1 className="dialog-heading">Delete {deleteObjectType}</h1>
         </DialogHeader>
-        <DialogBody class="dialog-form">
+        <DialogBody className="dialog-form">
             <p>Are you sure you want to remove
                 the {deleteObjectType} {deleteObject?.username ?? deleteObject?.name}?</p>
         </DialogBody>
@@ -104,7 +104,7 @@ export default function Team() {
             <button className="dialog-action dialog-action__cancel"
                     onClick={() => setDeleteObjectDialogShowing(false)}>Cancel
             </button>
-            <p class="dialog-error">{deleteObjectError}</p>
+            <p className="dialog-error">{deleteObjectError}</p>
         </DialogFooter>
     </Dialog>, {
         afterSetShowing: (showing) => {
@@ -118,11 +118,11 @@ export default function Team() {
 
     const [setProjectCreateDialogShowing, projectCreateDialog] = useDialog(<Dialog>
         <DialogHeader>
-            <h1 class="dialog-heading">Create Team</h1>
+            <h1 className="dialog-heading">Create Team</h1>
         </DialogHeader>
-        <DialogBody class="dialog-form">
-            <label class="dialog-input-label">Project Name:</label>
-            <input class="dialog-input" value={newProjectName}
+        <DialogBody className="dialog-form">
+            <label className="dialog-input-label">Project Name:</label>
+            <input className="dialog-input" value={newProjectName}
                    onChange={(e) => setNewProjectName(e?.currentTarget.value)}
                    type="text"
                    placeholder="Project Name"/>
@@ -134,7 +134,7 @@ export default function Team() {
             <button className="dialog-action dialog-action__cancel"
                     onClick={() => setProjectCreateDialogShowing(false)}>Cancel
             </button>
-            <p class="dialog-error">{error}</p>
+            <p className="dialog-error">{error}</p>
         </DialogFooter>
     </Dialog>, {
         afterSetShowing: (showing) => {
@@ -146,12 +146,12 @@ export default function Team() {
 
     const [setUserAddDialogShowing, userAddDialog] = useDialog(<Dialog>
         <DialogHeader>
-            <h1 class="dialog-heading">Add User</h1>
+            <h1 className="dialog-heading">Add User</h1>
         </DialogHeader>
-        <DialogBody class="dialog-form">
-            <label class="dialog-input-label">User:</label>
+        <DialogBody className="dialog-form">
+            <label className="dialog-input-label">User:</label>
             <DashboardUserSelect users={userData} onSelectedUserChange={setUserToAdd} reset={reset}/>
-            <label class="dialog-input-label">Role:</label>
+            <label className="dialog-input-label">Role:</label>
             <SelectInput items={userRoles} onSelectedItemChange={setUserRole} defaultValue={userRole}/>
         </DialogBody>
         <DialogFooter>
@@ -161,7 +161,7 @@ export default function Team() {
             <button className="dialog-action dialog-action__cancel"
                     onClick={() => setUserAddDialogShowing(false)}>Cancel
             </button>
-            <p class="dialog-error">{memberError}</p>
+            <p className="dialog-error">{memberError}</p>
         </DialogFooter>
     </Dialog>, {
         afterSetShowing: (showing) => {

@@ -76,11 +76,11 @@ export default function SettingCard(props: { flag: FlagRecord, originalValue: Va
 
     switch (inputType) {
         case "text":
-            input = <input type={inputType} value={value.value} class="setting-card-value"
+            input = <input type={inputType} value={value.value} className="setting-card-value"
                            onInput={e => setValue(e.currentTarget.value)}/>;
             break;
         case "number":
-            input = <input type={inputType} value={value.value} class="setting-card-value"
+            input = <input type={inputType} value={value.value} className="setting-card-value"
                            onInput={e => setValue(e.currentTarget.value)}/>
             inputExpandButton = null;
             break;
@@ -103,34 +103,34 @@ export default function SettingCard(props: { flag: FlagRecord, originalValue: Va
         if (lastSaveStatus === null) return null;
 
         if (lastSaveStatus[0] === 1) {
-            return <p class="setting-card-save-status-message">Value saved successfully.</p>
+            return <p className="setting-card-save-status-message">Value saved successfully.</p>
         } else if (lastSaveStatus[0] === 0) {
             if (lastSaveStatus[1].toString().startsWith("SyntaxError: JSON.parse")) {
-                return <p class="setting-card-save-status-message">JSON is not correctly formatted.</p>
+                return <p className="setting-card-save-status-message">JSON is not correctly formatted.</p>
             }
-            return <p class="setting-card-save-status-message">Failed to save value.</p>
+            return <p className="setting-card-save-status-message">Failed to save value.</p>
         } else {
-            return <p class="setting-card-save-status-message">{lastSaveStatus[1]}</p>
+            return <p className="setting-card-save-status-message">{lastSaveStatus[1]}</p>
         }
     }
 
-    return <div class="setting-card">
-        <div class="setting-card-header">
-            <h3 class="setting-card-title">{flag.name}</h3>
-            <p class="setting-card-key">{flag.identifier}</p>
+    return <div className="setting-card">
+        <div className="setting-card-header">
+            <h3 className="setting-card-title">{flag.name}</h3>
+            <p className="setting-card-key">{flag.identifier}</p>
         </div>
-        <div class="setting-card-body">
+        <div className="setting-card-body">
             {input}
             {inputExpandButton}
         </div>
-        <div class="setting-card-footer">
+        <div className="setting-card-footer">
             {getLastSaveStatusMessage()}
-            <button class="setting-card-button" onClick={() => setDeleteDialogShowing(true)}>
+            <button className="setting-card-button" onClick={() => setDeleteDialogShowing(true)}>
                 <FontAwesomeIcon icon={faTrash}/>
             </button>
-            <button class="setting-card-button" onClick={onReset} disabled={originalValue.value === value.value}>Reset
+            <button className="setting-card-button" onClick={onReset} disabled={originalValue.value === value.value}>Reset
             </button>
-            <button class="setting-card-button" onClick={save} disabled={originalValue.value === value.value}>Save
+            <button className="setting-card-button" onClick={save} disabled={originalValue.value === value.value}>Save
             </button>
         </div>
         {dialog}

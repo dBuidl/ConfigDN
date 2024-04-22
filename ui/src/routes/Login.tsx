@@ -51,7 +51,7 @@ export default function Login() {
         setLoginEnabled(true);
     }
 
-    return <Page class="auth-page">
+    return <Page className="auth-page">
         <NavBar logo={logo}>
             <NavBarLinksContainer>
                 <NavAuthLinks/>
@@ -59,28 +59,28 @@ export default function Login() {
         </NavBar>
 
         <Content pageName="auth-content">
-            <form class="auth-form" onSubmit={loginToAccount}>
-                <div class="auth-form-header">
+            <form className="auth-form" onSubmit={loginToAccount}>
+                <div className="auth-form-header">
                     <p>Login</p>
                 </div>
-                <div class="auth-form-body">
+                <div className="auth-form-body">
                     <ValidatedInput value={email} valueUpdate={setEmail} name={"email"} label={"Username or Email"}
                                     errors={errors}/>
                     <ValidatedInput value={password} valueUpdate={setPassword} name={"password"} label={"Password"}
                                     errors={errors} type={"password"}/>
                 </div>
-                <div class="auth-form-footer">
-                    <button class="auth-form-submit-button" type="submit" disabled={!loginEnabled}>Login</button>
-                    <div class="auth-form-submit-error">
+                <div className="auth-form-footer">
+                    <button className="auth-form-submit-button" type="submit" disabled={!loginEnabled}>Login</button>
+                    <div className="auth-form-submit-error">
                         {errors.form ? errors.form : ""}
                     </div>
 
-                    <Link class="auth-form-link" to={URLS.FORGOT_PASSWORD}>Forgot Password?</Link>
+                    <Link className="auth-form-link" to={URLS.FORGOT_PASSWORD}>Forgot Password?</Link>
 
-                    <div class="auth-form-oauth2">
+                    <div className="auth-form-oauth2">
                         <p>Or login with:</p>
-                        <div class="auth-form-oauth2-buttons">
-                            <button class="auth-form-oauth2-button" type="button"
+                        <div className="auth-form-oauth2-buttons">
+                            <button className="auth-form-oauth2-button" type="button"
                                     onClick={e => loginWithOauth(e, "github", oAuthData)} disabled={!loginEnabled}>
                                 <FontAwesomeIcon icon={faGithub}/><p>GitHub</p>
                             </button>
