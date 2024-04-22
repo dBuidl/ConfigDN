@@ -213,7 +213,7 @@ export default function Config() {
         <DialogHeader>
             <h1 className="dialog-heading">Create Flag</h1>
         </DialogHeader>
-        <DialogBody className="dialog-form">
+        <DialogBody class="dialog-form">
             <label className="dialog-input-label">Flag Name:</label>
             <input type="text" className="dialog-input" value={newFlagName} placeholder="Flag Name"
                    onInput={(e) => {

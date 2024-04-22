@@ -5,7 +5,7 @@ interface DialogOverlayProps extends PropsWithChildren {
 }
 
 export default function DialogOverlay(props: DialogOverlayProps) {
-    return <div className="dialog-overlay" onClick={props.onClick ? props.onClick : () => null}>
+    return <div role={"button"} className="dialog-overlay" onClick={props.onClick ? props.onClick : () => null} onKeyDown={(e) => {if (e.key === "Enter" && props.onClick) {props.onClick(e);}}}>
         {props.children}
     </div>;
 }
