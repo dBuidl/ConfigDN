@@ -77,7 +77,7 @@ export default function Overview() {
         <DialogHeader>
             <h1 className="dialog-heading">Delete Team</h1>
         </DialogHeader>
-        <DialogBody className="dialog-form">
+        <DialogBody class="dialog-form">
             <p>Are you sure you want to delete the team {teamToDelete?.name}? This is irreversible and will delete all
                 associated configs, projects, environments and API Keys.</p>
         </DialogBody>
@@ -102,7 +102,7 @@ export default function Overview() {
         <DialogHeader>
             <h1 className="dialog-heading">Create Team</h1>
         </DialogHeader>
-        <DialogBody className="dialog-form">
+        <DialogBody class="dialog-form">
             <label className="dialog-input-label">Team Name:</label>
             <input className="dialog-input" value={newTeamName} onChange={(e) => setNewTeamName(e?.currentTarget.value)}
                    type="text"

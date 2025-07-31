@@ -95,7 +95,7 @@ export default function Team() {
         <DialogHeader>
             <h1 className="dialog-heading">Delete {deleteObjectType}</h1>
         </DialogHeader>
-        <DialogBody className="dialog-form">
+        <DialogBody class="dialog-form">
             <p>Are you sure you want to remove
                 the {deleteObjectType} {deleteObject?.username ?? deleteObject?.name}?</p>
         </DialogBody>
@@ -120,7 +120,7 @@ export default function Team() {
         <DialogHeader>
             <h1 className="dialog-heading">Create Team</h1>
         </DialogHeader>
-        <DialogBody className="dialog-form">
+        <DialogBody class="dialog-form">
             <label className="dialog-input-label">Project Name:</label>
             <input className="dialog-input" value={newProjectName}
                    onChange={(e) => setNewProjectName(e?.currentTarget.value)}
@@ -148,7 +148,7 @@ export default function Team() {
         <DialogHeader>
             <h1 className="dialog-heading">Add User</h1>
         </DialogHeader>
-        <DialogBody className="dialog-form">
+        <DialogBody class="dialog-form">
             <label className="dialog-input-label">User:</label>
             <DashboardUserSelect users={userData} onSelectedUserChange={setUserToAdd} reset={reset}/>
             <label className="dialog-input-label">Role:</label>

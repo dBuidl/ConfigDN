@@ -60,7 +60,7 @@ export default function ChangePassword() {
         setLoginEnabled(true);
     }
 
-    return <Page className="auth-page">
+    return <Page class="auth-page">
         <NavBar logo={logo}>
             <NavBarLinksContainer>
                 <NavAuthLinks/>
