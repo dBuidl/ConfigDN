@@ -19,6 +19,8 @@ import ForgotPassword from "./routes/ForgotPassword";
 import ResetPassword from "./routes/ResetPassword";
 import ChangePassword from "./routes/ChangePassword";
 import User, {userLoader} from "./routes/Dashboards/User";
+import PrivacyPolicy from "./routes/PrivacyPolicy";
+import TermsOfService from "./routes/TermsOfService";
 
 const router = createBrowserRouter([
     {
@@ -94,6 +96,14 @@ const router = createBrowserRouter([
     {
         path: URLS.LOGOUT,
         element: <Logout/>,
+    },
+    {
+        path: URLS.PRIVACY_POLICY,
+        element: <PrivacyPolicy/>,
+    },
+    {
+        path: URLS.TERMS_OF_SERVICE,
+        element: <TermsOfService/>,
     }
 ])
 
