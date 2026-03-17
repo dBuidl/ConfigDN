@@ -1,16 +1,12 @@
 package migrations
 
 import (
-	"encoding/json"
-
-	"github.com/pocketbase/dbx"
-	"github.com/pocketbase/pocketbase/daos"
+	"github.com/pocketbase/pocketbase/core"
 	m "github.com/pocketbase/pocketbase/migrations"
-	"github.com/pocketbase/pocketbase/models"
 )
 
 func init() {
-	m.Register(func(db dbx.Builder) error {
+	m.Register(func(app core.App) error {
 		jsonData := `[
 			{
 				"id": "s4mq1ee1hnznlfz",
@@ -529,13 +525,8 @@ func init() {
 			}
 		]`
 
-		collections := []*models.Collection{}
-		if err := json.Unmarshal([]byte(jsonData), &collections); err != nil {
-			return err
-		}
-
-		return daos.New(db).ImportCollections(collections, true, nil)
-	}, func(db dbx.Builder) error {
+		return app.ImportCollectionsByMarshaledJSON([]byte(jsonData), true)
+	}, func(app core.App) error {
 		return nil
 	})
 }

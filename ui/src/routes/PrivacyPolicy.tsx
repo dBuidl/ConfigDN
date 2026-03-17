@@ -36,7 +36,7 @@ export default function PrivacyPolicy() {
                     
                     <h2>1. Introduction</h2>
                     <p>
-                        dbuidl Limited ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy 
+                        dBuidl Limited ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy
                         explains how we collect, use, and safeguard your information when you use our ConfigDN service.
                     </p>
                     
@@ -44,7 +44,7 @@ export default function PrivacyPolicy() {
                     <p>
                         <strong>Company Name:</strong> dbuidl Limited<br/>
                         <strong>Company Number:</strong> SC730458<br/>
-                        <strong>Registered Address:</strong> 272 Bath Street, Glasgow, Scotland, G2 4JR<br/>
+                        <strong>Registered Address:</strong> Clyde Offices 2nd Floor, 48 West George Street, Glasgow, Scotland, G2 1BP<br/>
                         <strong>Country:</strong> United Kingdom
                     </p>
                     
@@ -134,7 +134,7 @@ export default function PrivacyPolicy() {
                     <p>
                         If you have any questions about this Privacy Policy, please contact us at:<br/>
                         <strong>Email:</strong> privacy [at] dbuidl [dot] com<br/>
-                        <strong>Address:</strong> dbuidl Limited, 272 Bath Street, Glasgow, Scotland, G2 4JR
+                        <strong>Address:</strong> dBuidl Limited, Clyde Offices 2nd Floor, 48 West George Street, Glasgow, Scotland, G2 1BP
                     </p>
                 </div>
             </Content>

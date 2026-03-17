@@ -10,7 +10,7 @@ type BaseDBRecord struct {
 
 type ConfigKeyValueInfo struct {
 	Updated types.DateTime `db:"updated"`
-	Value   types.JsonRaw  `db:"value"`
+	Value   types.JSONRaw  `db:"value"`
 	FlagID  string         `db:"identifier"`
 }
 

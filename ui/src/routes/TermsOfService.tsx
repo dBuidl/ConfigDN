@@ -43,9 +43,9 @@ export default function TermsOfService() {
                     <h2>2. Company Information</h2>
                     <p>
                         ConfigDN is provided by:<br/>
-                        <strong>Company Name:</strong> dbuidl Limited<br/>
+                        <strong>Company Name:</strong> dBuidl Limited<br/>
                         <strong>Company Number:</strong> SC730458<br/>
-                        <strong>Registered Address:</strong> 272 Bath Street, Glasgow, Scotland, G2 4JR<br/>
+                        <strong>Registered Address:</strong> Clyde Offices 2nd Floor, 48 West George Street, Glasgow, Scotland, G2 1BP<br/>
                         <strong>Country:</strong> United Kingdom
                     </p>
                     
@@ -88,7 +88,7 @@ export default function TermsOfService() {
                     <h2>7. Intellectual Property</h2>
                     <h3>7.1 Our Rights</h3>
                     <p>
-                        The Service and its original content, features, and functionality are owned by dbuidl Limited and 
+                        The Service and its original content, features, and functionality are owned by dBuidl Limited and
                         are protected by international copyright, trademark, and other intellectual property laws.
                     </p>
                     
@@ -107,13 +107,13 @@ export default function TermsOfService() {
                     
                     <h2>9. Limitation of Liability</h2>
                     <p>
-                        To the maximum extent permitted by law, dbuidl Limited shall not be liable for any indirect, 
+                        To the maximum extent permitted by law, dBuidl Limited shall not be liable for any indirect,
                         incidental, special, consequential, or punitive damages arising out of your use of the Service.
                     </p>
                     
                     <h2>10. Indemnification</h2>
                     <p>
-                        You agree to indemnify and hold harmless dbuidl Limited from any claims, damages, or expenses 
+                        You agree to indemnify and hold harmless dBuidl Limited from any claims, damages, or expenses
                         arising from your use of the Service or violation of these Terms.
                     </p>
                     
@@ -152,7 +152,7 @@ export default function TermsOfService() {
                     <p>
                         If you have any questions about these Terms, please contact us at:<br/>
                         <strong>Email:</strong> legal [at] dbuidl [dot] com<br/>
-                        <strong>Address:</strong> dbuidl Limited, 272 Bath Street, Glasgow, Scotland, G2 4JR
+                        <strong>Address:</strong> dBuidl Limited, Clyde Offices 2nd Floor, 48 West George Street, Glasgow, Scotland, G2 1BP
                     </p>
                 </div>
             </Content>

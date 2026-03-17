@@ -6,7 +6,7 @@ import (
 )
 
 type GetConfigResponseJson struct {
-	Value types.JsonRaw `json:"v"`
+	Value types.JSONRaw `json:"v"`
 }
 
 func ConfigValuesToPublicJson(cKVIs []ConfigKeyValueInfo) (map[string]interface{}, error) {
