@@ -1,3 +1,5 @@
+@use "sass:color";
+
 /* SCSS HEX */
 $black: #000000ff;
 $charleston-green: #1f2a2dff;
@@ -7,7 +9,7 @@ $cyber-yellow: #ffd027ff;
 
 /* SCSS HEX */
 $black: #000000ff;
-$oxford-blue: mix(#14213dff, #fff, 92%);
+$oxford-blue: color.mix(#14213dff, #fff, 92%);
 $orange-web: #fca311ff;
 $platinum: #e5e5e5ff;
 $white: #ffffffff;
@@ -137,7 +139,7 @@ nav.navbar {
         // Navbar with breadcrumb
         .navbar-links-breadcrumb {
             flex: 100% 1 1;
-            background-color: mix($oxford-blue, $celadon-blue);
+            background-color: color.mix($oxford-blue, $celadon-blue);
 
             padding-left: 30px;
 
@@ -202,7 +204,7 @@ nav.navbar {
                 .dialog-input-dropdown-dropdown-items {
                     position: absolute;
                     z-index: 1000;
-                    background-color: mix($oxford-blue, $celadon-blue, 80%);
+                    background-color: color.mix($oxford-blue, $celadon-blue, 80%);
                     border-radius: 5px;
                     padding: 0;
                     font-size: 1em;
@@ -229,11 +231,11 @@ nav.navbar {
                         }
 
                         &.dialog-input-dropdown-dropdown-item__selected {
-                            background-color: mix($oxford-blue, $celadon-blue, 50%);
+                            background-color: color.mix($oxford-blue, $celadon-blue, 50%);
                         }
 
                         &.dialog-input-dropdown-dropdown-item__highlighted {
-                            background-color: mix($oxford-blue, $celadon-blue, 70%);
+                            background-color: color.mix($oxford-blue, $celadon-blue, 70%);
                         }
 
                         &:last-of-type {
@@ -422,7 +424,7 @@ nav.navbar {
         .content-demo-flags {
             flex: 400px 1 0;
             min-height: 400px;
-            background: mix($charleston-green, #000, 70%);
+            background: color.mix($charleston-green, #000, 70%);
             border-radius: 10px;
             padding: 20px;
             overflow-y: auto;
@@ -438,7 +440,7 @@ nav.navbar {
                 }
 
                 p {
-                    color: mix($gainsboro, $oxford-blue, 70%);
+                    color: color.mix($gainsboro, $oxford-blue, 70%);
                     margin: 0;
                     font-size: 0.9em;
                 }
@@ -473,7 +475,7 @@ nav.navbar {
                             transform: translateY(-50%);
                             width: 40px;
                             height: 20px;
-                            background-color: mix($oxford-blue, $gainsboro, 80%);
+                            background-color: color.mix($oxford-blue, $gainsboro, 80%);
                             border-radius: 20px;
                             transition: background-color 0.3s;
 
@@ -507,14 +509,14 @@ nav.navbar {
                 .demo-flag-divider {
                     margin: 20px 0 15px 0;
                     padding: 10px 0;
-                    border-top: 1px solid mix($oxford-blue, $gainsboro, 70%);
+                    border-top: 1px solid color.mix($oxford-blue, $gainsboro, 70%);
                     text-align: center;
 
                     span {
                         color: $celadon-blue;
                         font-size: 0.9em;
                         font-weight: 500;
-                        background: mix($charleston-green, #000, 70%);
+                        background: color.mix($charleston-green, #000, 70%);
                         padding: 0 10px;
                     }
                 }
@@ -547,7 +549,7 @@ nav.navbar {
                     .demo-flag-number-input {
                         width: 80px;
                         padding: 8px 10px;
-                        border: 1px solid mix($oxford-blue, $gainsboro, 80%);
+                        border: 1px solid color.mix($oxford-blue, $gainsboro, 80%);
                         border-radius: 4px;
                         background: white;
                         color: #212529;
@@ -562,7 +564,7 @@ nav.navbar {
 
                     .demo-flag-select-input {
                         padding: 8px 10px;
-                        border: 1px solid mix($oxford-blue, $gainsboro, 80%);
+                        border: 1px solid color.mix($oxford-blue, $gainsboro, 80%);
                         border-radius: 4px;
                         background: white;
                         color: #212529;
@@ -582,7 +584,7 @@ nav.navbar {
         .content-demo-site {
             flex: 400px 1 0;
             min-height: 400px;
-            background: mix($charleston-green, #000, 70%);
+            background: color.mix($charleston-green, #000, 70%);
             border-radius: 10px;
             padding: 20px;
             overflow-y: auto;
@@ -598,7 +600,7 @@ nav.navbar {
                 }
 
                 p {
-                    color: mix($gainsboro, $oxford-blue, 70%);
+                    color: color.mix($gainsboro, $oxford-blue, 70%);
                     margin: 0;
                     font-size: 0.9em;
                 }
@@ -630,7 +632,7 @@ nav.navbar {
                     }
 
                     &.new-design {
-                        background: linear-gradient(135deg, $celadon-blue, mix($celadon-blue, $oxford-blue, 70%));
+                        background: linear-gradient(135deg, $celadon-blue, color.mix($celadon-blue, $oxford-blue, 70%));
                         color: white;
                     }
 
@@ -669,7 +671,7 @@ nav.navbar {
                 }
 
                 .demo-preview-banner {
-                    background: linear-gradient(135deg, $cyber-yellow, mix($cyber-yellow, $orange-web, 80%));
+                    background: linear-gradient(135deg, $cyber-yellow, color.mix($cyber-yellow, $orange-web, 80%));
                     color: black;
                     padding: 8px 15px;
                     text-align: center;
@@ -697,7 +699,7 @@ nav.navbar {
                     }
 
                     .demo-preview-beta-section {
-                        background: mix($celadon-blue, white, 10%);
+                        background: color.mix($celadon-blue, white, 10%);
                         padding: 10px;
                         border-radius: 6px;
                         margin-bottom: 15px;
@@ -716,7 +718,7 @@ nav.navbar {
                     }
 
                     .demo-preview-card {
-                        background: mix(white, #f8f9fa, 50%);
+                        background: color.mix(white, #f8f9fa, 50%);
                         border: 1px solid #e9ecef;
                         border-radius: 6px;
                         padding: 12px;
@@ -832,7 +834,7 @@ nav.navbar {
 
                     .demo-preview-content {
                         .demo-preview-beta-section {
-                            background: mix($celadon-blue, black, 15%);
+                            background: color.mix($celadon-blue, black, 15%);
                         }
 
                         .demo-preview-card {
@@ -1147,7 +1149,7 @@ div.page-transition {
                 }
 
                 .dashboard-objects-object-header {
-                    background-color: mix($oxford-blue, $celadon-blue, 60%);
+                    background-color: color.mix($oxford-blue, $celadon-blue, 60%);
                     display: flex;
                     padding: 5px 10px;
                     align-items: center;
@@ -1187,12 +1189,12 @@ div.page-transition {
 
                             // hover (grey the color slightly)
                             &:hover {
-                                color: mix($oxford-blue, $white, 20%);
+                                color: color.mix($oxford-blue, $white, 20%);
                             }
 
                             // active (grey the color more)
                             &:active {
-                                color: mix($oxford-blue, $white, 40%);
+                                color: color.mix($oxford-blue, $white, 40%);
                             }
 
                             svg {
@@ -1249,7 +1251,7 @@ div.page-transition {
             flex: 400px 1 1;
 
             .setting-card-header {
-                background-color: mix($oxford-blue, $celadon-blue, 60%);
+                background-color: color.mix($oxford-blue, $celadon-blue, 60%);
                 padding: 5px;
 
                 .setting-card-title {
@@ -1298,7 +1300,7 @@ div.page-transition {
                     }
 
                     .setting-card-value:checked + .setting-card-value-slider {
-                        background-color: mix($oxford-blue, $celadon-blue, 60%);
+                        background-color: color.mix($oxford-blue, $celadon-blue, 60%);
                     }
 
                     .setting-card-value:checked + .setting-card-value-slider:before {
@@ -1340,11 +1342,11 @@ div.page-transition {
                     background: $charleston-green;
 
                     &:hover, &:focus {
-                        background: mix($charleston-green, $white, 80%);
+                        background: color.mix($charleston-green, $white, 80%);
                     }
 
                     &:active {
-                        background: mix($charleston-green, $white, 70%)
+                        background: color.mix($charleston-green, $white, 70%)
                     }
                 }
             }
@@ -1393,22 +1395,22 @@ div.page-transition {
             }
 
             &:hover, &:focus {
-                background: mix($celadon-blue, $white, 80%);
+                background: color.mix($celadon-blue, $white, 80%);
             }
 
             &:active {
-                background: mix($celadon-blue, $white, 70%)
+                background: color.mix($celadon-blue, $white, 70%)
             }
 
             &.button__save-all {
-                background: mix($celadon-blue, $oxford-blue, 40%);
+                background: color.mix($celadon-blue, $oxford-blue, 40%);
 
                 &:hover, &:focus {
-                    background: mix(mix($celadon-blue, $oxford-blue, 40%), $white, 80%);
+                    background: color.mix(color.mix($celadon-blue, $oxford-blue, 40%), $white, 80%);
                 }
 
                 &:active {
-                    background: mix(mix($celadon-blue, $oxford-blue, 40%), $white, 70%)
+                    background: color.mix(color.mix($celadon-blue, $oxford-blue, 40%), $white, 70%)
                 }
             }
 
@@ -1417,11 +1419,11 @@ div.page-transition {
                 background-color: #900;
 
                 &:hover {
-                    background-color: mix(#900, #fff, 80%);
+                    background-color: color.mix(#900, #fff, 80%);
                 }
 
                 &:active {
-                    background-color: mix(#900, #fff, 70%);
+                    background-color: color.mix(#900, #fff, 70%);
                 }
             }
         }
@@ -1461,20 +1463,20 @@ div.page-transition {
                     color: black;
 
                     &:hover {
-                        background-color: mix($cyber-yellow, $oxford-blue, 90%);
+                        background-color: color.mix($cyber-yellow, $oxford-blue, 90%);
                     }
 
                     &:active {
-                        background-color: mix($cyber-yellow, $oxford-blue, 80%);
+                        background-color: color.mix($cyber-yellow, $oxford-blue, 80%);
                     }
                 }
 
                 &:hover {
-                    background-color: mix($oxford-blue, white, 80%);
+                    background-color: color.mix($oxford-blue, white, 80%);
                 }
 
                 &:active {
-                    background-color: mix($oxford-blue, white, 90%);
+                    background-color: color.mix($oxford-blue, white, 90%);
                 }
             }
         }
@@ -1501,7 +1503,7 @@ div.page-transition {
     bottom: 0;
     right: 0;
     z-index: 1000;
-    background-color: mix(#ffffff00,
+    background-color: color.mix(#ffffff00,
             #ffffff, 40%);
     display: flex;
     align-items: safe center;
@@ -1601,7 +1603,7 @@ div.page-transition {
                 .dialog-input-dropdown-dropdown-items {
                     position: absolute;
                     z-index: 1000;
-                    background-color: mix($oxford-blue, $celadon-blue, 80%);
+                    background-color: color.mix($oxford-blue, $celadon-blue, 80%);
                     border-radius: 5px;
                     padding: 0;
                     font-size: 1.2em;
@@ -1632,11 +1634,11 @@ div.page-transition {
                         }
 
                         &.dialog-input-dropdown-dropdown-item__selected {
-                            background-color: mix($oxford-blue, $celadon-blue, 50%);
+                            background-color: color.mix($oxford-blue, $celadon-blue, 50%);
                         }
 
                         &.dialog-input-dropdown-dropdown-item__highlighted {
-                            background-color: mix($oxford-blue, $celadon-blue, 70%);
+                            background-color: color.mix($oxford-blue, $celadon-blue, 70%);
                         }
 
                         &:last-of-type {
@@ -1685,11 +1687,11 @@ div.page-transition {
                 background-color: $celadon-blue;
 
                 &:hover {
-                    background-color: mix($celadon-blue, $oxford-blue, 70%);
+                    background-color: color.mix($celadon-blue, $oxford-blue, 70%);
                 }
 
                 &:active {
-                    background-color: mix($celadon-blue, $oxford-blue, 60%);
+                    background-color: color.mix($celadon-blue, $oxford-blue, 60%);
                 }
             }
 
@@ -1698,11 +1700,11 @@ div.page-transition {
                 color: black;
 
                 &:hover {
-                    background-color: mix(#aaa, #fff, 70%);
+                    background-color: color.mix(#aaa, #fff, 70%);
                 }
 
                 &:active {
-                    background-color: mix(#aaa, #fff, 60%);
+                    background-color: color.mix(#aaa, #fff, 60%);
                 }
             }
 
@@ -1711,11 +1713,11 @@ div.page-transition {
                 background-color: #900;
 
                 &:hover {
-                    background-color: mix(#900, #fff, 80%);
+                    background-color: color.mix(#900, #fff, 80%);
                 }
 
                 &:active {
-                    background-color: mix(#900, #fff, 70%);
+                    background-color: color.mix(#900, #fff, 70%);
                 }
             }
         }
@@ -1766,7 +1768,7 @@ div.page-transition {
             max-width: 100vw;
 
             .auth-form-header {
-                background-color: mix($oxford-blue, $celadon-blue, 60%);
+                background-color: color.mix($oxford-blue, $celadon-blue, 60%);
                 padding: 5px 5px 0;
 
                 p {
@@ -1805,7 +1807,7 @@ div.page-transition {
                     font-size: 1.1em;
                     line-height: 1.1em;
                     font-weight: bold;
-                    color: mix(red, $white, 60%);
+                    color: color.mix(red, $white, 60%);
                 }
             }
 
@@ -1819,13 +1821,13 @@ div.page-transition {
                     padding: 5px 10px;
                     border: none;
                     border-radius: 5px;
-                    background-color: mix($oxford-blue, $celadon-blue, 80%);
+                    background-color: color.mix($oxford-blue, $celadon-blue, 80%);
                     color: $white;
                     font-weight: bold;
                     width: 100%;
 
                     &:hover {
-                        background-color: mix($oxford-blue, $celadon-blue, 70%);
+                        background-color: color.mix($oxford-blue, $celadon-blue, 70%);
                     }
                 }
 
@@ -1862,7 +1864,7 @@ div.page-transition {
                             padding: 5px 10px;
                             border: none;
                             border-radius: 5px;
-                            background: mix($oxford-blue, $celadon-blue, 60%);
+                            background: color.mix($oxford-blue, $celadon-blue, 60%);
                             color: $white;
                             font-weight: bold;
                             justify-content: center;
@@ -1878,11 +1880,11 @@ div.page-transition {
                             }
 
                             &:hover {
-                                background-color: mix($oxford-blue, $celadon-blue, 70%);
+                                background-color: color.mix($oxford-blue, $celadon-blue, 70%);
                             }
 
                             &:active {
-                                background-color: mix($oxford-blue, $celadon-blue, 80%);
+                                background-color: color.mix($oxford-blue, $celadon-blue, 80%);
                             }
                         }
                     }
@@ -1893,7 +1895,7 @@ div.page-transition {
                     font-size: 1.1em;
                     line-height: 1.1em;
                     font-weight: bold;
-                    color: mix(red, $white, 60%);
+                    color: color.mix(red, $white, 60%);
                 }
 
                 .auth-form-submit-success {
@@ -1901,7 +1903,7 @@ div.page-transition {
                     font-size: 1.1em;
                     line-height: 1.1em;
                     font-weight: bold;
-                    color: mix(green, $white, 10%);
+                    color: color.mix(green, $white, 10%);
                 }
             }
         }
@@ -1914,7 +1916,7 @@ div.page-transition {
     margin-top: auto;
     padding: 20px 0;
     background-color: $oxford-blue;
-    border-top: 1px solid mix($oxford-blue, $gainsboro, 90%);
+    border-top: 1px solid color.mix($oxford-blue, $gainsboro, 90%);
 
     .footer-content {
         max-width: 1200px;
@@ -1938,13 +1940,13 @@ div.page-transition {
 
             .footer-separator {
                 margin: 0 10px;
-                color: mix($gainsboro, $oxford-blue, 50%);
+                color: color.mix($gainsboro, $oxford-blue, 50%);
             }
         }
 
         .footer-copyright {
             font-size: 0.8em;
-            color: mix($gainsboro, $oxford-blue, 60%);
+            color: color.mix($gainsboro, $oxford-blue, 60%);
         }
     }
 }
@@ -1981,7 +1983,7 @@ div.page-transition {
 
     p {
         margin-bottom: 15px;
-        color: mix($gainsboro, $oxford-blue, 80%);
+        color: color.mix($gainsboro, $oxford-blue, 80%);
     }
 
     ul, ol {
@@ -1990,7 +1992,7 @@ div.page-transition {
 
         li {
             margin-bottom: 5px;
-            color: mix($gainsboro, $oxford-blue, 80%);
+            color: color.mix($gainsboro, $oxford-blue, 80%);
         }
     }
 

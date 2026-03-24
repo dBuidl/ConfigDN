@@ -1,4 +1,4 @@
-import {defineConfig, type Plugin, ViteDevServer} from 'vite/dist/node'
+import {defineConfig, type Plugin, type ViteDevServer} from 'vite'
 import preact from '@preact/preset-vite'
 import history from 'connect-history-api-fallback'
 
