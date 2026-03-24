@@ -1,12 +1,13 @@
 import {ComponentChild} from "preact";
-import {StateUpdater, useEffect, useState} from "preact/compat";
+import {useEffect, useState} from "preact/compat";
+import {Dispatch, StateUpdater} from "preact/hooks";
 import DialogOverlay from "../components/dialog/DialogOverlay";
 
 interface DialogOptions {
     afterSetShowing?: (showing: boolean) => void;
 }
 
-export default function useDialog(dialog: ComponentChild, options?: DialogOptions): [StateUpdater<boolean>, ComponentChild] {
+export default function useDialog(dialog: ComponentChild, options?: DialogOptions): [Dispatch<StateUpdater<boolean>>, ComponentChild] {
     const [showing, setShowing] = useState(false);
 
     // call afterSetShowing when showing changes
