@@ -19,7 +19,7 @@
     "pocketbase": "^0.26.8",
     "preact": "^10.11.2",
     "react-jdenticon": "^1.0.0",
-    "react-router-dom": "^6.4.3",
+    "react-router-dom": "^7.13.2",
     "sass": "^1.98.0",
     "store": "^2.0.12"
   },
