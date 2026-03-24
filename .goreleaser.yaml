@@ -1,3 +1,5 @@
+version: 2
+
 project_name: ConfigDN
 
 dist: .builds
@@ -47,16 +49,16 @@ release:
 
 archives:
   - id: archive_cgo
-    builds: [build_cgo]
+    ids: [build_cgo]
     name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}_cgo'
-    format: zip
+    formats: [zip]
     files:
       - LICENSE*
       - CHANGELOG*
 
   - id: archive_noncgo
-    builds: [build_noncgo]
-    format: zip
+    ids: [build_noncgo]
+    formats: [zip]
     files:
       - LICENSE*
       - CHANGELOG*
@@ -65,7 +67,7 @@ checksum:
   name_template: 'checksums.txt'
 
 snapshot:
-  name_template: '{{ incpatch .Version }}-next'
+  version_template: '{{ incpatch .Version }}-next'
 
 changelog:
   sort: asc
