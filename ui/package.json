@@ -28,6 +28,6 @@
     "@types/connect-history-api-fallback": "^1.5.4",
     "connect-history-api-fallback": "^2.0.0",
     "typescript": "^6.0.2",
-    "vite": "^8.0.2"
+    "vite": "^8.0.7"
   }
 }
