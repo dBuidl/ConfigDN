@@ -41,19 +41,19 @@ export default function NavBarBreadcrumbs(props: NavBarBreadcrumbsProps) {
     }
 
     // display specified parts of the breadcrumb with the separator ">" between them
-    return <div className={"navbar-links-breadcrumb"}>
+    return <div className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto whitespace-nowrap text-sm font-semibold text-copy sm:text-base">
         {props.team && <>
-            <Link className="breadcrumb-page" to={`/dashboard/${props.team.id}`}>{props.team.name}</Link>
+            <Link className="max-w-36 overflow-hidden text-ellipsis rounded-lg px-2 py-1 hover:bg-panel hover:text-lime sm:max-w-60" to={`/dashboard/${props.team.id}`}>{props.team.name}</Link>
         </>}
         {props.project && <>
-            <div className="breadcrumb-spacer">&gt;</div>
-            <Link className="breadcrumb-page"
+            <div className="text-line">&gt;</div>
+            <Link className="max-w-36 overflow-hidden text-ellipsis rounded-lg px-2 py-1 hover:bg-panel hover:text-lime sm:max-w-60"
                   to={`/dashboard/${props.team?.id}/${props.project.id}`}>{props.project.name}</Link>
         </>}
         {props.config && <>
-            <div className="breadcrumb-spacer">&gt;</div>
+            <div className="text-line">&gt;</div>
             {props.environment ?
-                <Link className="breadcrumb-page"
+                <Link className="max-w-36 overflow-hidden text-ellipsis rounded-lg px-2 py-1 hover:bg-panel hover:text-lime sm:max-w-60"
                       to={`/dashboard/${props.team?.id}/${props.project?.id}/${props.config.id}/${props.environment.id}`}>{props.config.name}</Link> :
                 <p>{props.config.name}</p>
             }
@@ -61,7 +61,7 @@ export default function NavBarBreadcrumbs(props: NavBarBreadcrumbsProps) {
         {props.environment &&
             // env should be a dropdown allowing you to select the environment you want to view
             <>
-                <div className="breadcrumb-spacer">&gt;</div>
+                <div className="text-line">&gt;</div>
                 <SelectInput items={possibleEnvironments} defaultValue={selectedEnvironment}
                              onSelectedItemChange={onEnvironmentDropDownChange}/>
             </>

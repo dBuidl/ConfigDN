@@ -7,8 +7,8 @@ export default function useAuthValid() {
     let [isValid, setIsValid] = useState(pocketbase.authStore.isValid);
 
     useEffect(() => {
-        return pocketbase.authStore.onChange((e) => {
-            setIsValid(e.length > 0);
+        return pocketbase.authStore.onChange(() => {
+            setIsValid(pocketbase.authStore.isValid);
         });
     }, []);
 
@@ -17,14 +17,14 @@ export default function useAuthValid() {
 
 export function useAuthValidWithModel(): tValidAuthModelResponse {
     let [isValid, setIsValid] = useState(pocketbase.authStore.isValid);
-    let [model, setModel] = useState<tNullableAuthModel>(pocketbase.authStore.model);
+    let [record, setRecord] = useState<tNullableAuthModel>(pocketbase.authStore.record);
 
     useEffect(() => {
-        return pocketbase.authStore.onChange((e, mod) => {
-            setIsValid(e.length > 0);
-            setModel(mod);
+        return pocketbase.authStore.onChange(() => {
+            setIsValid(pocketbase.authStore.isValid);
+            setRecord(pocketbase.authStore.record);
         });
     }, []);
 
-    return [isValid, model] as tValidAuthModelResponse;
+    return [isValid, record] as tValidAuthModelResponse;
 }

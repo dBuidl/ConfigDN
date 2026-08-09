@@ -1,11 +1,11 @@
 import React, {PropsWithChildren} from "preact/compat";
-import logo from "../../assets/images/raster/logo.png";
+import configdnMark from "../../assets/images/vector/configdn-mark.svg";
 import NavBarLinksContainer from "./NavBarLinksContainer";
 import NavAuthLinks from "./NavAuthLinks";
 import NavBar from "./NavBar";
 
 export default function DashboardNavbar(props: PropsWithChildren) {
-    return <NavBar logo={logo}>
+    return <NavBar logo={configdnMark}>
         <NavBarLinksContainer>
             {props.children}
             <NavAuthLinks/>

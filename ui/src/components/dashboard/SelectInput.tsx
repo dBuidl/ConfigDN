@@ -50,20 +50,18 @@ export default function SelectInput(props: SelectInputProps) {
 
     // @ts-ignore
     return (
-        <div className="dialog-input-dropdown">
+        <div className="relative min-w-28">
             <div
-                className="dialog-input-dropdown-dropdown"
+                className="flex w-full cursor-pointer items-center justify-between gap-2 rounded-lg border border-line bg-panel px-2.5 py-1.5 text-left text-sm text-copy hover:border-cyan"
                 {...getToggleButtonProps()}
             >
                 <label {...getLabelProps()}
-                       className="dialog-input-dropdown-dropdown-text">{selectedItem ? itemToString(selectedItem) : props.selectText ?? 'Select Item'}</label>
-                <span className="dialog-input-dropdown-dropdown-icon">{isOpen ? <FontAwesomeIcon icon={faCaretUp}/> :
+                       className="min-w-0 flex-1 overflow-hidden text-ellipsis">{selectedItem ? itemToString(selectedItem) : props.selectText ?? 'Select Item'}</label>
+                <span>{isOpen ? <FontAwesomeIcon icon={faCaretUp}/> :
                     <FontAwesomeIcon icon={faCaretDown}/>}</span>
             </div>
             <ul
-                className={`dialog-input-dropdown-dropdown-items ${
-                    !isOpen && 'dialog-input-dropdown-dropdown-items__hidden'
-                }`}
+                className={`absolute left-0 top-full z-50 mt-2 max-h-64 min-w-full overflow-y-auto rounded-xl border border-line bg-panel-raised p-1.5 shadow-2xl ${!isOpen ? 'hidden' : ''}`}
                 {...getMenuProps()}
             >
                 {isOpen &&
@@ -71,14 +69,14 @@ export default function SelectInput(props: SelectInputProps) {
                         .map((item, index) => (
                             item &&
                             <li
-                                className={`${highlightedIndex === index && 'dialog-input-dropdown-dropdown-item__highlighted'} ${selectedItem === item && 'dialog-input-dropdown-dropdown-item__selected'} dialog-input-dropdown-dropdown-item`}
+                                className={`cursor-pointer rounded-lg px-3 py-2 text-sm hover:bg-panel ${highlightedIndex === index || selectedItem === item ? 'bg-cyan/10 text-cyan' : ''}`}
                                 key={`${item.value}${index}`}
                                 {...getItemProps({item, index})}
                             >
                                 <span
-                                    className="dialog-input-dropdown-dropdown-item-name">{item.title}</span>
+                                    className="block font-semibold">{item.title}</span>
                                 <span
-                                    className="dialog-input-dropdown-dropdown-item-username">{item.description ?? ""}</span>
+                                    className="block text-xs text-muted">{item.description ?? ""}</span>
                             </li>
                         ))}
             </ul>

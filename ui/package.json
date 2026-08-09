@@ -16,17 +16,18 @@
     "@types/store": "^2.0.2",
     "crypto-random-string": "^5.0.0",
     "downshift": "^9.3.2",
-    "pocketbase": "^0.26.8",
+    "pocketbase": "^0.27.1",
     "preact": "^10.11.2",
     "react-jdenticon": "^1.0.0",
     "react-router-dom": "^6.30.3",
-    "sass": "^1.98.0",
     "store": "^2.0.12"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.5",
+    "@tailwindcss/vite": "^4.3.3",
     "@types/connect-history-api-fallback": "^1.5.4",
     "connect-history-api-fallback": "^2.0.0",
+    "tailwindcss": "^4.3.3",
     "typescript": "^6.0.2",
     "vite": "^8.0.7"
   }

@@ -15,19 +15,13 @@ export default function NavBarLink(props: { isExternal?: boolean, href: string, 
 
     if (props.isExternal) {
         return <a href={props.href} onClick={onClick}
-                  className={`navbar-link navbar-link__animated ${isAnimating ? 'navbar-link__active' : ''}`}>
-            <span className="navbar-link__text">{props.children}</span>
-            <span className="navbar-link__decoration">
-              <span className="navbar-link__decoration__switch"></span>
-            </span>
+                  className={`inline-flex min-h-10 items-center rounded-xl px-3 text-sm font-semibold text-muted transition hover:bg-panel hover:text-copy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime sm:px-3 ${isAnimating ? 'bg-panel text-copy' : ''}`}>
+            <span className="whitespace-nowrap">{props.children}</span>
         </a>
     }
 
     return <Link to={props.href} onClick={onClick}
-                 className={`navbar-link navbar-link__animated ${isAnimating ? 'navbar-link__active' : ''}`}>
-        <span className="navbar-link__text">{props.children}</span>
-        <span className="navbar-link__decoration">
-              <span className="navbar-link__decoration__switch"></span>
-            </span>
+                 className={`inline-flex min-h-10 items-center rounded-xl px-3 text-sm font-semibold text-muted transition hover:bg-panel hover:text-copy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime sm:px-3 ${isAnimating ? 'bg-panel text-copy' : ''}`}>
+        <span className="whitespace-nowrap">{props.children}</span>
     </Link>
 }

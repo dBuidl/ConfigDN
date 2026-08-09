@@ -390,7 +390,7 @@ export default function Team() {
                 </DashboardObjectsList>
             </DashboardObjects>
 
-            {team.owner === pocketbase.authStore.model?.id && <DashboardObjects>
+            {team.owner === pocketbase.authStore.record?.id && <DashboardObjects>
                 <DashboardObjectsTitle>Members</DashboardObjectsTitle>
                 <DashboardObjectsList>
                     <DashboardUserSection title={"Owner"} expand={team.expand.owner} onUserDelete={onUserDelete}/>

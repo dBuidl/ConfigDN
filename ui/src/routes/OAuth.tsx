@@ -13,8 +13,9 @@ export default function OAuth() {
         const provider = store.get("provider");
         const redirectUrl = location.origin + URLS.OAUTH2_REDIRECT;
 
-        if (provider.state !== params.get("state")) {
+        if (!provider || provider.state !== params.get("state")) {
             navigate(URLS.LOGIN + "?error=Could not verify state, please try to login again.");
+            return;
         }
 
         if (code) {
@@ -24,7 +25,7 @@ export default function OAuth() {
                 // Try and set a sensible username and display name for the user (otherwise they get ugly names like "user123456")
                 pocketbase.collection('users').update(data.record.id, {
                     name: data.meta?.name ?? "",
-                    username: data.meta?.username.replace(/\W/g, "") ?? "",
+                    username: (data.meta?.username ?? "").replace(/\W/g, ""),
                 }).catch(e => console.error(e));
 
                 navigate(URLS.DASHBOARD)

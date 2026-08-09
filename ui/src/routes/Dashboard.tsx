@@ -11,7 +11,7 @@ export default function Dashboard() {
     return <>
         <Sidebar/>
 
-        <Page>
+        <Page class="dashboard-page ml-72">
             <Outlet/>
         </Page>
     </>

@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@theme {
+    --color-ink: #08111f;
+    --color-ink-soft: #0d1a2b;
+    --color-panel: #122238;
+    --color-panel-raised: #172b45;
+    --color-line: #29445d;
+    --color-copy: #e7f0ee;
+    --color-muted: #8ca4b8;
+    --color-lime: #b9f36b;
+    --color-cyan: #5ed8d0;
+    --color-amber: #ffbf75;
+    --color-red: #ff8490;
+    --font-sans: "Avenir Next", Avenir, ui-sans-serif, system-ui, sans-serif;
+    --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+@layer base {
+    :root {
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    html {
+        min-width: 320px;
+        background: #08111f;
+    }
+
+    body {
+        @apply m-0 min-h-screen bg-ink font-sans text-copy;
+        background-image: radial-gradient(circle at 80% -10%, rgba(94, 216, 208, 0.12), transparent 34rem),
+            radial-gradient(circle at 5% 40%, rgba(185, 243, 107, 0.06), transparent 28rem);
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+        font: inherit;
+    }
+
+    a {
+        @apply text-inherit no-underline;
+    }
+
+    ::selection {
+        @apply bg-lime text-ink;
+    }
+}
+
+@media (max-width: 900px) {
+    .dashboard-sidebar {
+        position: relative !important;
+        width: 100% !important;
+        max-height: 15rem;
+        border-right-width: 0 !important;
+        border-bottom-width: 1px;
+    }
+
+    .dashboard-page {
+        margin-left: 0 !important;
+    }
+}

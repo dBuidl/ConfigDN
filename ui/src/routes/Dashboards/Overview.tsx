@@ -140,7 +140,7 @@ export default function Overview() {
                             </DashboardObjectHeaderIcon>
                             <DashboardObjectHeaderName>{team.name}</DashboardObjectHeaderName>
                             <DashboardObjectActions>
-                                {team.owner === pocketbase.authStore.model?.id ?
+                                {team.owner === pocketbase.authStore.record?.id ?
                                     <DashboardObjectAction onClick={(e) => {
                                         e.stopPropagation();
 

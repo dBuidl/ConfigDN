@@ -87,8 +87,9 @@ export default function Sidebar() {
         })();
     }, [authValid]);
 
-    return <nav className="sidebar">
-        {loading && <div className="loading">Loading...</div>}
+    return <nav className="dashboard-sidebar fixed inset-y-0 left-0 z-50 flex w-72 flex-col overflow-y-auto border-r border-line/70 bg-ink-soft/95 px-4 py-5 backdrop-blur-xl">
+        <div className="mb-7 px-3 font-mono text-[0.65rem] font-bold tracking-[0.2em] text-cyan">CONFIGDN / WORKSPACE</div>
+        {loading && <div className="rounded-xl border border-line bg-panel px-3 py-2 text-sm text-muted">Loading...</div>}
 
         {/* print data hierarchy here */}
         {data.map((team: SidebarTeam) => {
@@ -106,6 +107,6 @@ export default function Sidebar() {
             </>
         })}
 
-        {error && <div className="error">{error}</div>}
+        {error && <div className="rounded-xl border border-red/30 bg-red/5 px-3 py-2 text-sm text-red">{error}</div>}
     </nav>;
 }

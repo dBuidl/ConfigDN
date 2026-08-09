@@ -1,6 +1,6 @@
 // This file contains the structures of the PocketBase database as well as some custom types to explain the data.
 
-import {AuthModel, RecordModel} from "pocketbase";
+import {AuthRecord, RecordModel} from "pocketbase";
 import {DashboardSelectItem} from "../components/dashboard/SelectInput";
 
 export interface UserRecord extends RecordModel {
@@ -93,6 +93,6 @@ export const flagTypeArray: DashboardSelectItem[] = [
 
 export type tWebMailAPIResponse = { success: true, message: string, email: string, web_mail_url: string, service_name: string } | { success: false, message: string, email?: string };
 
-export type tNullableAuthModel = AuthModel | null;
+export type tNullableAuthModel = AuthRecord;
 
-export type tValidAuthModelResponse = [true, AuthModel] | [false, null]
+export type tValidAuthModelResponse = [true, AuthRecord] | [false, null]

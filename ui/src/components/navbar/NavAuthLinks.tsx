@@ -11,7 +11,7 @@ import NavBarDropdownLink, {
 } from "./NavBarDropdownLink";
 
 export default function NavAuthLinks() {
-    const [authValid, model] = useAuthValidWithModel();
+    const [authValid, record] = useAuthValidWithModel();
 
     if (authValid) {
         return <>
@@ -19,11 +19,11 @@ export default function NavAuthLinks() {
             <NavBarDropdownLink>
             <NavBarDropdownLinkText>
                 <FontAwesomeIcon
-                    icon={faUserCircle}/>&nbsp;{pocketbase.authStore?.model?.username}
+                    icon={faUserCircle}/>&nbsp;{pocketbase.authStore?.record?.username}
             </NavBarDropdownLinkText>
             <NavBarDropdownItemContainer>
                 <NavBarDropdownItem>
-                    <NavBarLink href={URLS.USER_SETTINGS + "/" + model?.id}>Account</NavBarLink>
+                    <NavBarLink href={URLS.USER_SETTINGS + "/" + record?.id}>Account</NavBarLink>
                 </NavBarDropdownItem>
                 <NavBarDropdownItem>
                     <NavBarLink href={URLS.LOGOUT}>Logout</NavBarLink>

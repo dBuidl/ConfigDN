@@ -1,12 +1,12 @@
 import Page from "../components/general/Page";
 import Content from "../components/general/Content";
 import NavBar from "../components/navbar/NavBar";
-import logo from "../assets/images/raster/logo.png";
 import NavBarLinksContainer from "../components/navbar/NavBarLinksContainer";
 import NavAuthLinks from "../components/navbar/NavAuthLinks";
 import { useEffect } from "preact/hooks";
 import { useNavigate } from "react-router-dom";
 import URLS from "../helpers/URLS";
+import configdnMark from "../assets/images/vector/configdn-mark.svg";
 
 export default function TermsOfService() {
     const navigate = useNavigate();
@@ -24,13 +24,13 @@ export default function TermsOfService() {
     
     return (
         <Page>
-            <NavBar logo={logo}>
+            <NavBar logo={configdnMark}>
                 <NavBarLinksContainer>
                     <NavAuthLinks/>
                 </NavBarLinksContainer>
             </NavBar>
             <Content>
-                <div className="terms-of-service">
+                <div className="mx-auto w-full max-w-4xl px-6 py-12 text-muted sm:px-10 [&_h1]:mb-8 [&_h1]:text-4xl [&_h1]:font-semibold [&_h1]:tracking-tight [&_h1]:text-copy [&_h2]:mb-3 [&_h2]:mt-8 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-copy [&_p]:mb-3 [&_p]:leading-7 [&_li]:mb-3 [&_li]:leading-7 [&_ul]:ml-5 [&_ul]:list-disc">
                     <h1>Terms of Service</h1>
                     <p><strong>Last updated:</strong> {new Date().toLocaleDateString()}</p>
                     

@@ -1,7 +1,6 @@
 import {render} from 'preact';
 import {Home} from './routes/Home';
-import './styles/style.scss';
-import './styles/minireset.css';
+import './styles/tailwind.css';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import Login, {loginLoader} from "./routes/Login";
 import Register, {registerLoader} from "./routes/Register";
