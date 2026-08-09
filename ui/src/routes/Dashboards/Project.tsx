@@ -10,8 +10,7 @@ import DashboardObjectHeader from "../../components/dashboard/DashboardObjectHea
 import DashboardObjectHeaderIcon from "../../components/dashboard/DashboardObjectHeaderIcon";
 import DashboardObjectHeaderName from "../../components/dashboard/DashboardObjectHeaderName";
 import DashboardObjects from "../../components/dashboard/DashboardObjects";
-// @ts-ignore
-import Jdenticon from "react-jdenticon";
+import Jdenticon from "../../components/dashboard/Jdenticon";
 import DashboardNavbar from "../../components/navbar/DashboardNavbar";
 import NavBarBreadcrumbs from "../../components/navbar/NavBarBreadcrumbs";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -24,6 +23,7 @@ import DialogFooter from "../../components/dialog/DialogFooter";
 import DashboardObjectActions from "../../components/dashboard/DashboardObjectActions";
 import DashboardObjectAction from "../../components/dashboard/DashboardObjectAction";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
+import notifyWorkspaceChanged from "../../helpers/notifyWorkspaceChanged";
 
 export default function Project() {
     const [team, project, configsData, environmentsData] = useLoaderData() as ProjectLoaderData;
@@ -62,6 +62,7 @@ export default function Project() {
             project: project.id,
         }).then((configRecord) => {
             setConfigs(configsNow => [...configsNow, configRecord as ConfigRecord]);
+            notifyWorkspaceChanged();
             setCreateConfigDialogOpen(false);
         }).catch((e) => {
             console.error(e);
@@ -83,6 +84,7 @@ export default function Project() {
             project: project.id,
         }).then((environmentRecord) => {
             setEnvironments(environmentsNow => [...environmentsNow, environmentRecord as EnvironmentRecord]);
+            notifyWorkspaceChanged();
             setCreateEnvironmentDialogOpen(false);
         }).catch((e) => {
             console.error(e);
@@ -125,6 +127,7 @@ export default function Project() {
         if (deleteObjectType === 'config') {
             pocketbase.collection('config').delete(deleteObject?.id).then(() => {
                 setConfigs(configsNow => configsNow.filter(config => config.id !== deleteObject?.id));
+                notifyWorkspaceChanged();
                 setDeleteObjectDialogOpen(false);
             }).catch((e) => {
                 console.error(e);
@@ -134,6 +137,7 @@ export default function Project() {
         } else if (deleteObjectType === 'environment') {
             pocketbase.collection('environment').delete(deleteObject?.id).then(() => {
                 setEnvironments(environmentsNow => environmentsNow.filter(environment => environment.id !== deleteObject?.id));
+                notifyWorkspaceChanged();
                 setDeleteObjectDialogOpen(false);
             }).catch((e) => {
                 console.error(e);

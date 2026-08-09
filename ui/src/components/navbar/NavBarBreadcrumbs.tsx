@@ -37,7 +37,7 @@ export default function NavBarBreadcrumbs(props: NavBarBreadcrumbsProps) {
     const onEnvironmentDropDownChange = (item: DashboardSelectItem | null) => {
         if (item === null) return;
 
-        navigate("./../" + item.value);
+        navigate(`/dashboard/${props.team?.id}/${props.project?.id}/${props.config?.id}/${item.value}`);
     }
 
     // display specified parts of the breadcrumb with the separator ">" between them

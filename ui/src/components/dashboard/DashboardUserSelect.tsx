@@ -1,9 +1,10 @@
 import {useCombobox} from "downshift";
 import {UserRecord} from "../../types/Structures";
-import {useEffect} from "preact/compat";
+import {createPortal, useEffect, useRef} from "preact/compat";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCaretUp} from "@fortawesome/free-solid-svg-icons/faCaretUp";
 import {faCaretDown} from "@fortawesome/free-solid-svg-icons/faCaretDown";
+import useDropdownPosition from "../../hooks/useDropdownPosition";
 
 function itemToString(item: UserRecord | null) {
     return item ? item.username : ''
@@ -20,6 +21,7 @@ interface DashboardUserSelectProps {
 }
 
 export default function DashboardUserSelect(props: DashboardUserSelectProps) {
+    const toggleRef = useRef<HTMLDivElement>(null);
     const {
         isOpen,
         selectedItem,
@@ -47,9 +49,32 @@ export default function DashboardUserSelect(props: DashboardUserSelectProps) {
         props.onSelectedUserChange?.(selectedItem);
     }, [selectedItem]);
 
-    // @ts-ignore
+    const dropdownPosition = useDropdownPosition(isOpen, toggleRef);
+    const menuProps = getMenuProps();
+    const menu = isOpen && dropdownPosition && createPortal(
+        <ul
+            className="fixed z-[100] max-h-64 min-w-44 overflow-y-auto rounded-xl border border-line bg-panel-raised p-1.5 shadow-2xl"
+            style={{top: `${dropdownPosition.top}px`, left: `${dropdownPosition.left}px`, width: `${dropdownPosition.width}px`}}
+            {...menuProps}
+        >
+            {filterAndReplaceFilteredWithNulls(props.users, inputValue)
+                .map((item, index) => (
+                    item &&
+                    <li
+                        className={`cursor-pointer rounded-lg px-3 py-2 text-sm hover:bg-panel ${highlightedIndex === index || selectedItem === item ? 'bg-cyan/10 text-cyan' : ''}`}
+                        key={`${item.value}${index}`}
+                        {...getItemProps({item, index})}
+                    >
+                        <span className="block font-semibold">{item.username}</span>
+                        <span className="block text-xs text-muted">{item.name ?? ""}</span>
+                    </li>
+                ))}
+        </ul>,
+        document.body,
+    );
+
     return (
-        <div className="relative min-w-28">
+        <div ref={toggleRef} className="relative min-w-28">
             <div
                 className="flex w-full cursor-pointer items-center justify-between gap-2 rounded-lg border border-line bg-panel px-2.5 py-1.5 text-left text-sm text-copy hover:border-cyan"
                 {...getToggleButtonProps()}
@@ -62,26 +87,7 @@ export default function DashboardUserSelect(props: DashboardUserSelectProps) {
                 <span>{isOpen ? <FontAwesomeIcon icon={faCaretUp}/> :
                     <FontAwesomeIcon icon={faCaretDown}/>}</span>
             </div>
-            <ul
-                className={`absolute left-0 top-full z-50 mt-2 max-h-64 min-w-full overflow-y-auto rounded-xl border border-line bg-panel-raised p-1.5 shadow-2xl ${!isOpen ? 'hidden' : ''}`}
-                {...getMenuProps()}
-            >
-                {isOpen &&
-                    filterAndReplaceFilteredWithNulls(props.users, inputValue)
-                        .map((item, index) => (
-                            item &&
-                            <li
-                                className={`cursor-pointer rounded-lg px-3 py-2 text-sm hover:bg-panel ${highlightedIndex === index || selectedItem === item ? 'bg-cyan/10 text-cyan' : ''}`}
-                                key={`${item.value}${index}`}
-                                {...getItemProps({item, index})}
-                            >
-                                <span
-                                    className="block font-semibold">{item.username}</span>
-                                <span
-                                    className="block text-xs text-muted">{item.name ?? ""}</span>
-                            </li>
-                        ))}
-            </ul>
+            {menu}
         </div>
     );
 }

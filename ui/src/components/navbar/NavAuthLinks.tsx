@@ -16,20 +16,21 @@ export default function NavAuthLinks() {
     if (authValid) {
         return <>
             <NavBarLink href={URLS.DASHBOARD}>Dashboard</NavBarLink>
-            <NavBarDropdownLink>
-            <NavBarDropdownLinkText>
-                <FontAwesomeIcon
-                    icon={faUserCircle}/>&nbsp;{pocketbase.authStore?.record?.username}
-            </NavBarDropdownLinkText>
-            <NavBarDropdownItemContainer>
-                <NavBarDropdownItem>
-                    <NavBarLink href={URLS.USER_SETTINGS + "/" + record?.id}>Account</NavBarLink>
-                </NavBarDropdownItem>
-                <NavBarDropdownItem>
-                    <NavBarLink href={URLS.LOGOUT}>Logout</NavBarLink>
-                </NavBarDropdownItem>
-            </NavBarDropdownItemContainer>
-        </NavBarDropdownLink>
+            <NavBarDropdownLink dropdown={
+                <NavBarDropdownItemContainer>
+                    <NavBarDropdownItem>
+                        <NavBarLink className="w-full" href={URLS.USER_SETTINGS + "/" + record?.id}>Account</NavBarLink>
+                    </NavBarDropdownItem>
+                    <NavBarDropdownItem>
+                        <NavBarLink className="w-full" href={URLS.LOGOUT}>Logout</NavBarLink>
+                    </NavBarDropdownItem>
+                </NavBarDropdownItemContainer>
+            }>
+                <NavBarDropdownLinkText>
+                    <FontAwesomeIcon
+                        icon={faUserCircle}/>&nbsp;{pocketbase.authStore?.record?.username}
+                </NavBarDropdownLinkText>
+            </NavBarDropdownLink>
             </>;
     }
 

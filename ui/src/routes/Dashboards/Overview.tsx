@@ -10,8 +10,7 @@ import DashboardObjectHeaderIcon from "../../components/dashboard/DashboardObjec
 import DashboardObjectHeaderName from "../../components/dashboard/DashboardObjectHeaderName";
 import React, {useEffect} from "preact/compat";
 import Content from "../../components/general/Content";
-// @ts-ignore
-import Jdenticon from "react-jdenticon";
+import Jdenticon from "../../components/dashboard/Jdenticon";
 import DashboardNavbar from "../../components/navbar/DashboardNavbar";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus} from "@fortawesome/free-solid-svg-icons/faPlus";
@@ -23,6 +22,7 @@ import DialogFooter from "../../components/dialog/DialogFooter";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 import DashboardObjectActions from "../../components/dashboard/DashboardObjectActions";
 import DashboardObjectAction from "../../components/dashboard/DashboardObjectAction";
+import notifyWorkspaceChanged from "../../helpers/notifyWorkspaceChanged";
 
 export default function Overview() {
     const [teamsData] = useLoaderData() as OverviewData;
@@ -50,6 +50,7 @@ export default function Overview() {
             owner: [pocketbase.authStore?.model?.id],
         }).then((team) => {
             setTeams([...teams, team as TeamRecord]);
+            notifyWorkspaceChanged();
             setNewTeamName('');
             setCreateTeamDialogShowing(false);
         }).catch((error) => {
@@ -65,6 +66,7 @@ export default function Overview() {
 
         pocketbase.collection('team').delete(teamToDelete.id).then(() => {
             setTeams(tms => tms.filter((team) => team.id !== teamToDelete.id));
+            notifyWorkspaceChanged();
             setTeamToDelete(null);
             setDeleteTeamDialogShowing(false);
         }).catch((error) => {

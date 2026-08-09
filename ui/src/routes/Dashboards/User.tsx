@@ -1,7 +1,5 @@
 import {Link, useLoaderData, useNavigate} from "react-router-dom";
 import Content from "../../components/general/Content";
-import DashboardSpacer from "../../components/dashboard/DashboardSpacer";
-import SettingButtons from "../../components/dashboard/config/SettingButtons";
 import SettingButton from "../../components/dashboard/config/SettingButton";
 import DashboardNavbar from "../../components/navbar/DashboardNavbar";
 import {useAuthValidWithModel} from "../../hooks/useAuthValid";
@@ -36,49 +34,56 @@ export default function User() {
         });
     }
 
-   return <>
-        <DashboardNavbar>
-            {model ? <div className={"navbar-links-breadcrumb"}>
-                    <Link className="breadcrumb-page"
-                          to={`/dashboard/user/${model?.id}`}><p>Account Settings</p></Link>
-                </div>
-                : null}
-        </DashboardNavbar>
-       <Content pageName="dashboard dashboard-user-settings">
+    return <>
+         <DashboardNavbar>
+             {model ? <div className="flex min-w-0 flex-1 items-center text-sm font-semibold text-copy sm:text-base">
+                     <Link className="rounded-lg px-2 py-1 hover:bg-panel hover:text-lime"
+                           to={`/dashboard/user/${model.id}`}>Account Settings</Link>
+                 </div>
+                 : null}
+         </DashboardNavbar>
+        <Content pageName="dashboard dashboard-user-settings">
+           <div className="mx-auto w-full max-w-4xl">
+               <header className="mb-8">
+                   <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-cyan">ACCOUNT SETTINGS</p>
+                   <h1 className="mt-3 text-3xl font-semibold tracking-tight text-copy sm:text-4xl">Manage your account</h1>
+                   <p className="mt-3 max-w-2xl text-base leading-7 text-muted">Update your credentials or review the teams connected to your account.</p>
+               </header>
 
-           <h1 className="action-header">Change your password</h1>
+               <section className="mb-6 overflow-hidden rounded-3xl border border-line bg-panel">
+                   <div className="border-b border-line/70 px-5 py-5 sm:px-7">
+                       <h2 className="text-xl font-semibold text-copy">Change password</h2>
+                       <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">Use your current password to set a new one. If you have forgotten it, log out and use the password recovery process.</p>
+                   </div>
+                   <div className="px-5 py-5 sm:px-7">
+                       <SettingButton onClick={() => navigate(URLS.CHANGE_PASSWORD)} type="Change Password"/>
+                   </div>
+               </section>
 
-           <p>You can do so using the button below if you know your current password. If you have forgotten it, please
-               log out and use the forgotten password process.</p>
-
-           <SettingButtons>
-               <SettingButton onClick={() => navigate(URLS.CHANGE_PASSWORD)}
-                              type={"Change Password"}/>
-           </SettingButtons>
-
-           <h1 className="action-header">Delete account</h1>
-
-           <p>If you want to, you can delete your ConfigDN account. This actions is <strong>irreversible</strong>! <strong>All teams</strong> you are the owner of will also be deleted.</p>
-
-           <p>You currently own the following teams:</p>
-
-           <ul className="owned-teams-list">
-               {
-                   teams.items.map(v => <li><a href={URLS.DASHBOARD + "/" + v.id}>{v.name}</a></li>)
-               }
-           </ul>
-
-           <p>You can transfer them by clicking on the links above, choosing add member, then owner and set the owner to the new owner.</p>
-
-           <SettingButtons>
-               <SettingButton onClick={() => deleteAccount()}
-                              type={"Delete Account"}/>
-           </SettingButtons>
-
-           <p className="delete-account-warning">{message}</p>
-
-           <DashboardSpacer/>
-       </Content>
+               <section className="overflow-hidden rounded-3xl border border-red/30 bg-panel">
+                   <div className="border-b border-red/20 px-5 py-5 sm:px-7">
+                       <p className="font-mono text-xs font-bold uppercase tracking-[0.16em] text-red">Danger zone</p>
+                       <h2 className="mt-2 text-xl font-semibold text-copy">Delete account</h2>
+                       <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">Deleting your account is irreversible. Any teams you own, along with their projects, configurations, environments, and API keys, will also be deleted.</p>
+                   </div>
+                   <div className="px-5 py-5 sm:px-7">
+                       <h3 className="text-sm font-semibold text-copy">Teams you own</h3>
+                       {teams.items.length > 0 ?
+                           <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+                               {teams.items.map(team => <li key={team.id}>
+                                   <Link className="block rounded-xl border border-line bg-ink px-3 py-2.5 text-sm font-semibold text-muted hover:border-cyan hover:text-cyan" to={`${URLS.DASHBOARD}/${team.id}`}>{team.name}</Link>
+                               </li>)}
+                           </ul> :
+                           <p className="mt-2 text-sm text-muted">You do not currently own any teams.</p>}
+                       <p className="mt-4 text-sm leading-6 text-muted">To transfer ownership, open a team, choose <strong className="text-copy">Add Member</strong>, select the <strong className="text-copy">Owner</strong> role, and confirm the transfer.</p>
+                       <div className="mt-5 flex flex-wrap items-center gap-3">
+                           <SettingButton onClick={() => deleteAccount()} type="Delete Account"/>
+                           {message && <p className="max-w-xl text-sm leading-6 text-red">{message}</p>}
+                       </div>
+                   </div>
+               </section>
+           </div>
+        </Content>
    </>;
 }
 

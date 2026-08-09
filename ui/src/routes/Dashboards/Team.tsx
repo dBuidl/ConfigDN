@@ -10,8 +10,7 @@ import DashboardObject from "../../components/dashboard/DashboardObject";
 import DashboardObjectHeader from "../../components/dashboard/DashboardObjectHeader";
 import DashboardObjectHeaderName from "../../components/dashboard/DashboardObjectHeaderName";
 import DashboardObjectHeaderIcon from "../../components/dashboard/DashboardObjectHeaderIcon";
-// @ts-ignore
-import Jdenticon from "react-jdenticon";
+import Jdenticon from "../../components/dashboard/Jdenticon";
 import Content from "../../components/general/Content";
 import DashboardNavbar from "../../components/navbar/DashboardNavbar";
 import NavBarBreadcrumbs from "../../components/navbar/NavBarBreadcrumbs";
@@ -26,6 +25,7 @@ import DashboardUserSelect from "../../components/dashboard/DashboardUserSelect"
 import SelectInput, {DashboardSelectItem} from "../../components/dashboard/SelectInput";
 import DashboardObjectActions from "../../components/dashboard/DashboardObjectActions";
 import DashboardObjectAction from "../../components/dashboard/DashboardObjectAction";
+import notifyWorkspaceChanged from "../../helpers/notifyWorkspaceChanged";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 import DashboardObjectBody from "../../components/dashboard/DashboardObjectBody";
 
@@ -187,6 +187,7 @@ export default function Team() {
         if (deleteObjectType === "project") {
             pocketbase.collection("project").delete(deleteObject.id).then(() => {
                 setProjects(projects.filter((p) => p.id !== deleteObject.id));
+                notifyWorkspaceChanged();
                 setDeleteObjectDialogShowing(false);
             }).catch((e) => {
                 setDeleteObjectError(e.message);
@@ -347,6 +348,7 @@ export default function Team() {
             team: team.id,
         }).then((project) => {
             setProjects([...projects, project as ProjectRecord]);
+            notifyWorkspaceChanged();
             setNewProjectName('');
             setProjectCreateDialogShowing(false);
         }).catch((err) => {

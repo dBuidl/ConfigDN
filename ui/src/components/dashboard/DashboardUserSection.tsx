@@ -8,8 +8,7 @@ import DashboardObjectBody from "./DashboardObjectBody";
 import DashboardObjectBodyInfo from "./DashboardObjectBodyInfo";
 import DashboardObject from "./DashboardObject";
 import React from "preact/compat";
-// @ts-ignore
-import Jdenticon from "react-jdenticon";
+import Jdenticon from "./Jdenticon";
 import DashboardObjectActions from "./DashboardObjectActions";
 import DashboardObjectAction from "./DashboardObjectAction";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";

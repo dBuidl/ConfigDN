@@ -16,9 +16,9 @@
     "@types/store": "^2.0.2",
     "crypto-random-string": "^5.0.0",
     "downshift": "^9.3.2",
+    "jdenticon": "^3.3.0",
     "pocketbase": "^0.27.1",
     "preact": "^10.11.2",
-    "react-jdenticon": "^1.0.0",
     "react-router-dom": "^6.30.3",
     "store": "^2.0.12"
   },

@@ -4,6 +4,7 @@ import {ClientResponseError} from "pocketbase";
 import {ConfigRecord, EnvironmentRecord, ProjectRecord, TeamRecord} from "../../types/Structures";
 import useAuthValid from "../../hooks/useAuthValid";
 import SidebarObject from "./SidebarObject";
+import {WORKSPACE_CHANGED_EVENT} from "../../helpers/notifyWorkspaceChanged";
 
 export interface SidebarBase {
     id: string,
@@ -38,7 +39,8 @@ export default function Sidebar() {
             return;
         }
 
-        (async function () {
+        const loadSidebar = async () => {
+            setLoading(true);
             try {
                 const teams = await pocketbase.collection('team').getFullList() as TeamRecord[];
                 const projects = await pocketbase.collection('project').getFullList() as ProjectRecord[];
@@ -84,7 +86,16 @@ export default function Sidebar() {
                 }
                 setLoading(false);
             }
-        })();
+        };
+
+        const refreshSidebar = () => {
+            void loadSidebar();
+        };
+
+        window.addEventListener(WORKSPACE_CHANGED_EVENT, refreshSidebar);
+        refreshSidebar();
+
+        return () => window.removeEventListener(WORKSPACE_CHANGED_EVENT, refreshSidebar);
     }, [authValid]);
 
     return <nav className="dashboard-sidebar fixed inset-y-0 left-0 z-50 flex w-72 flex-col overflow-y-auto border-r border-line/70 bg-ink-soft/95 px-4 py-5 backdrop-blur-xl">
