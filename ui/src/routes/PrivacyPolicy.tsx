@@ -42,10 +42,10 @@ export default function PrivacyPolicy() {
                     
                     <h2>2. Company Information</h2>
                     <p>
-                        <strong>Company Name:</strong> dbuidl Limited<br/>
+                        <strong>Company Name:</strong> dBuidl Limited<br/>
                         <strong>Company Number:</strong> SC730458<br/>
-                        <strong>Registered Address:</strong> Clyde Offices 2nd Floor, 48 West George Street, Glasgow, Scotland, G2 1BP<br/>
-                        <strong>Country:</strong> United Kingdom
+                        <strong>Registered Address:</strong> Clyde Offices, 2nd Floor, 48 West George Street, Glasgow, G2 1BP, Scotland<br/>
+                        <strong>Country:</strong> Scotland, United Kingdom
                     </p>
                     
                     <h2>3. Information We Collect</h2>
@@ -134,7 +134,7 @@ export default function PrivacyPolicy() {
                     <p>
                         If you have any questions about this Privacy Policy, please contact us at:<br/>
                         <strong>Email:</strong> privacy [at] dbuidl [dot] com<br/>
-                        <strong>Address:</strong> dBuidl Limited, Clyde Offices 2nd Floor, 48 West George Street, Glasgow, Scotland, G2 1BP
+                        <strong>Address:</strong> dBuidl Limited, Clyde Offices, 2nd Floor, 48 West George Street, Glasgow, G2 1BP, Scotland
                     </p>
                 </div>
             </Content>

@@ -19,6 +19,8 @@ To build the project, use the build script:
 ./build.sh
 ```
 
+The UI determines whether it is hosted or self-hosted at runtime from the hostname. Only `configdn.com` receives the hosted branding and legal links; other hostnames receive the self-hosted branding.
+
 This script also builds the UI before a release. Alternatively, you can download a release from the [releases page](https://github.com/dBuidl/ConfigDN/releases).
 
 # Running the project

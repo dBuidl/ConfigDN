@@ -45,8 +45,8 @@ export default function TermsOfService() {
                         ConfigDN is provided by:<br/>
                         <strong>Company Name:</strong> dBuidl Limited<br/>
                         <strong>Company Number:</strong> SC730458<br/>
-                        <strong>Registered Address:</strong> Clyde Offices 2nd Floor, 48 West George Street, Glasgow, Scotland, G2 1BP<br/>
-                        <strong>Country:</strong> United Kingdom
+                        <strong>Registered Address:</strong> Clyde Offices, 2nd Floor, 48 West George Street, Glasgow, G2 1BP, Scotland<br/>
+                        <strong>Country:</strong> Scotland, United Kingdom
                     </p>
                     
                     <h2>3. Description of Service</h2>
@@ -152,7 +152,7 @@ export default function TermsOfService() {
                     <p>
                         If you have any questions about these Terms, please contact us at:<br/>
                         <strong>Email:</strong> legal [at] dbuidl [dot] com<br/>
-                        <strong>Address:</strong> dBuidl Limited, Clyde Offices 2nd Floor, 48 West George Street, Glasgow, Scotland, G2 1BP
+                        <strong>Address:</strong> dBuidl Limited, Clyde Offices, 2nd Floor, 48 West George Street, Glasgow, G2 1BP, Scotland
                     </p>
                 </div>
             </Content>

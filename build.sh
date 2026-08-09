@@ -1,11 +1,15 @@
-# Local build script / UI Preparation Script for Release
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Local build script / UI preparation script for release.
+
+root_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
 # Build Frontend
-cd ./ui/ || exit
-npm i
-npm run build
+npm --prefix="$root_dir/ui" install
+npm --prefix="$root_dir/ui" run build
 
 # Build Backend
-cd ..
+cd "$root_dir"
 go get
 go build
