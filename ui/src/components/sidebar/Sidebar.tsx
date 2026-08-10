@@ -27,7 +27,7 @@ export interface SidebarTeam extends SidebarBase {
     projects: SidebarProject[];
 }
 
-export default function Sidebar() {
+export default function Sidebar(props: { isOpen: boolean, onClose: () => void }) {
     const authValid = useAuthValid();
     const [data, setData] = React.useState<SidebarTeam[]>([]);
     const [loading, setLoading] = React.useState(true);
@@ -98,18 +98,19 @@ export default function Sidebar() {
         return () => window.removeEventListener(WORKSPACE_CHANGED_EVENT, refreshSidebar);
     }, [authValid]);
 
-    return <nav className="dashboard-sidebar fixed inset-y-0 left-0 z-50 flex w-72 flex-col overflow-y-auto border-r border-line/70 bg-ink-soft/95 px-4 py-5 backdrop-blur-xl">
+    return <nav id="workspace-navigation" className={`dashboard-sidebar fixed inset-y-0 left-0 z-50 flex w-[min(18rem,calc(100vw-1.5rem))] -translate-x-full flex-col overflow-y-auto border-r border-line/70 dark:border-dark-line/70 bg-ink-soft/95 dark:bg-dark-ink-soft/95 px-4 py-5 backdrop-blur-xl transition-transform duration-200 lg:w-72 lg:translate-x-0 ${props.isOpen ? "translate-x-0" : ""}`}>
         <div className="mb-7 px-3 font-mono text-[0.65rem] font-bold tracking-[0.2em] text-cyan">CONFIGDN / WORKSPACE</div>
         {loading && <div className="rounded-xl border border-line bg-panel px-3 py-2 text-sm text-muted">Loading...</div>}
 
         {/* print data hierarchy here */}
         {data.map((team: SidebarTeam) => {
             return <>
-                <SidebarObject type="team" url={team.id} name={team.name}>
+                <SidebarObject type="team" url={team.id} name={team.name} onNavigate={props.onClose}>
                     {team.projects.map((project: SidebarProject) => {
-                        return <SidebarObject type="project" name={project.name} url={team.id + "/" + project.id}>
+                        return <SidebarObject type="project" name={project.name} url={team.id + "/" + project.id} onNavigate={props.onClose}>
                             {project.configs.map((config: SidebarConfig) => {
                                 return <SidebarObject type="config" name={config.name}
+                                                      onNavigate={props.onClose}
                                                       url={team.id + "/" + project.id + "/" + config.id + (config.environments.length > 0 ? "/" + config.environments[0].id : "")}/>
                             })}
                         </SidebarObject>

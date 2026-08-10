@@ -1,7 +1,7 @@
 import {ComponentChildren} from "preact";
 
 export default function NavBarLinksContainer(props: { children: ComponentChildren }) {
-    return <div className="flex min-w-0 flex-1 items-center justify-end gap-1">
+    return <div className="flex min-w-0 flex-1 items-center justify-end gap-0.5 overflow-x-auto sm:gap-1">
         {props.children}
     </div>;
 }

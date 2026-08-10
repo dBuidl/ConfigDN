@@ -1,17 +1,30 @@
 @import "tailwindcss";
 
+@custom-variant dark (@media (prefers-color-scheme: dark));
+
 @theme {
-    --color-ink: #08111f;
-    --color-ink-soft: #0d1a2b;
-    --color-panel: #122238;
-    --color-panel-raised: #172b45;
-    --color-line: #29445d;
-    --color-copy: #e7f0ee;
-    --color-muted: #8ca4b8;
-    --color-lime: #b9f36b;
-    --color-cyan: #5ed8d0;
-    --color-amber: #ffbf75;
-    --color-red: #ff8490;
+    --color-ink: #f5f8f6;
+    --color-ink-soft: #eaf2ee;
+    --color-panel: #ffffff;
+    --color-panel-raised: #f4f8f5;
+    --color-line: #c8d8d1;
+    --color-copy: #17342a;
+    --color-muted: #5f756b;
+    --color-lime: #4d7c0f;
+    --color-cyan: #0f766e;
+    --color-amber: #a16207;
+    --color-red: #b4233b;
+    --color-dark-ink: #08111f;
+    --color-dark-ink-soft: #0d1a2b;
+    --color-dark-panel: #122238;
+    --color-dark-panel-raised: #172b45;
+    --color-dark-line: #29445d;
+    --color-dark-copy: #e7f0ee;
+    --color-dark-muted: #8ca4b8;
+    --color-dark-lime: #b9f36b;
+    --color-dark-cyan: #5ed8d0;
+    --color-dark-amber: #ffbf75;
+    --color-dark-red: #ff8490;
     --font-sans: "Avenir Next", Avenir, ui-sans-serif, system-ui, sans-serif;
     --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
@@ -30,13 +43,14 @@
 
     html {
         min-width: 320px;
-        background: #08111f;
+        background: #f5f8f6;
+        color-scheme: light;
     }
 
     body {
         @apply m-0 min-h-screen bg-ink font-sans text-copy;
-        background-image: radial-gradient(circle at 80% -10%, rgba(94, 216, 208, 0.12), transparent 34rem),
-            radial-gradient(circle at 5% 40%, rgba(185, 243, 107, 0.06), transparent 28rem);
+        background-image: radial-gradient(circle at 80% -10%, rgba(15, 118, 110, 0.1), transparent 34rem),
+            radial-gradient(circle at 5% 40%, rgba(77, 124, 15, 0.06), transparent 28rem);
     }
 
     button,
@@ -55,16 +69,34 @@
     }
 }
 
-@media (max-width: 900px) {
-    .dashboard-sidebar {
-        position: relative !important;
-        width: 100% !important;
-        max-height: 15rem;
-        border-right-width: 0 !important;
-        border-bottom-width: 1px;
+@media (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: dark;
+        --color-ink: #08111f;
+        --color-ink-soft: #0d1a2b;
+        --color-panel: #122238;
+        --color-panel-raised: #172b45;
+        --color-line: #29445d;
+        --color-copy: #e7f0ee;
+        --color-muted: #8ca4b8;
+        --color-lime: #b9f36b;
+        --color-cyan: #5ed8d0;
+        --color-amber: #ffbf75;
+        --color-red: #ff8490;
     }
 
-    .dashboard-page {
-        margin-left: 0 !important;
+    html {
+        background: #08111f;
+    }
+
+    body {
+        background-image: radial-gradient(circle at 80% -10%, rgba(94, 216, 208, 0.12), transparent 34rem),
+            radial-gradient(circle at 5% 40%, rgba(185, 243, 107, 0.06), transparent 28rem);
+    }
+}
+
+@media (max-width: 1023px) {
+    .dashboard-sidebar {
+        box-shadow: 18px 0 50px rgba(8, 17, 31, 0.16);
     }
 }
