@@ -19,7 +19,7 @@
     "jdenticon": "^3.3.0",
     "pocketbase": "^0.27.1",
     "preact": "^10.11.2",
-    "react-router-dom": "^6.30.3",
+    "react-router-dom": "^7.18.2",
     "store": "^2.0.12"
   },
   "devDependencies": {
