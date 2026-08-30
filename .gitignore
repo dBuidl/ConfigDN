@@ -113,3 +113,6 @@ vendor/
 # Executables
 ConfigDN
 ConfigDN.*
+
+*.local.md
+ecosystem.config.js
