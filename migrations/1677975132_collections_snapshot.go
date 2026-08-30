@@ -15,7 +15,7 @@ func init() {
 				"name": "team",
 				"type": "base",
 				"system": false,
-				"schema": [
+				"fields": [
 					{
 						"system": false,
 						"id": "5ut2zdg2",
@@ -104,7 +104,7 @@ func init() {
 				"name": "project",
 				"type": "base",
 				"system": false,
-				"schema": [
+				"fields": [
 					{
 						"system": false,
 						"id": "kkb2ta8p",
@@ -148,7 +148,7 @@ func init() {
 				"name": "config",
 				"type": "base",
 				"system": false,
-				"schema": [
+				"fields": [
 					{
 						"system": false,
 						"id": "aiijq9xl",
@@ -192,7 +192,7 @@ func init() {
 				"name": "flag",
 				"type": "base",
 				"system": false,
-				"schema": [
+				"fields": [
 					{
 						"system": false,
 						"id": "qvlwubta",
@@ -301,7 +301,7 @@ func init() {
 				"name": "environment",
 				"type": "base",
 				"system": false,
-				"schema": [
+				"fields": [
 					{
 						"system": false,
 						"id": "k0zpheqn",
@@ -345,7 +345,7 @@ func init() {
 				"name": "value",
 				"type": "base",
 				"system": false,
-				"schema": [
+				"fields": [
 					{
 						"system": false,
 						"id": "9lgepcz5",
@@ -400,7 +400,7 @@ func init() {
 				"name": "api_key",
 				"type": "base",
 				"system": false,
-				"schema": [
+				"fields": [
 					{
 						"system": false,
 						"id": "uo5c3qea",
@@ -472,7 +472,7 @@ func init() {
 				"name": "users",
 				"type": "auth",
 				"system": false,
-				"schema": [
+				"fields": [
 					{
 						"system": false,
 						"id": "pbfieldname",

@@ -4,7 +4,7 @@
         "name": "team",
         "type": "base",
         "system": false,
-        "schema": [
+        "fields": [
             {
                 "id": "5ut2zdg2",
                 "name": "name",
@@ -83,7 +83,7 @@
         "name": "project",
         "type": "base",
         "system": false,
-        "schema": [
+        "fields": [
             {
                 "id": "kkb2ta8p",
                 "name": "team",
@@ -123,7 +123,7 @@
         "name": "config",
         "type": "base",
         "system": false,
-        "schema": [
+        "fields": [
             {
                 "id": "aiijq9xl",
                 "name": "project",
@@ -163,7 +163,7 @@
         "name": "flag",
         "type": "base",
         "system": false,
-        "schema": [
+        "fields": [
             {
                 "id": "qvlwubta",
                 "name": "name",
@@ -268,7 +268,7 @@
         "name": "environment",
         "type": "base",
         "system": false,
-        "schema": [
+        "fields": [
             {
                 "id": "k0zpheqn",
                 "name": "name",
@@ -308,7 +308,7 @@
         "name": "value",
         "type": "base",
         "system": false,
-        "schema": [
+        "fields": [
             {
                 "id": "9lgepcz5",
                 "name": "flag",
@@ -357,7 +357,7 @@
         "name": "api_key",
         "type": "base",
         "system": false,
-        "schema": [
+        "fields": [
             {
                 "id": "uo5c3qea",
                 "name": "environment",
@@ -423,7 +423,7 @@
         "name": "users",
         "type": "auth",
         "system": false,
-        "schema": [
+        "fields": [
             {
                 "id": "pbfieldname",
                 "name": "name",
