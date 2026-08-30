@@ -33,6 +33,22 @@ To run the project, execute the executable built by the build script:
 
 ConfigDN will then be available at:
 - http://localhost:8090/ - UI
-- http://localhost:8090/_/ - Admin UI (Make sure you visit this before making it public as the first person to visit it will be made an admin)
+- http://localhost:8090/_/ - Admin UI
+
+# Creating an admin account
+
+For security, admin accounts must be created from the server command line rather than from the remotely accessible admin UI. Run this from the directory containing the `ConfigDN` executable:
+
+```bash
+./ConfigDN superuser create <username> password
+```
+
+Replace `<username>` with an email address and `password` with a strong password. If the server uses a different PocketBase data directory, specify the same directory used by the server:
+
+```bash
+./ConfigDN --dir ./pb_data superuser create admin@example.com 'use-a-strong-password'
+```
+
+You can then sign in at `https://your-domain.example/_/`.
 
 If you want a prettier interface for resetting passwords, you'll need to go into the admin UI, go to the settings icon then mail settings and update the action URL for reset password to `{APP_URL}/auth/reset-password/{TOKEN}`. You should probably set up an SMTP server while you're there and check over the other settings to make sure you're happy with them.
