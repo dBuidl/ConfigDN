@@ -1,6 +1,8 @@
 package migrations
 
 import (
+	"encoding/json"
+
 	"github.com/pocketbase/pocketbase/core"
 	m "github.com/pocketbase/pocketbase/migrations"
 )
@@ -525,8 +527,51 @@ func init() {
 			}
 		]`
 
-		return app.ImportCollectionsByMarshaledJSON([]byte(jsonData), true)
+		collections, err := normalizeCollectionSnapshot([]byte(jsonData))
+		if err != nil {
+			return err
+		}
+
+		return app.ImportCollections(collections, true)
 	}, func(app core.App) error {
 		return nil
 	})
+}
+
+// normalizeCollectionSnapshot converts the legacy nested field options format
+// to the flattened format expected by current PocketBase field decoders.
+func normalizeCollectionSnapshot(raw []byte) ([]map[string]any, error) {
+	collections := []map[string]any{}
+	if err := json.Unmarshal(raw, &collections); err != nil {
+		return nil, err
+	}
+
+	for _, collection := range collections {
+		fields, ok := collection["fields"].([]any)
+		if !ok {
+			continue
+		}
+
+		for i, rawField := range fields {
+			field, ok := rawField.(map[string]any)
+			if !ok {
+				continue
+			}
+
+			options, ok := field["options"].(map[string]any)
+			if !ok {
+				continue
+			}
+
+			for key, value := range options {
+				field[key] = value
+			}
+			delete(field, "options")
+			fields[i] = field
+		}
+
+		collection["fields"] = fields
+	}
+
+	return collections, nil
 }
